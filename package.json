@@ -1,15 +1,30 @@
 {
-  "name": "tms-sync",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "autorest": "^3.6.3"
-  }
+    "name": "@spec-box/sync",
+    "version": "0.0.1",
+    "scripts": {
+        "build": "tsc",
+        "prepare": "npm run build",
+        "generate-api": "./utils/generate-api.sh",
+        "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node src/cli.ts"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "@azure/core-client": "^1.7.3",
+        "@azure/core-rest-pipeline": "^1.11.0",
+        "fast-glob": "^3.3.0",
+        "fp-ts": "^2.16.0",
+        "fs-extra": "^11.1.1",
+        "io-ts": "^2.2.20",
+        "tslib": "^2.6.0",
+        "yaml": "^2.3.1",
+        "yargs": "^17.7.2"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.1",
+        "@types/node": "^20.4.2",
+        "@types/yargs": "^17.0.24",
+        "autorest": "^3.6.3",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.1.6"
+    }
 }
