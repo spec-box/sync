@@ -2,20 +2,20 @@ import * as coreClient from "@azure/core-client";
 import * as Parameters from "./models/parameters";
 import * as Mappers from "./models/mappers";
 import {
-  TmsWebApiOptionalParams,
+  SpecBoxWebApiOptionalParams,
   ApiProjectsOptionalParams,
   ApiUploadOptionalParams
 } from "./models";
 
-export class TmsWebApi extends coreClient.ServiceClient {
+export class SpecBoxWebApi extends coreClient.ServiceClient {
   $host: string;
 
   /**
-   * Initializes a new instance of the TmsWebApi class.
+   * Initializes a new instance of the SpecBoxWebApi class.
    * @param $host server parameter
    * @param options The parameter options
    */
-  constructor($host: string, options?: TmsWebApiOptionalParams) {
+  constructor($host: string, options?: SpecBoxWebApiOptionalParams) {
     if ($host === undefined) {
       throw new Error("'$host' cannot be null");
     }
@@ -24,11 +24,11 @@ export class TmsWebApi extends coreClient.ServiceClient {
     if (!options) {
       options = {};
     }
-    const defaults: TmsWebApiOptionalParams = {
+    const defaults: SpecBoxWebApiOptionalParams = {
       requestContentType: "application/json; charset=utf-8"
     };
 
-    const packageDetails = `azsdk-js-tmsWebApi/1.0.0-beta.1`;
+    const packageDetails = `azsdk-js-specBoxWebApi/1.0.0-beta.1`;
     const userAgentPrefix =
       options.userAgentOptions && options.userAgentOptions.userAgentPrefix
         ? `${options.userAgentOptions.userAgentPrefix} ${packageDetails}`

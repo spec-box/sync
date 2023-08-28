@@ -19,6 +19,7 @@ export type {
   AssertionGroup,
   Assertion,
   Attribute,
+  AttributeValue,
 } from "./models";
 export type { AssertionContext, AttributesContext } from "./keys";
 export { getKey, getAttributesContext } from "./keys";

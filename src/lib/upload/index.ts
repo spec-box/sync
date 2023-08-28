@@ -1,12 +1,14 @@
 import {
-  TmsWebApi,
+  SpecBoxWebApi,
   UploadData,
   AssertionModel,
   AssertionGroupModel,
   FeatureModel,
+  AttributeModel,
+  AttributeValueModel,
 } from "../../api";
 import { ApiConfig } from "../config/models";
-import { ProjectData } from "../domain";
+import { Attribute, AttributeValue, ProjectData } from "../domain";
 import { Assertion, AssertionGroup, Feature } from "../domain";
 
 const mapAssertion = ({
@@ -42,21 +44,32 @@ const mapFeature = ({
   };
 };
 
-function buildRequestBody(entities: Feature[]): UploadData {
-  return {
-    features: entities.map(mapFeature),
-  };
-}
+const mapAttributeValue = ({
+  title,
+  code,
+}: AttributeValue): AttributeValueModel => ({
+  title,
+  code,
+});
+
+const mapAttribute = ({ title, code, values }: Attribute): AttributeModel => ({
+  title,
+  code,
+  values: values.map(mapAttributeValue),
+});
 
 export const uploadEntities = async (
-  { features }: ProjectData,
+  { features, allAttributes }: ProjectData,
   config: ApiConfig
 ) => {
   const { host, project } = config;
 
-  const client = new TmsWebApi(host);
+  const client = new SpecBoxWebApi(host, { allowInsecureConnection: true });
 
-  const body = buildRequestBody(features);
+  const body: UploadData = {
+    features: features.map(mapFeature),
+    attributes: allAttributes.map(mapAttribute),
+  };
 
   await client.apiUpload({ project, body });
 };
