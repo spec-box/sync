@@ -24,15 +24,14 @@ export type {
 export type { AssertionContext, AttributesContext } from "./keys";
 export { getKey, getAttributesContext } from "./keys";
 
-const mapAssertion = ({ assert: title }: YmlAssertion): Assertion => {
-  const description = undefined; // TODO: брать из yml
-
-  return {
-    title,
-    description,
-    isAutomated: false,
-  };
-};
+const mapAssertion = ({
+  assert: title,
+  description,
+}: YmlAssertion): Assertion => ({
+  title,
+  description,
+  isAutomated: false,
+});
 
 const mapGroup = ([title, list]: [string, YmlAssertion[]]): AssertionGroup => {
   const assertions = list.map(mapAssertion);
@@ -43,11 +42,10 @@ const mapGroup = ([title, list]: [string, YmlAssertion[]]): AssertionGroup => {
 const mapFeature = ({ content, fileName, filePath }: YamlFile): Feature => {
   const {
     feature: title,
+    description,
     definitions: attributes,
     "specs-unit": specs = {},
   } = content;
-
-  const description = undefined; // TODO: брать из yml
 
   // TODO: формировать код по конфигу
   const component = attributes?.component.join("-");

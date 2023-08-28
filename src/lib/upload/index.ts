@@ -31,14 +31,16 @@ const mapGroup = ({
 };
 
 const mapFeature = ({
-  title,
   code,
+  title,
+  description,
   attributes,
   groups,
 }: Feature): FeatureModel => {
   return {
-    title,
     code,
+    title,
+    description,
     attributes,
     groups: groups.map(mapGroup),
   };

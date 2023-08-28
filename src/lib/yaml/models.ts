@@ -1,8 +1,14 @@
 import * as d from "io-ts/Decoder";
 
-export const assertionDecoder = d.struct({
-  assert: d.string,
-});
+export const assertionDecoder = d.intersect(
+  d.struct({
+    assert: d.string,
+  })
+)(
+  d.partial({
+    description: d.string,
+  })
+);
 
 export const entityDecoder = d.intersect(
   d.struct({
@@ -12,6 +18,7 @@ export const entityDecoder = d.intersect(
   d.partial({
     "specs-unit": d.record(d.array(assertionDecoder)),
     definitions: d.record(d.array(d.string)),
+    description: d.string,
   })
 );
 

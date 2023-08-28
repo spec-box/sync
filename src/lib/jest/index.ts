@@ -46,7 +46,6 @@ export const applyJestReport = (
         const fullName = getFullName(...parts);
 
         console.log("process:  \x1b[36m%s\x1b[0m", fullName);
-        console.log(JSON.stringify(assertionCtx));
 
         assertion.isAutomated = names.has(fullName);
 
