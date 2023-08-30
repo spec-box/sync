@@ -1,11 +1,19 @@
 {
     "name": "@spec-box/sync",
     "version": "0.0.1",
+    "bin": {
+        "spec-box": "./bin/spec-box"
+    },
+    "files": [
+        "dist"
+    ],
     "scripts": {
-        "build": "tsc",
-        "prepare": "npm run build",
+        "build": "rm -rf dist && tsc --build tsconfig.json",
+        "prepublishOnly": "npm run build",
         "generate-api": "./utils/generate-api.sh",
-        "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node src/cli.ts"
+        "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node src/cli.ts",
+        "version-beta": "npm version prerelease --preid beta",
+        "publish-beta": "npm publish --tag beta"
     },
     "license": "MIT",
     "dependencies": {
