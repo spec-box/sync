@@ -1,50 +1,74 @@
 import * as coreClient from "@azure/core-client";
 
-export interface UploadData {
-  features: FeatureModel[];
-  attributes: AttributeModel[];
+export interface SpecBoxWebApiModelUploadData {
+  features: SpecBoxWebApiModelUploadFeatureModel[];
+  attributes: SpecBoxWebApiModelUploadAttributeModel[];
 }
 
-export interface FeatureModel {
+export interface SpecBoxWebApiModelUploadFeatureModel {
   code: string;
   title: string;
   description?: string;
-  groups: AssertionGroupModel[];
-  /** Dictionary of <components·jx2eru·schemas·featuremodel·properties·attributes·additionalproperties> */
+  groups: SpecBoxWebApiModelUploadAssertionGroupModel[];
+  /** Dictionary of <components·1i2d5w·schemas·specbox-webapi-model-upload-featuremodel·properties·attributes·additionalproperties> */
   attributes?: { [propertyName: string]: string[] | null };
 }
 
-export interface AssertionGroupModel {
+export interface SpecBoxWebApiModelUploadAssertionGroupModel {
   title: string;
-  assertions: AssertionModel[];
+  assertions: SpecBoxWebApiModelUploadAssertionModel[];
 }
 
-export interface AssertionModel {
+export interface SpecBoxWebApiModelUploadAssertionModel {
   title: string;
   description?: string;
   isAutomated: boolean;
 }
 
-export interface AttributeModel {
+export interface SpecBoxWebApiModelUploadAttributeModel {
   code: string;
   title: string;
-  values: AttributeValueModel[];
+  values: SpecBoxWebApiModelUploadAttributeValueModel[];
 }
 
-export interface AttributeValueModel {
+export interface SpecBoxWebApiModelUploadAttributeValueModel {
   code: string;
   title: string;
+}
+
+export interface SpecBoxWebApiModelProjectFeatureModel {
+  code: string;
+  title: string;
+  description?: string;
+  /** NOTE: This property will not be serialized. It can only be populated by the server. */
+  readonly assertionGroups?: SpecBoxWebApiModelProjectAssertionGroupModel[];
+}
+
+export interface SpecBoxWebApiModelProjectAssertionGroupModel {
+  title: string;
+  /** NOTE: This property will not be serialized. It can only be populated by the server. */
+  readonly assertions: SpecBoxWebApiModelProjectAssertionModel[];
+}
+
+export interface SpecBoxWebApiModelProjectAssertionModel {
+  title: string;
+  description?: string;
+  isAutomated: boolean;
 }
 
 /** Optional parameters. */
-export interface ApiProjectsOptionalParams
-  extends coreClient.OperationOptions {}
-
-/** Optional parameters. */
-export interface ApiUploadOptionalParams extends coreClient.OperationOptions {
-  body?: UploadData;
+export interface ApiExportUploadOptionalParams
+  extends coreClient.OperationOptions {
+  body?: SpecBoxWebApiModelUploadData;
   project?: string;
 }
+
+/** Optional parameters. */
+export interface ApiProjectsProjectFeaturesFeatureOptionalParams
+  extends coreClient.OperationOptions {}
+
+/** Contains response data for the apiProjectsProjectFeaturesFeature operation. */
+export type ApiProjectsProjectFeaturesFeatureResponse = SpecBoxWebApiModelProjectFeatureModel;
 
 /** Optional parameters. */
 export interface SpecBoxWebApiOptionalParams

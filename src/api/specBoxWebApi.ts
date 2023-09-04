@@ -3,8 +3,9 @@ import * as Parameters from "./models/parameters";
 import * as Mappers from "./models/mappers";
 import {
   SpecBoxWebApiOptionalParams,
-  ApiProjectsOptionalParams,
-  ApiUploadOptionalParams
+  ApiExportUploadOptionalParams,
+  ApiProjectsProjectFeaturesFeatureOptionalParams,
+  ApiProjectsProjectFeaturesFeatureResponse
 } from "./models";
 
 export class SpecBoxWebApi extends coreClient.ServiceClient {
@@ -48,27 +49,31 @@ export class SpecBoxWebApi extends coreClient.ServiceClient {
   }
 
   /** @param options The options parameters. */
-  apiProjects(options?: ApiProjectsOptionalParams): Promise<void> {
-    return this.sendOperationRequest({ options }, apiProjectsOperationSpec);
+  apiExportUpload(options?: ApiExportUploadOptionalParams): Promise<void> {
+    return this.sendOperationRequest({ options }, apiExportUploadOperationSpec);
   }
 
-  /** @param options The options parameters. */
-  apiUpload(options?: ApiUploadOptionalParams): Promise<void> {
-    return this.sendOperationRequest({ options }, apiUploadOperationSpec);
+  /**
+   * @param project
+   * @param feature
+   * @param options The options parameters.
+   */
+  apiProjectsProjectFeaturesFeature(
+    project: string,
+    feature: string,
+    options?: ApiProjectsProjectFeaturesFeatureOptionalParams
+  ): Promise<ApiProjectsProjectFeaturesFeatureResponse> {
+    return this.sendOperationRequest(
+      { project, feature, options },
+      apiProjectsProjectFeaturesFeatureOperationSpec
+    );
   }
 }
 // Operation Specifications
 const serializer = coreClient.createSerializer(Mappers, /* isXml */ false);
 
-const apiProjectsOperationSpec: coreClient.OperationSpec = {
-  path: "/api/projects",
-  httpMethod: "GET",
-  responses: { 200: {} },
-  urlParameters: [Parameters.$host],
-  serializer
-};
-const apiUploadOperationSpec: coreClient.OperationSpec = {
-  path: "/api/upload",
+const apiExportUploadOperationSpec: coreClient.OperationSpec = {
+  path: "/api/export/upload",
   httpMethod: "POST",
   responses: { 200: {} },
   requestBody: Parameters.body,
@@ -76,5 +81,17 @@ const apiUploadOperationSpec: coreClient.OperationSpec = {
   urlParameters: [Parameters.$host],
   headerParameters: [Parameters.contentType],
   mediaType: "json",
+  serializer
+};
+const apiProjectsProjectFeaturesFeatureOperationSpec: coreClient.OperationSpec = {
+  path: "/api/projects/{project}/features/{feature}",
+  httpMethod: "GET",
+  responses: {
+    200: {
+      bodyMapper: Mappers.SpecBoxWebApiModelProjectFeatureModel
+    }
+  },
+  urlParameters: [Parameters.$host, Parameters.project1, Parameters.feature],
+  headerParameters: [Parameters.accept],
   serializer
 };

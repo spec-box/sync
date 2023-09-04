@@ -1,9 +1,9 @@
 import * as coreClient from "@azure/core-client";
 
-export const UploadData: coreClient.CompositeMapper = {
+export const SpecBoxWebApiModelUploadData: coreClient.CompositeMapper = {
   type: {
     name: "Composite",
-    className: "UploadData",
+    className: "SpecBoxWebApiModelUploadData",
     modelProperties: {
       features: {
         serializedName: "features",
@@ -13,7 +13,7 @@ export const UploadData: coreClient.CompositeMapper = {
           element: {
             type: {
               name: "Composite",
-              className: "FeatureModel"
+              className: "SpecBoxWebApiModelUploadFeatureModel"
             }
           }
         }
@@ -26,7 +26,7 @@ export const UploadData: coreClient.CompositeMapper = {
           element: {
             type: {
               name: "Composite",
-              className: "AttributeModel"
+              className: "SpecBoxWebApiModelUploadAttributeModel"
             }
           }
         }
@@ -35,10 +35,10 @@ export const UploadData: coreClient.CompositeMapper = {
   }
 };
 
-export const FeatureModel: coreClient.CompositeMapper = {
+export const SpecBoxWebApiModelUploadFeatureModel: coreClient.CompositeMapper = {
   type: {
     name: "Composite",
-    className: "FeatureModel",
+    className: "SpecBoxWebApiModelUploadFeatureModel",
     modelProperties: {
       code: {
         constraints: {
@@ -75,7 +75,7 @@ export const FeatureModel: coreClient.CompositeMapper = {
           element: {
             type: {
               name: "Composite",
-              className: "AssertionGroupModel"
+              className: "SpecBoxWebApiModelUploadAssertionGroupModel"
             }
           }
         }
@@ -94,10 +94,10 @@ export const FeatureModel: coreClient.CompositeMapper = {
   }
 };
 
-export const AssertionGroupModel: coreClient.CompositeMapper = {
+export const SpecBoxWebApiModelUploadAssertionGroupModel: coreClient.CompositeMapper = {
   type: {
     name: "Composite",
-    className: "AssertionGroupModel",
+    className: "SpecBoxWebApiModelUploadAssertionGroupModel",
     modelProperties: {
       title: {
         constraints: {
@@ -117,7 +117,7 @@ export const AssertionGroupModel: coreClient.CompositeMapper = {
           element: {
             type: {
               name: "Composite",
-              className: "AssertionModel"
+              className: "SpecBoxWebApiModelUploadAssertionModel"
             }
           }
         }
@@ -126,10 +126,10 @@ export const AssertionGroupModel: coreClient.CompositeMapper = {
   }
 };
 
-export const AssertionModel: coreClient.CompositeMapper = {
+export const SpecBoxWebApiModelUploadAssertionModel: coreClient.CompositeMapper = {
   type: {
     name: "Composite",
-    className: "AssertionModel",
+    className: "SpecBoxWebApiModelUploadAssertionModel",
     modelProperties: {
       title: {
         constraints: {
@@ -159,10 +159,10 @@ export const AssertionModel: coreClient.CompositeMapper = {
   }
 };
 
-export const AttributeModel: coreClient.CompositeMapper = {
+export const SpecBoxWebApiModelUploadAttributeModel: coreClient.CompositeMapper = {
   type: {
     name: "Composite",
-    className: "AttributeModel",
+    className: "SpecBoxWebApiModelUploadAttributeModel",
     modelProperties: {
       code: {
         constraints: {
@@ -192,7 +192,7 @@ export const AttributeModel: coreClient.CompositeMapper = {
           element: {
             type: {
               name: "Composite",
-              className: "AttributeValueModel"
+              className: "SpecBoxWebApiModelUploadAttributeValueModel"
             }
           }
         }
@@ -201,10 +201,10 @@ export const AttributeModel: coreClient.CompositeMapper = {
   }
 };
 
-export const AttributeValueModel: coreClient.CompositeMapper = {
+export const SpecBoxWebApiModelUploadAttributeValueModel: coreClient.CompositeMapper = {
   type: {
     name: "Composite",
-    className: "AttributeValueModel",
+    className: "SpecBoxWebApiModelUploadAttributeValueModel",
     modelProperties: {
       code: {
         constraints: {
@@ -224,6 +224,121 @@ export const AttributeValueModel: coreClient.CompositeMapper = {
         required: true,
         type: {
           name: "String"
+        }
+      }
+    }
+  }
+};
+
+export const SpecBoxWebApiModelProjectFeatureModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelProjectFeatureModel",
+    modelProperties: {
+      code: {
+        constraints: {
+          MinLength: 1
+        },
+        serializedName: "code",
+        required: true,
+        type: {
+          name: "String"
+        }
+      },
+      title: {
+        constraints: {
+          MinLength: 1
+        },
+        serializedName: "title",
+        required: true,
+        type: {
+          name: "String"
+        }
+      },
+      description: {
+        serializedName: "description",
+        nullable: true,
+        type: {
+          name: "String"
+        }
+      },
+      assertionGroups: {
+        serializedName: "assertionGroups",
+        readOnly: true,
+        type: {
+          name: "Sequence",
+          element: {
+            type: {
+              name: "Composite",
+              className: "SpecBoxWebApiModelProjectAssertionGroupModel"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+export const SpecBoxWebApiModelProjectAssertionGroupModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelProjectAssertionGroupModel",
+    modelProperties: {
+      title: {
+        constraints: {
+          MinLength: 1
+        },
+        serializedName: "title",
+        required: true,
+        type: {
+          name: "String"
+        }
+      },
+      assertions: {
+        serializedName: "assertions",
+        required: true,
+        readOnly: true,
+        type: {
+          name: "Sequence",
+          element: {
+            type: {
+              name: "Composite",
+              className: "SpecBoxWebApiModelProjectAssertionModel"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+export const SpecBoxWebApiModelProjectAssertionModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelProjectAssertionModel",
+    modelProperties: {
+      title: {
+        constraints: {
+          MinLength: 1
+        },
+        serializedName: "title",
+        required: true,
+        type: {
+          name: "String"
+        }
+      },
+      description: {
+        serializedName: "description",
+        nullable: true,
+        type: {
+          name: "String"
+        }
+      },
+      isAutomated: {
+        serializedName: "isAutomated",
+        required: true,
+        type: {
+          name: "Boolean"
         }
       }
     }

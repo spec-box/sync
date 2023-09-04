@@ -1,11 +1,11 @@
 import {
   SpecBoxWebApi,
-  UploadData,
-  AssertionModel,
-  AssertionGroupModel,
-  FeatureModel,
-  AttributeModel,
-  AttributeValueModel,
+  SpecBoxWebApiModelUploadData,
+  SpecBoxWebApiModelUploadAssertionModel,
+  SpecBoxWebApiModelUploadAssertionGroupModel,
+  SpecBoxWebApiModelUploadFeatureModel,
+  SpecBoxWebApiModelUploadAttributeModel,
+  SpecBoxWebApiModelUploadAttributeValueModel,
 } from "../../api";
 import { ApiConfig } from "../config/models";
 import { Attribute, AttributeValue, ProjectData } from "../domain";
@@ -15,7 +15,7 @@ const mapAssertion = ({
   title,
   description,
   isAutomated,
-}: Assertion): AssertionModel => {
+}: Assertion): SpecBoxWebApiModelUploadAssertionModel => {
   return {
     title,
     description,
@@ -26,7 +26,7 @@ const mapAssertion = ({
 const mapGroup = ({
   title,
   assertions,
-}: AssertionGroup): AssertionGroupModel => {
+}: AssertionGroup): SpecBoxWebApiModelUploadAssertionGroupModel => {
   return { title, assertions: assertions.map(mapAssertion) };
 };
 
@@ -36,7 +36,7 @@ const mapFeature = ({
   description,
   attributes,
   groups,
-}: Feature): FeatureModel => {
+}: Feature): SpecBoxWebApiModelUploadFeatureModel => {
   return {
     code,
     title,
@@ -49,12 +49,12 @@ const mapFeature = ({
 const mapAttributeValue = ({
   title,
   code,
-}: AttributeValue): AttributeValueModel => ({
+}: AttributeValue): SpecBoxWebApiModelUploadAttributeValueModel => ({
   title,
   code,
 });
 
-const mapAttribute = ({ title, code, values }: Attribute): AttributeModel => ({
+const mapAttribute = ({ title, code, values }: Attribute): SpecBoxWebApiModelUploadAttributeModel => ({
   title,
   code,
   values: values.map(mapAttributeValue),
@@ -68,10 +68,10 @@ export const uploadEntities = async (
 
   const client = new SpecBoxWebApi(host, { allowInsecureConnection: true });
 
-  const body: UploadData = {
+  const body: SpecBoxWebApiModelUploadData = {
     features: features.map(mapFeature),
     attributes: allAttributes.map(mapAttribute),
   };
 
-  await client.apiUpload({ project, body });
+  await client.apiExportUpload({ project, body });
 };
