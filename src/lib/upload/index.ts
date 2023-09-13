@@ -73,5 +73,5 @@ export const uploadEntities = async (
     attributes: allAttributes.map(mapAttribute),
   };
 
-  await client.apiExportUpload({ project, body });
+  await client.exportUpload({ project, body });
 };

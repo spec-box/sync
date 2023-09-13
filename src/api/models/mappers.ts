@@ -264,6 +264,7 @@ export const SpecBoxWebApiModelProjectFeatureModel: coreClient.CompositeMapper =
       },
       assertionGroups: {
         serializedName: "assertionGroups",
+        required: true,
         readOnly: true,
         type: {
           name: "Sequence",
@@ -339,6 +340,97 @@ export const SpecBoxWebApiModelProjectAssertionModel: coreClient.CompositeMapper
         required: true,
         type: {
           name: "Boolean"
+        }
+      }
+    }
+  }
+};
+
+export const SpecBoxWebApiModelProjectStructureModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelProjectStructureModel",
+    modelProperties: {
+      tree: {
+        serializedName: "tree",
+        required: true,
+        type: {
+          name: "Sequence",
+          element: {
+            type: {
+              name: "Composite",
+              className: "SpecBoxWebApiModelProjectTreeNodeModel"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+export const SpecBoxWebApiModelProjectTreeNodeModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelProjectTreeNodeModel",
+    modelProperties: {
+      id: {
+        constraints: {
+          MinLength: 1
+        },
+        serializedName: "id",
+        required: true,
+        type: {
+          name: "String"
+        }
+      },
+      path: {
+        serializedName: "path",
+        required: true,
+        type: {
+          name: "Sequence",
+          element: {
+            type: {
+              name: "String"
+            }
+          }
+        }
+      },
+      parentId: {
+        serializedName: "parentId",
+        nullable: true,
+        type: {
+          name: "String"
+        }
+      },
+      featureCode: {
+        serializedName: "featureCode",
+        nullable: true,
+        type: {
+          name: "String"
+        }
+      },
+      title: {
+        constraints: {
+          MinLength: 1
+        },
+        serializedName: "title",
+        required: true,
+        type: {
+          name: "String"
+        }
+      },
+      totalCount: {
+        serializedName: "totalCount",
+        required: true,
+        type: {
+          name: "Number"
+        }
+      },
+      automatedCount: {
+        serializedName: "automatedCount",
+        required: true,
+        type: {
+          name: "Number"
         }
       }
     }

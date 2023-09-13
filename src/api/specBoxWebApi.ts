@@ -3,9 +3,11 @@ import * as Parameters from "./models/parameters";
 import * as Mappers from "./models/mappers";
 import {
   SpecBoxWebApiOptionalParams,
-  ApiExportUploadOptionalParams,
-  ApiProjectsProjectFeaturesFeatureOptionalParams,
-  ApiProjectsProjectFeaturesFeatureResponse
+  ExportUploadOptionalParams,
+  ProjectsProjectFeaturesFeatureOptionalParams,
+  ProjectsProjectFeaturesFeatureResponse,
+  ProjectsProjectStructureOptionalParams,
+  ProjectsProjectStructureResponse
 } from "./models";
 
 export class SpecBoxWebApi extends coreClient.ServiceClient {
@@ -49,8 +51,8 @@ export class SpecBoxWebApi extends coreClient.ServiceClient {
   }
 
   /** @param options The options parameters. */
-  apiExportUpload(options?: ApiExportUploadOptionalParams): Promise<void> {
-    return this.sendOperationRequest({ options }, apiExportUploadOperationSpec);
+  exportUpload(options?: ExportUploadOptionalParams): Promise<void> {
+    return this.sendOperationRequest({ options }, exportUploadOperationSpec);
   }
 
   /**
@@ -58,22 +60,36 @@ export class SpecBoxWebApi extends coreClient.ServiceClient {
    * @param feature
    * @param options The options parameters.
    */
-  apiProjectsProjectFeaturesFeature(
+  projectsProjectFeaturesFeature(
     project: string,
     feature: string,
-    options?: ApiProjectsProjectFeaturesFeatureOptionalParams
-  ): Promise<ApiProjectsProjectFeaturesFeatureResponse> {
+    options?: ProjectsProjectFeaturesFeatureOptionalParams
+  ): Promise<ProjectsProjectFeaturesFeatureResponse> {
     return this.sendOperationRequest(
       { project, feature, options },
-      apiProjectsProjectFeaturesFeatureOperationSpec
+      projectsProjectFeaturesFeatureOperationSpec
+    );
+  }
+
+  /**
+   * @param project
+   * @param options The options parameters.
+   */
+  projectsProjectStructure(
+    project: string,
+    options?: ProjectsProjectStructureOptionalParams
+  ): Promise<ProjectsProjectStructureResponse> {
+    return this.sendOperationRequest(
+      { project, options },
+      projectsProjectStructureOperationSpec
     );
   }
 }
 // Operation Specifications
 const serializer = coreClient.createSerializer(Mappers, /* isXml */ false);
 
-const apiExportUploadOperationSpec: coreClient.OperationSpec = {
-  path: "/api/export/upload",
+const exportUploadOperationSpec: coreClient.OperationSpec = {
+  path: "/export/upload",
   httpMethod: "POST",
   responses: { 200: {} },
   requestBody: Parameters.body,
@@ -83,8 +99,8 @@ const apiExportUploadOperationSpec: coreClient.OperationSpec = {
   mediaType: "json",
   serializer
 };
-const apiProjectsProjectFeaturesFeatureOperationSpec: coreClient.OperationSpec = {
-  path: "/api/projects/{project}/features/{feature}",
+const projectsProjectFeaturesFeatureOperationSpec: coreClient.OperationSpec = {
+  path: "/projects/{project}/features/{feature}",
   httpMethod: "GET",
   responses: {
     200: {
@@ -92,6 +108,18 @@ const apiProjectsProjectFeaturesFeatureOperationSpec: coreClient.OperationSpec =
     }
   },
   urlParameters: [Parameters.$host, Parameters.project1, Parameters.feature],
+  headerParameters: [Parameters.accept],
+  serializer
+};
+const projectsProjectStructureOperationSpec: coreClient.OperationSpec = {
+  path: "/projects/{project}/structure",
+  httpMethod: "GET",
+  responses: {
+    200: {
+      bodyMapper: Mappers.SpecBoxWebApiModelProjectStructureModel
+    }
+  },
+  urlParameters: [Parameters.$host, Parameters.project1],
   headerParameters: [Parameters.accept],
   serializer
 };

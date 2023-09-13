@@ -13,6 +13,7 @@
         "prepublishOnly": "npm run build",
         "generate-api": "./utils/generate-api.sh",
         "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 ./bin/spec-box sync",
+        "test-ext": "./bin/spec-box sync",
         "version-beta": "npm version prerelease --preid beta",
         "publish-beta": "npm publish --tag beta"
     },

@@ -41,7 +41,7 @@ export interface SpecBoxWebApiModelProjectFeatureModel {
   title: string;
   description?: string;
   /** NOTE: This property will not be serialized. It can only be populated by the server. */
-  readonly assertionGroups?: SpecBoxWebApiModelProjectAssertionGroupModel[];
+  readonly assertionGroups: SpecBoxWebApiModelProjectAssertionGroupModel[];
 }
 
 export interface SpecBoxWebApiModelProjectAssertionGroupModel {
@@ -56,19 +56,40 @@ export interface SpecBoxWebApiModelProjectAssertionModel {
   isAutomated: boolean;
 }
 
+export interface SpecBoxWebApiModelProjectStructureModel {
+  tree: SpecBoxWebApiModelProjectTreeNodeModel[];
+}
+
+export interface SpecBoxWebApiModelProjectTreeNodeModel {
+  id: string;
+  path: string[];
+  parentId?: string;
+  featureCode?: string;
+  title: string;
+  totalCount: number;
+  automatedCount: number;
+}
+
 /** Optional parameters. */
-export interface ApiExportUploadOptionalParams
+export interface ExportUploadOptionalParams
   extends coreClient.OperationOptions {
   body?: SpecBoxWebApiModelUploadData;
   project?: string;
 }
 
 /** Optional parameters. */
-export interface ApiProjectsProjectFeaturesFeatureOptionalParams
+export interface ProjectsProjectFeaturesFeatureOptionalParams
   extends coreClient.OperationOptions {}
 
-/** Contains response data for the apiProjectsProjectFeaturesFeature operation. */
-export type ApiProjectsProjectFeaturesFeatureResponse = SpecBoxWebApiModelProjectFeatureModel;
+/** Contains response data for the projectsProjectFeaturesFeature operation. */
+export type ProjectsProjectFeaturesFeatureResponse = SpecBoxWebApiModelProjectFeatureModel;
+
+/** Optional parameters. */
+export interface ProjectsProjectStructureOptionalParams
+  extends coreClient.OperationOptions {}
+
+/** Contains response data for the projectsProjectStructure operation. */
+export type ProjectsProjectStructureResponse = SpecBoxWebApiModelProjectStructureModel;
 
 /** Optional parameters. */
 export interface SpecBoxWebApiOptionalParams
