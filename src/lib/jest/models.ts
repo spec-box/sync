@@ -26,10 +26,14 @@ export const jestTestResultDecoder = d.struct({
   name: d.string,
   status: jestSuiteStatusDecoder,
   message: d.string,
+  startTime: d.number,
+  endTime: d.number,
   assertionResults: d.array(jestAssertionResultDecoder),
 });
 
 export const jestReportDecoder = d.struct({
+  startTime: d.number,
+  numTotalTests: d.number,
   testResults: d.array(jestTestResultDecoder),
 });
 

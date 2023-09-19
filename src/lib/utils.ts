@@ -9,6 +9,8 @@ export interface CommonOptions {
 
 export const CWD = process.cwd();
 
+export const normalizePath = (path: string) => path.replace(/[\\/]+/g, '/').replace(/[/]$/g, '');
+
 export const resolvePath = (path: string, basePath = CWD) => resolve(basePath, path);
 
 export const readTextFile = async (path: string, basePath?: string) => {

@@ -469,13 +469,6 @@ export const SpecBoxWebApiModelStatAutotestsStatUploadData: coreClient.Composite
         type: {
           name: "Number"
         }
-      },
-      comment: {
-        serializedName: "comment",
-        nullable: true,
-        type: {
-          name: "String"
-        }
       }
     }
   }

@@ -75,7 +75,6 @@ export interface SpecBoxWebApiModelStatAutotestsStatUploadData {
   timestamp: Date;
   duration: number;
   assertionsCount: number;
-  comment?: string;
 }
 
 /** Optional parameters. */
