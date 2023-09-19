@@ -34,6 +34,7 @@ const mapFeature = ({
   code,
   title,
   description,
+  filePath,
   attributes,
   groups,
 }: Feature): SpecBoxWebApiModelUploadFeatureModel => {
@@ -41,6 +42,7 @@ const mapFeature = ({
     code,
     title,
     description,
+    filePath,
     attributes,
     groups: groups.map(mapGroup),
   };

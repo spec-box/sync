@@ -3,7 +3,10 @@ import {
   OperationURLParameter,
   OperationQueryParameter
 } from "@azure/core-client";
-import { SpecBoxWebApiModelUploadData as SpecBoxWebApiModelUploadDataMapper } from "../models/mappers";
+import {
+  SpecBoxWebApiModelUploadData as SpecBoxWebApiModelUploadDataMapper,
+  SpecBoxWebApiModelStatAutotestsStatUploadData as SpecBoxWebApiModelStatAutotestsStatUploadDataMapper
+} from "../models/mappers";
 
 export const contentType: OperationParameter = {
   parameterPath: ["options", "contentType"],
@@ -74,6 +77,51 @@ export const feature: OperationURLParameter = {
     required: true,
     type: {
       name: "String"
+    }
+  }
+};
+
+export const body1: OperationParameter = {
+  parameterPath: ["options", "body"],
+  mapper: SpecBoxWebApiModelStatAutotestsStatUploadDataMapper
+};
+
+export const from: OperationQueryParameter = {
+  parameterPath: ["options", "from"],
+  mapper: {
+    serializedName: "from",
+    type: {
+      name: "String"
+    }
+  }
+};
+
+export const to: OperationQueryParameter = {
+  parameterPath: ["options", "to"],
+  mapper: {
+    serializedName: "to",
+    type: {
+      name: "String"
+    }
+  }
+};
+
+export const from1: OperationQueryParameter = {
+  parameterPath: ["options", "from"],
+  mapper: {
+    serializedName: "from",
+    type: {
+      name: "DateTime"
+    }
+  }
+};
+
+export const to1: OperationQueryParameter = {
+  parameterPath: ["options", "to"],
+  mapper: {
+    serializedName: "to",
+    type: {
+      name: "DateTime"
     }
   }
 };

@@ -7,7 +7,10 @@ import {
   ProjectsProjectFeaturesFeatureOptionalParams,
   ProjectsProjectFeaturesFeatureResponse,
   ProjectsProjectStructureOptionalParams,
-  ProjectsProjectStructureResponse
+  ProjectsProjectStructureResponse,
+  StatAutotestsUploadOptionalParams,
+  StatAutotestsOptionalParams,
+  StatAssertionsOptionalParams
 } from "./models";
 
 export class SpecBoxWebApi extends coreClient.ServiceClient {
@@ -84,6 +87,26 @@ export class SpecBoxWebApi extends coreClient.ServiceClient {
       projectsProjectStructureOperationSpec
     );
   }
+
+  /** @param options The options parameters. */
+  statAutotestsUpload(
+    options?: StatAutotestsUploadOptionalParams
+  ): Promise<void> {
+    return this.sendOperationRequest(
+      { options },
+      statAutotestsUploadOperationSpec
+    );
+  }
+
+  /** @param options The options parameters. */
+  statAutotests(options?: StatAutotestsOptionalParams): Promise<void> {
+    return this.sendOperationRequest({ options }, statAutotestsOperationSpec);
+  }
+
+  /** @param options The options parameters. */
+  statAssertions(options?: StatAssertionsOptionalParams): Promise<void> {
+    return this.sendOperationRequest({ options }, statAssertionsOperationSpec);
+  }
 }
 // Operation Specifications
 const serializer = coreClient.createSerializer(Mappers, /* isXml */ false);
@@ -121,5 +144,32 @@ const projectsProjectStructureOperationSpec: coreClient.OperationSpec = {
   },
   urlParameters: [Parameters.$host, Parameters.project1],
   headerParameters: [Parameters.accept],
+  serializer
+};
+const statAutotestsUploadOperationSpec: coreClient.OperationSpec = {
+  path: "/stat/autotests/upload",
+  httpMethod: "POST",
+  responses: { 200: {} },
+  requestBody: Parameters.body1,
+  queryParameters: [Parameters.project],
+  urlParameters: [Parameters.$host],
+  headerParameters: [Parameters.contentType],
+  mediaType: "json",
+  serializer
+};
+const statAutotestsOperationSpec: coreClient.OperationSpec = {
+  path: "/stat/autotests",
+  httpMethod: "GET",
+  responses: { 200: {} },
+  queryParameters: [Parameters.project, Parameters.from, Parameters.to],
+  urlParameters: [Parameters.$host],
+  serializer
+};
+const statAssertionsOperationSpec: coreClient.OperationSpec = {
+  path: "/stat/assertions",
+  httpMethod: "GET",
+  responses: { 200: {} },
+  queryParameters: [Parameters.project, Parameters.from1, Parameters.to1],
+  urlParameters: [Parameters.$host],
   serializer
 };

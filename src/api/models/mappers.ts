@@ -67,6 +67,13 @@ export const SpecBoxWebApiModelUploadFeatureModel: coreClient.CompositeMapper = 
           name: "String"
         }
       },
+      filePath: {
+        serializedName: "filePath",
+        nullable: true,
+        type: {
+          name: "String"
+        }
+      },
       groups: {
         serializedName: "groups",
         required: true,
@@ -431,6 +438,43 @@ export const SpecBoxWebApiModelProjectTreeNodeModel: coreClient.CompositeMapper 
         required: true,
         type: {
           name: "Number"
+        }
+      }
+    }
+  }
+};
+
+export const SpecBoxWebApiModelStatAutotestsStatUploadData: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelStatAutotestsStatUploadData",
+    modelProperties: {
+      timestamp: {
+        serializedName: "timestamp",
+        required: true,
+        type: {
+          name: "DateTime"
+        }
+      },
+      duration: {
+        serializedName: "duration",
+        required: true,
+        type: {
+          name: "Number"
+        }
+      },
+      assertionsCount: {
+        serializedName: "assertionsCount",
+        required: true,
+        type: {
+          name: "Number"
+        }
+      },
+      comment: {
+        serializedName: "comment",
+        nullable: true,
+        type: {
+          name: "String"
         }
       }
     }
