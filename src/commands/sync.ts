@@ -4,7 +4,7 @@ import glob from "fast-glob";
 import { CommonOptions } from "../lib/utils";
 import { loadConfig } from "../lib/config";
 import { loadYaml } from "../lib/yaml";
-import { uploadEntities } from "../lib/upload";
+import { uploadEntities } from "../lib/upload/upload-entities";
 import { applyJestReport, loadJestReport } from "../lib/jest";
 import { processYamlFiles } from "../lib/domain";
 

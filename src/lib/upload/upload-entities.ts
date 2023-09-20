@@ -10,6 +10,7 @@ import {
 import { ApiConfig } from "../config/models";
 import { Attribute, AttributeValue, ProjectData } from "../domain";
 import { Assertion, AssertionGroup, Feature } from "../domain";
+import { normalizePath } from "../utils";
 
 const mapAssertion = ({
   title,
@@ -34,6 +35,7 @@ const mapFeature = ({
   code,
   title,
   description,
+  filePath,
   attributes,
   groups,
 }: Feature): SpecBoxWebApiModelUploadFeatureModel => {
@@ -42,6 +44,7 @@ const mapFeature = ({
     title,
     description,
     attributes,
+    filePath: normalizePath(filePath),
     groups: groups.map(mapGroup),
   };
 };

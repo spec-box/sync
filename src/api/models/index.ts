@@ -9,6 +9,7 @@ export interface SpecBoxWebApiModelUploadFeatureModel {
   code: string;
   title: string;
   description?: string;
+  filePath?: string;
   groups: SpecBoxWebApiModelUploadAssertionGroupModel[];
   /** Dictionary of <components·1i2d5w·schemas·specbox-webapi-model-upload-featuremodel·properties·attributes·additionalproperties> */
   attributes?: { [propertyName: string]: string[] | null };
@@ -70,6 +71,12 @@ export interface SpecBoxWebApiModelProjectTreeNodeModel {
   automatedCount: number;
 }
 
+export interface SpecBoxWebApiModelStatAutotestsStatUploadData {
+  timestamp: Date;
+  duration: number;
+  assertionsCount: number;
+}
+
 /** Optional parameters. */
 export interface ExportUploadOptionalParams
   extends coreClient.OperationOptions {
@@ -90,6 +97,29 @@ export interface ProjectsProjectStructureOptionalParams
 
 /** Contains response data for the projectsProjectStructure operation. */
 export type ProjectsProjectStructureResponse = SpecBoxWebApiModelProjectStructureModel;
+
+/** Optional parameters. */
+export interface StatAutotestsUploadOptionalParams
+  extends coreClient.OperationOptions {
+  project?: string;
+  body?: SpecBoxWebApiModelStatAutotestsStatUploadData;
+}
+
+/** Optional parameters. */
+export interface StatAutotestsOptionalParams
+  extends coreClient.OperationOptions {
+  project?: string;
+  from?: string;
+  to?: string;
+}
+
+/** Optional parameters. */
+export interface StatAssertionsOptionalParams
+  extends coreClient.OperationOptions {
+  project?: string;
+  from?: Date;
+  to?: Date;
+}
 
 /** Optional parameters. */
 export interface SpecBoxWebApiOptionalParams
