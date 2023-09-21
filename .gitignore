@@ -2,3 +2,4 @@ node_modules
 swagger.json
 dist
 .tms.json
+jest-report.json
