@@ -32,8 +32,15 @@ export interface Attribute {
   values: AttributeValue[];
 }
 
+export interface Tree {
+    title: string;
+    code: string;
+    attributes: string[];
+}
+
 export interface ProjectData {
   features: Feature[];
 
-  allAttributes: Attribute[];
+  attributes?: Attribute[];
+  trees?: Tree[];
 }

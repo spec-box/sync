@@ -6,10 +6,12 @@ import {
   SpecBoxWebApiModelUploadFeatureModel,
   SpecBoxWebApiModelUploadAttributeModel,
   SpecBoxWebApiModelUploadAttributeValueModel,
+  SpecBoxWebApiModelUploadTreeModel,
 } from "../../api";
 import { ApiConfig } from "../config/models";
 import { Attribute, AttributeValue, ProjectData } from "../domain";
 import { Assertion, AssertionGroup, Feature } from "../domain";
+import { Tree } from "../domain/models";
 import { normalizePath } from "../utils";
 
 const mapAssertion = ({
@@ -57,14 +59,28 @@ const mapAttributeValue = ({
   code,
 });
 
-const mapAttribute = ({ title, code, values }: Attribute): SpecBoxWebApiModelUploadAttributeModel => ({
+const mapAttribute = ({
+  title,
+  code,
+  values,
+}: Attribute): SpecBoxWebApiModelUploadAttributeModel => ({
   title,
   code,
   values: values.map(mapAttributeValue),
 });
 
+const mapTree = ({
+  title,
+  code,
+  attributes,
+}: Tree): SpecBoxWebApiModelUploadTreeModel => ({
+  title,
+  code,
+  attributes,
+});
+
 export const uploadEntities = async (
-  { features, allAttributes }: ProjectData,
+  { features, attributes = [], trees = [] }: ProjectData,
   config: ApiConfig
 ) => {
   const { host, project } = config;
@@ -73,7 +89,8 @@ export const uploadEntities = async (
 
   const body: SpecBoxWebApiModelUploadData = {
     features: features.map(mapFeature),
-    attributes: allAttributes.map(mapAttribute),
+    attributes: attributes?.map(mapAttribute),
+    trees: trees?.map(mapTree),
   };
 
   await client.exportUpload({ project, body });

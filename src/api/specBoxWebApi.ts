@@ -169,7 +169,7 @@ const statAssertionsOperationSpec: coreClient.OperationSpec = {
   path: "/stat/assertions",
   httpMethod: "GET",
   responses: { 200: {} },
-  queryParameters: [Parameters.project, Parameters.from1, Parameters.to1],
+  queryParameters: [Parameters.project, Parameters.from, Parameters.to],
   urlParameters: [Parameters.$host],
   serializer
 };

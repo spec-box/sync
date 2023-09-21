@@ -30,6 +30,19 @@ export const SpecBoxWebApiModelUploadData: coreClient.CompositeMapper = {
             }
           }
         }
+      },
+      trees: {
+        serializedName: "trees",
+        required: true,
+        type: {
+          name: "Sequence",
+          element: {
+            type: {
+              name: "Composite",
+              className: "SpecBoxWebApiModelUploadTreeModel"
+            }
+          }
+        }
       }
     }
   }
@@ -231,6 +244,47 @@ export const SpecBoxWebApiModelUploadAttributeValueModel: coreClient.CompositeMa
         required: true,
         type: {
           name: "String"
+        }
+      }
+    }
+  }
+};
+
+export const SpecBoxWebApiModelUploadTreeModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelUploadTreeModel",
+    modelProperties: {
+      code: {
+        constraints: {
+          MinLength: 1
+        },
+        serializedName: "code",
+        required: true,
+        type: {
+          name: "String"
+        }
+      },
+      title: {
+        constraints: {
+          MinLength: 1
+        },
+        serializedName: "title",
+        required: true,
+        type: {
+          name: "String"
+        }
+      },
+      attributes: {
+        serializedName: "attributes",
+        required: true,
+        type: {
+          name: "Sequence",
+          element: {
+            type: {
+              name: "String"
+            }
+          }
         }
       }
     }

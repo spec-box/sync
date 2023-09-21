@@ -5,10 +5,12 @@ import {
   Assertion,
   Attribute,
   AttributeValue,
+  Tree,
 } from "./models";
 import { YamlFile, Assertion as YmlAssertion } from "../yaml";
 import {
   YmlConfig,
+  Tree as CfgTree,
   Attribute as CfgAttribute,
   AttributeValue as CfgAttributeValue,
 } from "../config";
@@ -70,12 +72,21 @@ const mapAttribute = ({ code, title, values }: CfgAttribute): Attribute => {
   };
 };
 
+const mapTree = ({ code, title, attributes }: CfgTree): Tree => {
+  return {
+    title,
+    code,
+    attributes,
+  };
+};
+
 export const processYamlFiles = (
   files: YamlFile[],
-  { attributes = [] }: YmlConfig
+  ymlConfig: YmlConfig
 ): ProjectData => {
-  const allAttributes = attributes.map(mapAttribute);
   const features = files.map(mapFeature);
+  const attributes = ymlConfig.attributes?.map(mapAttribute);
+  const trees = ymlConfig.trees?.map(mapTree);
 
-  return { features, allAttributes };
+  return { features, attributes, trees };
 };

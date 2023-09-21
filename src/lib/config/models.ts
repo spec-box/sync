@@ -17,6 +17,12 @@ export const attributeDecoder = d.struct({
   values: d.array(attributeValueDecoder),
 });
 
+export const treeDecoder = d.struct({
+  code: d.string,
+  title: d.string,
+  attributes: d.array(d.string),
+});
+
 export const ymlConfigDecoder = d.intersect(
   d.struct({
     files: d.array(d.string),
@@ -24,6 +30,7 @@ export const ymlConfigDecoder = d.intersect(
 )(
   d.partial({
     attributes: d.array(attributeDecoder),
+    trees: d.array(treeDecoder),
   })
 );
 
@@ -69,5 +76,6 @@ export type ApiConfig = d.TypeOf<typeof apiConfigDecoder>;
 export type YmlConfig = d.TypeOf<typeof ymlConfigDecoder>;
 export type JestConfig = d.TypeOf<typeof jestConfigDecoder>;
 
+export type Tree = d.TypeOf<typeof treeDecoder>;
 export type Attribute = d.TypeOf<typeof attributeDecoder>;
 export type AttributeValue = d.TypeOf<typeof attributeValueDecoder>;
