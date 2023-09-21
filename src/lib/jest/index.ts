@@ -5,7 +5,7 @@ import { JestReport, jestReportDecoder } from "./models";
 export const getFullName = (...parts: string[]) => parts.join(" / ");
 
 export const applyJestReport = (
-  { features, allAttributes }: ProjectData,
+  { features, attributes }: ProjectData,
   report: JestReport,
   keyParts: string[]
 ) => {
@@ -18,7 +18,7 @@ export const applyJestReport = (
     }
   }
 
-  const attributesCtx = getAttributesContext(allAttributes);
+  const attributesCtx = getAttributesContext(attributes);
 
   // заполняем поле isAutomated
   for (let {

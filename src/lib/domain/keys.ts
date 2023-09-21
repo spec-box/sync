@@ -16,7 +16,7 @@ export interface AssertionContext {
 }
 
 export const getAttributesContext = (
-  alLAttributes: Attribute[]
+  alLAttributes: Attribute[] = []
 ): AttributesContext => {
   const obj: AttributesContext = {};
 

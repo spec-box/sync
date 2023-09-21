@@ -3,6 +3,7 @@ import * as coreClient from "@azure/core-client";
 export interface SpecBoxWebApiModelUploadData {
   features: SpecBoxWebApiModelUploadFeatureModel[];
   attributes: SpecBoxWebApiModelUploadAttributeModel[];
+  trees: SpecBoxWebApiModelUploadTreeModel[];
 }
 
 export interface SpecBoxWebApiModelUploadFeatureModel {
@@ -35,6 +36,12 @@ export interface SpecBoxWebApiModelUploadAttributeModel {
 export interface SpecBoxWebApiModelUploadAttributeValueModel {
   code: string;
   title: string;
+}
+
+export interface SpecBoxWebApiModelUploadTreeModel {
+  code: string;
+  title: string;
+  attributes: string[];
 }
 
 export interface SpecBoxWebApiModelProjectFeatureModel {
@@ -109,8 +116,8 @@ export interface StatAutotestsUploadOptionalParams
 export interface StatAutotestsOptionalParams
   extends coreClient.OperationOptions {
   project?: string;
-  from?: string;
-  to?: string;
+  from?: Date;
+  to?: Date;
 }
 
 /** Optional parameters. */

@@ -91,32 +91,12 @@ export const from: OperationQueryParameter = {
   mapper: {
     serializedName: "from",
     type: {
-      name: "String"
-    }
-  }
-};
-
-export const to: OperationQueryParameter = {
-  parameterPath: ["options", "to"],
-  mapper: {
-    serializedName: "to",
-    type: {
-      name: "String"
-    }
-  }
-};
-
-export const from1: OperationQueryParameter = {
-  parameterPath: ["options", "from"],
-  mapper: {
-    serializedName: "from",
-    type: {
       name: "DateTime"
     }
   }
 };
 
-export const to1: OperationQueryParameter = {
+export const to: OperationQueryParameter = {
   parameterPath: ["options", "to"],
   mapper: {
     serializedName: "to",
