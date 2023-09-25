@@ -12,7 +12,7 @@
         "build": "rm -rf dist && tsc --build tsconfig.json",
         "prepublishOnly": "npm run build",
         "generate-api": "./utils/generate-api.sh",
-        "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 ./bin/spec-box sync",
+        "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node ./src/cli.ts sync",
         "test-ext": "./bin/spec-box sync",
         "version-beta": "npm version prerelease --preid beta",
         "publish-beta": "npm publish --tag beta"

@@ -1,5 +1,6 @@
 node_modules
 swagger.json
 dist
-.tms.json
 jest-report.json
+.spec-box-meta.yml
+.tms.json

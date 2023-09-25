@@ -4,6 +4,7 @@ import {
 } from "../../api";
 import { ApiConfig } from "../config/models";
 import { JestReport } from "../jest/models";
+import { DEFAULT_API_OPTIONS } from "../utils";
 
 export const uploadJestStat = async (
   jestReport: JestReport,
@@ -19,7 +20,7 @@ export const uploadJestStat = async (
     0
   );
 
-  const client = new SpecBoxWebApi(host, { allowInsecureConnection: true });
+  const client = new SpecBoxWebApi(host, DEFAULT_API_OPTIONS);
 
   const body: SpecBoxWebApiModelStatAutotestsStatUploadData = {
     timestamp: new Date(startTime),

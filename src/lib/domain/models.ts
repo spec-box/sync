@@ -33,9 +33,9 @@ export interface Attribute {
 }
 
 export interface Tree {
-    title: string;
-    code: string;
-    attributes: string[];
+  title: string;
+  code: string;
+  attributes: string[];
 }
 
 export interface ProjectData {

@@ -1,7 +1,6 @@
-import { parse } from "yaml";
 import { basename, relative } from "node:path";
 
-import { readTextFile, parseObject, resolvePath, CWD } from "../utils";
+import { resolvePath, CWD, readYaml } from "../utils";
 import { entityDecoder, Entity } from "./models";
 
 export type { Entity, Assertion } from "./models";
@@ -20,13 +19,10 @@ export const loadYaml = async (
   const relativePath = relative(basePath, absolutePath);
   const fileName = basename(relativePath).split(".")[0];
 
-  const content = await readTextFile(path, basePath);
-  const data: unknown = parse(content);
-
-  const entity = parseObject(data, entityDecoder);
+  const content = await readYaml(entityDecoder, path, basePath);
 
   return {
-    content: entity,
+    content,
     filePath: relativePath,
     fileName,
   };

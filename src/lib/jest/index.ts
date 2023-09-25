@@ -1,4 +1,9 @@
-import { AssertionContext, ProjectData, getAttributesContext, getKey } from "../domain";
+import {
+  AssertionContext,
+  ProjectData,
+  getAttributesContext,
+  getKey,
+} from "../domain";
 import { readTextFile, parseObject } from "../utils";
 import { JestReport, jestReportDecoder } from "./models";
 

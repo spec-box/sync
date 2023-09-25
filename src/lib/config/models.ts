@@ -1,11 +1,7 @@
 import { pipe } from "fp-ts/lib/function";
 import * as d from "io-ts/Decoder";
 
-export const apiConfigDecoder = d.struct({
-  host: d.string,
-  project: d.string,
-});
-
+// meta
 export const attributeValueDecoder = d.struct({
   code: d.string,
   title: d.string,
@@ -20,7 +16,18 @@ export const attributeDecoder = d.struct({
 export const treeDecoder = d.struct({
   code: d.string,
   title: d.string,
-  attributes: d.array(d.string),
+  "group-by": d.array(d.string),
+});
+
+export const metaDecoder = d.partial({
+  attributes: d.array(attributeDecoder),
+  trees: d.array(treeDecoder),
+});
+
+// config
+export const apiConfigDecoder = d.struct({
+  host: d.string,
+  project: d.string,
 });
 
 export const ymlConfigDecoder = d.intersect(
@@ -29,8 +36,7 @@ export const ymlConfigDecoder = d.intersect(
   })
 )(
   d.partial({
-    attributes: d.array(attributeDecoder),
-    trees: d.array(treeDecoder),
+    metaPath: d.string,
   })
 );
 
@@ -76,6 +82,7 @@ export type ApiConfig = d.TypeOf<typeof apiConfigDecoder>;
 export type YmlConfig = d.TypeOf<typeof ymlConfigDecoder>;
 export type JestConfig = d.TypeOf<typeof jestConfigDecoder>;
 
+export type Meta = d.TypeOf<typeof metaDecoder>;
 export type Tree = d.TypeOf<typeof treeDecoder>;
 export type Attribute = d.TypeOf<typeof attributeDecoder>;
 export type AttributeValue = d.TypeOf<typeof attributeValueDecoder>;
