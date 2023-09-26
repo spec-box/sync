@@ -12,7 +12,7 @@ import { ApiConfig } from "../config/models";
 import { Attribute, AttributeValue, ProjectData } from "../domain";
 import { Assertion, AssertionGroup, Feature } from "../domain";
 import { Tree } from "../domain/models";
-import { normalizePath } from "../utils";
+import { DEFAULT_API_OPTIONS, normalizePath } from "../utils";
 
 const mapAssertion = ({
   title,
@@ -85,7 +85,7 @@ export const uploadEntities = async (
 ) => {
   const { host, project } = config;
 
-  const client = new SpecBoxWebApi(host, { allowInsecureConnection: true });
+  const client = new SpecBoxWebApi(host, DEFAULT_API_OPTIONS);
 
   const body: SpecBoxWebApiModelUploadData = {
     features: features.map(mapFeature),

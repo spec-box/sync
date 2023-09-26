@@ -9,11 +9,11 @@ import {
 } from "./models";
 import { YamlFile, Assertion as YmlAssertion } from "../yaml";
 import {
-  YmlConfig,
   Tree as CfgTree,
   Attribute as CfgAttribute,
   AttributeValue as CfgAttributeValue,
 } from "../config";
+import { Meta } from "../config/models";
 
 export type {
   ProjectData,
@@ -72,7 +72,7 @@ const mapAttribute = ({ code, title, values }: CfgAttribute): Attribute => {
   };
 };
 
-const mapTree = ({ code, title, attributes }: CfgTree): Tree => {
+const mapTree = ({ code, title, "group-by": attributes }: CfgTree): Tree => {
   return {
     title,
     code,
@@ -82,11 +82,11 @@ const mapTree = ({ code, title, attributes }: CfgTree): Tree => {
 
 export const processYamlFiles = (
   files: YamlFile[],
-  ymlConfig: YmlConfig
+  meta: Meta
 ): ProjectData => {
   const features = files.map(mapFeature);
-  const attributes = ymlConfig.attributes?.map(mapAttribute);
-  const trees = ymlConfig.trees?.map(mapTree);
+  const attributes = meta.attributes?.map(mapAttribute);
+  const trees = meta.trees?.map(mapTree);
 
   return { features, attributes, trees };
 };
