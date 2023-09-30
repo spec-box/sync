@@ -1,5 +1,9 @@
 import { pipe } from "fp-ts/lib/function";
 import * as d from "io-ts/Decoder";
+import {
+  Validator,
+  validateCode
+} from "../validators";
 
 // meta
 export const attributeValueDecoder = d.struct({
@@ -7,11 +11,19 @@ export const attributeValueDecoder = d.struct({
   title: d.string,
 });
 
+export const attributeValueValidator = new Validator<AttributeValue>();
+attributeValueValidator.register((a) => a.code, [validateCode]);
+
 export const attributeDecoder = d.struct({
   code: d.string,
   title: d.string,
   values: d.array(attributeValueDecoder),
 });
+
+export const attributeValidator = new Validator<Attribute>();
+attributeValidator.register((a) => a.code, [validateCode]);
+attributeValidator.register((a) => a.values, [attributeValueValidator.validate]);
+
 
 export const treeDecoder = d.struct({
   code: d.string,
