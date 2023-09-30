@@ -19,6 +19,7 @@ export const entityDecoder = d.intersect(
     "specs-unit": d.record(d.array(assertionDecoder)),
     definitions: d.record(d.array(d.string)),
     description: d.string,
+    code: d.string,
   })
 );
 
