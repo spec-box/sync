@@ -5,7 +5,6 @@ import {
   readYaml,
   readYamlIfExists,
 } from "../utils";
-import { ValidationError } from "../validators";
 import { Meta, RootConfig, configDecoder, metaDecoder } from "./models";
 
 export type { YmlConfig, Attribute, AttributeValue, Tree } from "./models";
@@ -41,13 +40,4 @@ export const loadMeta = async (
   }
 };
 
-export const validateMeta = (meta: Meta): ValidationError[] => {
-  if(meta.attributes) {
-
-
-
-  }  
-
-
-  return [];
-}
+export * from './validators';

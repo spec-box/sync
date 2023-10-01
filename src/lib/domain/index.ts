@@ -51,9 +51,12 @@ const mapFeature = ({ content, fileName, filePath }: YamlFile): Feature => {
   } = content;
 
   // TODO: формировать код по конфигу
-  const component = attributes?.component.join("-");
-  const subComponent = attributes?.["sub-component"].join("-");
-  const code = featureCode || `${component}_${subComponent}`;
+  let code = featureCode;
+  if(!code) {
+    const component = attributes?.component.join("-");
+    const subComponent = attributes?.["sub-component"].join("-");
+    code = `${component}_${subComponent}`;
+  }
 
   const groups = Object.entries(specs).map(mapGroup);
 
