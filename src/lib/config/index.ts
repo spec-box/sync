@@ -4,14 +4,15 @@ import {
   CWD,
   readYaml,
   readYamlIfExists,
-} from "../utils";
-import { ValidationError } from "../validators";
-import { Meta, RootConfig, configDecoder, metaDecoder } from "./models";
+} from '../utils';
+import { Validator, printError } from '../validators';
+import { getLoaderError } from '../validators/validator';
+import { Meta, RootConfig, configDecoder, metaDecoder } from './models';
 
-export type { YmlConfig, Attribute, AttributeValue, Tree } from "./models";
+export type { YmlConfig, Attribute, AttributeValue, Tree } from './models';
 
-export const DEFAULT_CONFIG_PATH = ".tms.json";
-export const DEFAULT_META_PATH = ".spec-box-meta.yml";
+export const DEFAULT_CONFIG_PATH = '.tms.json';
+export const DEFAULT_META_PATH = '.spec-box-meta.yml';
 
 export const loadConfig = async (
   path = DEFAULT_CONFIG_PATH
@@ -25,29 +26,21 @@ export const loadConfig = async (
 };
 
 export const loadMeta = async (
+  validationContext: Validator,
   path?: string,
   basePath: string = CWD // TODO: перенести в resolvePath
 ): Promise<Meta> => {
-  if (path) {
-    return await readYaml(metaDecoder, path, basePath);
-  } else {
-    const content = await readYamlIfExists(
-      metaDecoder,
-      DEFAULT_META_PATH,
-      basePath
-    );
+  const filePath = path || DEFAULT_META_PATH;
+  let fileReader = path
+    ? readYaml(metaDecoder, filePath, basePath)
+    : readYamlIfExists(metaDecoder, filePath, basePath);
 
+  try {
+    validationContext.setMetaFilePath(filePath);
+    const content = await fileReader;
     return content || {};
+  } catch (error) {
+    printError(getLoaderError(error, filePath, 'config'));
+    throw 'Ошибка загрузки файла конфигурации';
   }
 };
-
-export const validateMeta = (meta: Meta): ValidationError[] => {
-  if(meta.attributes) {
-
-
-
-  }  
-
-
-  return [];
-}

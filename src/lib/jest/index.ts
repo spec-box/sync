@@ -3,23 +3,28 @@ import {
   ProjectData,
   getAttributesContext,
   getKey,
-} from "../domain";
-import { readTextFile, parseObject } from "../utils";
-import { JestReport, jestReportDecoder } from "./models";
+} from '../domain';
+import { parseObject, readTextFile } from '../utils';
+import { Validator } from '../validators';
+import { JestReport, jestReportDecoder } from './models';
 
-export const getFullName = (...parts: string[]) => parts.join(" / ");
+export const getFullName = (...parts: string[]) => parts.join(' / ');
 
 export const applyJestReport = (
+  validationContext: Validator,
   { features, attributes }: ProjectData,
   report: JestReport,
   keyParts: string[]
 ) => {
-  const names = new Set<string>();
+  const names = new Map<string, string[]>();
 
   // формируем список ключей тест-кейсов из отчета jest
-  for (let { assertionResults } of report.testResults) {
+  for (let { assertionResults, name: path } of report.testResults) {
     for (let { title, ancestorTitles } of assertionResults) {
-      names.add(getFullName(...ancestorTitles, title));
+      const name = getFullName(...ancestorTitles, title);
+      const pathes = names.get(name) || [];
+      pathes.push(path);
+      names.set(name, pathes);
     }
   }
 
@@ -50,14 +55,18 @@ export const applyJestReport = (
         const parts = getKey(keyParts, assertionCtx, attributesCtx);
         const fullName = getFullName(...parts);
 
-        console.log("process:  \x1b[36m%s\x1b[0m", fullName);
-
         assertion.isAutomated = names.has(fullName);
 
         names.delete(fullName);
       }
     }
   }
+  Array.from(names.keys()).forEach((name) => {
+    const pathes = names.get(name);
+    pathes?.forEach((path) =>
+      validationContext.registerJestUnusedTests(name, path)
+    );
+  });
 };
 
 export const loadJestReport = async (path: string, basePath?: string) => {

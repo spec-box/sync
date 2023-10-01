@@ -1,30 +1,26 @@
 import {
-  ProjectData,
-  Feature,
-  AssertionGroup,
-  Assertion,
-  Attribute,
-  AttributeValue,
-  Tree,
-} from "./models";
-import { YamlFile, Assertion as YmlAssertion } from "../yaml";
-import {
-  Tree as CfgTree,
   Attribute as CfgAttribute,
   AttributeValue as CfgAttributeValue,
-} from "../config";
-import { Meta } from "../config/models";
-
-export type {
-  ProjectData,
-  Feature,
-  AssertionGroup,
+  Tree as CfgTree,
+} from '../config';
+import { Meta } from '../config/models';
+import { YamlFile, Assertion as YmlAssertion } from '../yaml';
+import {
   Assertion,
+  AssertionGroup,
   Attribute,
   AttributeValue,
-} from "./models";
-export type { AssertionContext, AttributesContext } from "./keys";
-export { getKey, getAttributesContext } from "./keys";
+  Feature,
+  ProjectData,
+  Tree,
+} from './models';
+
+export { getAttributesContext, getKey } from './keys';
+export type { AssertionContext, AttributesContext } from './keys';
+export type {
+  Assertion, AssertionGroup, Attribute,
+  AttributeValue, Feature, ProjectData, Tree
+} from './models';
 
 const mapAssertion = ({
   assert: title,
@@ -47,7 +43,7 @@ const mapFeature = ({ content, fileName, filePath }: YamlFile): Feature => {
     feature: title,
     description,
     definitions: attributes,
-    "specs-unit": specs = {},
+    'specs-unit': specs = {},
   } = content;
 
   const groups = Object.entries(specs).map(mapGroup);
@@ -68,7 +64,7 @@ const mapAttribute = ({ code, title, values }: CfgAttribute): Attribute => {
   };
 };
 
-const mapTree = ({ code, title, "group-by": attributes }: CfgTree): Tree => {
+const mapTree = ({ code, title, 'group-by': attributes }: CfgTree): Tree => {
   return {
     title,
     code,
