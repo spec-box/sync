@@ -435,32 +435,17 @@ export const SpecBoxWebApiModelProjectTreeNodeModel: coreClient.CompositeMapper 
     className: "SpecBoxWebApiModelProjectTreeNodeModel",
     modelProperties: {
       id: {
-        constraints: {
-          MinLength: 1
-        },
         serializedName: "id",
         required: true,
         type: {
-          name: "String"
-        }
-      },
-      path: {
-        serializedName: "path",
-        required: true,
-        type: {
-          name: "Sequence",
-          element: {
-            type: {
-              name: "String"
-            }
-          }
+          name: "Uuid"
         }
       },
       parentId: {
         serializedName: "parentId",
         nullable: true,
         type: {
-          name: "String"
+          name: "Uuid"
         }
       },
       featureCode: {

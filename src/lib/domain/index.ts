@@ -43,17 +43,12 @@ const mapGroup = ([title, list]: [string, YmlAssertion[]]): AssertionGroup => {
 
 const mapFeature = ({ content, fileName, filePath }: YamlFile): Feature => {
   const {
-    code: featureCode,
+    code,
     feature: title,
     description,
     definitions: attributes,
     "specs-unit": specs = {},
   } = content;
-
-  // TODO: формировать код по конфигу
-  const component = attributes?.component.join("-");
-  const subComponent = attributes?.["sub-component"].join("-");
-  const code = featureCode || `${component}_${subComponent}`;
 
   const groups = Object.entries(specs).map(mapGroup);
 

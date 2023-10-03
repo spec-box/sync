@@ -12,6 +12,7 @@ export const assertionDecoder = d.intersect(
 
 export const entityDecoder = d.intersect(
   d.struct({
+    code: d.string,
     feature: d.string,
   })
 )(
@@ -19,7 +20,6 @@ export const entityDecoder = d.intersect(
     "specs-unit": d.record(d.array(assertionDecoder)),
     definitions: d.record(d.array(d.string)),
     description: d.string,
-    code: d.string,
   })
 );
 

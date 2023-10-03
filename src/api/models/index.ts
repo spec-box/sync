@@ -70,7 +70,6 @@ export interface SpecBoxWebApiModelProjectStructureModel {
 
 export interface SpecBoxWebApiModelProjectTreeNodeModel {
   id: string;
-  path: string[];
   parentId?: string;
   featureCode?: string;
   title: string;
