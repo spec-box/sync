@@ -4,3 +4,4 @@ dist
 jest-report.json
 .spec-box-meta.yml
 .tms.json
+specs-demo

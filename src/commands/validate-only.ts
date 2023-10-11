@@ -1,22 +1,22 @@
 import { CommandModule } from 'yargs';
-import glob from 'fast-glob';
 
-import { CommonOptions } from '../lib/utils';
 import { loadConfig, loadMeta } from '../lib/config';
-import { YamlFile, loadYaml } from '../lib/yaml';
-import { uploadEntities } from '../lib/upload/upload-entities';
-import { applyJestReport, loadJestReport } from '../lib/jest';
-import { processYamlFiles } from '../lib/domain';
+import { CommonOptions } from '../lib/utils';
 import { Validator } from '../lib/validators';
+import { glob } from 'fast-glob';
+import { YamlFile, loadYaml } from '../lib/yaml';
+import { processYamlFiles } from '../lib/domain';
+import { applyJestReport, loadJestReport } from '../lib/jest';
 
-export const cmdSync: CommandModule<{}, CommonOptions> = {
-  command: 'sync',
+export const cmdValidateOnly: CommandModule<{}, CommonOptions> = {
+  command: 'validate',
   handler: async (args) => {
-    console.log('SYNC');
-    const validationContext = new Validator();
-    const { yml, api, jest, projectPath } = await loadConfig(args.config);
+    console.log('VALIDATION');
 
+    const { yml, jest, projectPath } = await loadConfig(args.config);
+    const validationContext = new Validator();
     const meta = await loadMeta(validationContext, yml.metaPath, projectPath);
+
     const files = await glob(yml.files, { cwd: projectPath });
 
     const yamls = await Promise.all(
@@ -26,6 +26,7 @@ export const cmdSync: CommandModule<{}, CommonOptions> = {
     yamls.forEach((yaml) => yaml && successYamls.push(yaml));
 
     const projectData = processYamlFiles(successYamls, meta);
+
     validationContext.validate(projectData);
 
     if (jest) {
@@ -33,12 +34,6 @@ export const cmdSync: CommandModule<{}, CommonOptions> = {
 
       applyJestReport(validationContext, projectData, jestReport, jest.keys);
     }
-
     validationContext.printReport();
-    if (validationContext.hasCriticalErrors) {
-      throw Error('Выгрузка невозможна из-за наличия критических ошибок');
-    }
-
-    await uploadEntities(projectData, api);
   },
 };
