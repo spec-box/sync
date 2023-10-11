@@ -78,12 +78,7 @@ export type FeatureMissingLinkError = {
     | 'assert.description';
   link: string;
 };
-export type AssertionGroupDuplicateError = {
-  type: 'assertion-group-duplicate';
-  filePath: string;
-  feature: Feature;
-  assertionGroup: AssertionGroup;
-};
+
 export type AssertionDuplicateError = {
   type: 'assertion-duplicate';
   filePath: string;
@@ -114,7 +109,6 @@ export type ValidationError =
   | FeatureCodeDuplicateError
   | FeatureMissingAttributeError
   | FeatureMissingLinkError
-  | AssertionGroupDuplicateError
   | AssertionDuplicateError
   | CodeError
   | LoaderError
@@ -138,6 +132,5 @@ export const ERROR_SEVERITY: { [key in ValidationErrorTypes]: ErrorSeverity } = 
   'feature-missing-attribute': 'error',
   'featrue-attribute-value-code-format': 'error',
   'feature-missing-link': 'warning',
-  'assertion-group-duplicate': 'error',
   'jest-unused': 'warning',
 };

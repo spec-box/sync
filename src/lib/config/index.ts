@@ -29,18 +29,19 @@ export const loadMeta = async (
   validationContext: Validator,
   path?: string,
   basePath: string = CWD // TODO: перенести в resolvePath
-): Promise<Meta> => {
+): Promise<{ filePath: string; meta: Meta }> => {
   const filePath = path || DEFAULT_META_PATH;
   let fileReader = path
     ? readYaml(metaDecoder, filePath, basePath)
     : readYamlIfExists(metaDecoder, filePath, basePath);
 
   try {
-    validationContext.setMetaFilePath(filePath);
     const content = await fileReader;
-    return content || {};
+    const meta = content || {};
+
+    return { filePath, meta };
   } catch (error) {
     printError(getLoaderError(error, filePath, 'config'));
-    throw 'Ошибка загрузки файла конфигурации';
+    throw Error('Ошибка загрузки файла конфигурации');
   }
 };

@@ -3,7 +3,6 @@ import { Feature, ProjectData } from '../domain';
 import { Tree } from '../domain/models';
 import {
   AssertionDuplicateError,
-  AssertionGroupDuplicateError,
   AttributeDuplicateError,
   AttributeValueDuplicateError,
   CodeError,
@@ -20,7 +19,7 @@ import {
   TreeMissingAttributeError,
   ValidationError,
 } from './models';
-import { printError } from './renderer';
+import { printError, renderStats } from './renderer';
 
 const CODE_REGEX = /^[A-Za-z][A-Za-z0-9-_]*$/;
 // named group <link> is used to capture and validate link key
@@ -34,32 +33,26 @@ export class Validator {
   private metaFilePath = '';
 
   get hasCriticalErrors(): boolean {
-    let hasError = false;
-    hasError ||=
-      this.loaderErrors.findIndex((e) => ERROR_SEVERITY[e.type] === 'error') >=
-      0;
-    hasError ||=
-      this.metaErrors.findIndex((e) => ERROR_SEVERITY[e.type] === 'error') >= 0;
-    hasError ||=
-      this.featureErrors.findIndex((e) => ERROR_SEVERITY[e.type] === 'error') >=
-      0;
-    hasError ||=
-      this.jestUnusedTests.findIndex(
-        (e) => ERROR_SEVERITY[e.type] === 'error'
-      ) >= 0;
-    return hasError;
+    return [
+      ...this.loaderErrors,
+      ...this.metaErrors,
+      ...this.featureErrors,
+      ...this.jestUnusedTests,
+    ].some((e) => ERROR_SEVERITY[e.type] === 'error');
   }
-  setMetaFilePath(path: string) {
-    this.metaFilePath = path;
-  }
-
-  constructor() {}
 
   printReport() {
     this.jestUnusedTests.forEach(printError);
     this.featureErrors.forEach(printError);
     this.metaErrors.forEach(printError);
     this.loaderErrors.forEach(printError);
+
+    renderStats('Всего', [
+      ...this.loaderErrors,
+      ...this.metaErrors,
+      ...this.featureErrors,
+      ...this.jestUnusedTests,
+    ]);
   }
 
   registerLoaderError(
@@ -78,8 +71,10 @@ export class Validator {
     });
   }
 
-  validate({ trees, attributes, features }: ProjectData) {
+  validate({ trees, attributes, metaFilePath, features }: ProjectData) {
     const metaAttributeValues = new Map<string, Set<string>>();
+
+    this.metaFilePath = metaFilePath;
     this.validateMetaAttributes(attributes, metaAttributeValues);
     this.validateMetaTrees(trees, metaAttributeValues);
     this.validateFeatures(features, metaAttributeValues);
@@ -129,7 +124,8 @@ export class Validator {
   ): ValidationError[] {
     const result = new Array<ValidationError>();
     for (const attributeValue of attribute.values) {
-      const valueValidation = this.validateCode(attribute.code, filePath);
+      const valueValidation = this.validateCode(attributeValue.code, filePath);
+
       if (valueValidation) {
         result.push(valueValidation);
         continue;
@@ -155,13 +151,15 @@ export class Validator {
   ) {
     const filePath = this.metaFilePath;
     if (trees) {
+      const treeUnique = new Set<string>();
+
       for (const tree of trees) {
-        const treeUnique = new Set<string>();
         const codeValidation = this.validateCode(tree.code, filePath);
         if (codeValidation) {
           this.metaErrors.push(codeValidation);
           continue;
         }
+
         if (treeUnique.has(tree.code)) {
           const error: TreeDuplicateError = {
             type: 'tree-duplicate',
@@ -172,6 +170,7 @@ export class Validator {
           continue;
         }
         treeUnique.add(tree.code);
+
         const treeAttributesUnique = new Set<string>();
         for (const attribute of tree.attributes) {
           if (!attributeValuesMap.has(attribute)) {
@@ -273,18 +272,8 @@ export class Validator {
   }
   private validateAsserions(feature: Feature): ValidationError[] {
     const errors = new Array<ValidationError>();
-    const groupsUnique = new Set<string>();
+
     for (const assertionGroup of feature.groups) {
-      if (groupsUnique.has(assertionGroup.title)) {
-        const groupDuplicateError: AssertionGroupDuplicateError = {
-          type: 'assertion-group-duplicate',
-          filePath: feature.filePath,
-          feature,
-          assertionGroup,
-        };
-        errors.push(groupDuplicateError);
-      }
-      groupsUnique.add(assertionGroup.title);
       const assertionsUnique = new Set<string>();
       for (const assertion of assertionGroup.assertions) {
         if (assertionsUnique.has(assertion.title)) {

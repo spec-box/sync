@@ -36,7 +36,7 @@ export const cmdSync: CommandModule<{}, CommonOptions> = {
 
     validationContext.printReport();
     if (validationContext.hasCriticalErrors) {
-      throw 'Выгрузка невозможна из-за наличия критических ошибок';
+      throw Error('Выгрузка невозможна из-за наличия критических ошибок');
     }
 
     await uploadEntities(projectData, api);

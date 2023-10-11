@@ -43,4 +43,5 @@ export interface ProjectData {
 
   attributes?: Attribute[];
   trees?: Tree[];
+  metaFilePath: string;
 }
