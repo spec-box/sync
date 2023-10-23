@@ -18,8 +18,6 @@ export const jestAssertionResultDecoder = d.struct({
   fullName: d.string,
   ancestorTitles: d.array(d.string),
   status: jestAssertionStatusDecoder,
-  duration: d.nullable(d.number),
-  invocations: d.number,
 });
 
 export const jestTestResultDecoder = d.struct({
