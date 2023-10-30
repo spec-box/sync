@@ -1,5 +1,21 @@
 import * as coreClient from "@azure/core-client";
 
+export const SpecBoxWebApiModelDefaultConfigurationModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelDefaultConfigurationModel",
+    modelProperties: {
+      metrikaCounterId: {
+        serializedName: "metrikaCounterId",
+        nullable: true,
+        type: {
+          name: "String"
+        }
+      }
+    }
+  }
+};
+
 export const SpecBoxWebApiModelUploadData: coreClient.CompositeMapper = {
   type: {
     name: "Composite",
@@ -291,6 +307,42 @@ export const SpecBoxWebApiModelUploadTreeModel: coreClient.CompositeMapper = {
   }
 };
 
+export const SpecBoxWebApiModelCommonProjectModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelCommonProjectModel",
+    modelProperties: {
+      code: {
+        constraints: {
+          MinLength: 1
+        },
+        serializedName: "code",
+        required: true,
+        type: {
+          name: "String"
+        }
+      },
+      title: {
+        constraints: {
+          MinLength: 1
+        },
+        serializedName: "title",
+        required: true,
+        type: {
+          name: "String"
+        }
+      },
+      description: {
+        serializedName: "description",
+        nullable: true,
+        type: {
+          name: "String"
+        }
+      }
+    }
+  }
+};
+
 export const SpecBoxWebApiModelProjectFeatureModel: coreClient.CompositeMapper = {
   type: {
     name: "Composite",
@@ -412,6 +464,13 @@ export const SpecBoxWebApiModelProjectStructureModel: coreClient.CompositeMapper
     name: "Composite",
     className: "SpecBoxWebApiModelProjectStructureModel",
     modelProperties: {
+      project: {
+        serializedName: "project",
+        type: {
+          name: "Composite",
+          className: "SpecBoxWebApiModelCommonProjectModel"
+        }
+      },
       tree: {
         serializedName: "tree",
         required: true,
@@ -487,6 +546,108 @@ export const SpecBoxWebApiModelStatAutotestsStatUploadData: coreClient.Composite
   type: {
     name: "Composite",
     className: "SpecBoxWebApiModelStatAutotestsStatUploadData",
+    modelProperties: {
+      timestamp: {
+        serializedName: "timestamp",
+        required: true,
+        type: {
+          name: "DateTime"
+        }
+      },
+      duration: {
+        serializedName: "duration",
+        required: true,
+        type: {
+          name: "Number"
+        }
+      },
+      assertionsCount: {
+        serializedName: "assertionsCount",
+        required: true,
+        type: {
+          name: "Number"
+        }
+      }
+    }
+  }
+};
+
+export const SpecBoxWebApiModelStatModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelStatModel",
+    modelProperties: {
+      project: {
+        serializedName: "project",
+        type: {
+          name: "Composite",
+          className: "SpecBoxWebApiModelCommonProjectModel"
+        }
+      },
+      assertions: {
+        serializedName: "assertions",
+        required: true,
+        type: {
+          name: "Sequence",
+          element: {
+            type: {
+              name: "Composite",
+              className: "SpecBoxWebApiModelStatAssertionsStatModel"
+            }
+          }
+        }
+      },
+      autotests: {
+        serializedName: "autotests",
+        required: true,
+        type: {
+          name: "Sequence",
+          element: {
+            type: {
+              name: "Composite",
+              className: "SpecBoxWebApiModelStatAutotestsStatModel"
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+export const SpecBoxWebApiModelStatAssertionsStatModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelStatAssertionsStatModel",
+    modelProperties: {
+      timestamp: {
+        serializedName: "timestamp",
+        required: true,
+        type: {
+          name: "DateTime"
+        }
+      },
+      totalCount: {
+        serializedName: "totalCount",
+        required: true,
+        type: {
+          name: "Number"
+        }
+      },
+      automatedCount: {
+        serializedName: "automatedCount",
+        required: true,
+        type: {
+          name: "Number"
+        }
+      }
+    }
+  }
+};
+
+export const SpecBoxWebApiModelStatAutotestsStatModel: coreClient.CompositeMapper = {
+  type: {
+    name: "Composite",
+    className: "SpecBoxWebApiModelStatAutotestsStatModel",
     modelProperties: {
       timestamp: {
         serializedName: "timestamp",

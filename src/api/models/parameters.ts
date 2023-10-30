@@ -8,6 +8,30 @@ import {
   SpecBoxWebApiModelStatAutotestsStatUploadData as SpecBoxWebApiModelStatAutotestsStatUploadDataMapper
 } from "../models/mappers";
 
+export const accept: OperationParameter = {
+  parameterPath: "accept",
+  mapper: {
+    defaultValue: "application/json, text/json",
+    isConstant: true,
+    serializedName: "Accept",
+    type: {
+      name: "String"
+    }
+  }
+};
+
+export const $host: OperationURLParameter = {
+  parameterPath: "$host",
+  mapper: {
+    serializedName: "$host",
+    required: true,
+    type: {
+      name: "String"
+    }
+  },
+  skipEncoding: true
+};
+
 export const contentType: OperationParameter = {
   parameterPath: ["options", "contentType"],
   mapper: {
@@ -25,34 +49,10 @@ export const body: OperationParameter = {
   mapper: SpecBoxWebApiModelUploadDataMapper
 };
 
-export const $host: OperationURLParameter = {
-  parameterPath: "$host",
-  mapper: {
-    serializedName: "$host",
-    required: true,
-    type: {
-      name: "String"
-    }
-  },
-  skipEncoding: true
-};
-
 export const project: OperationQueryParameter = {
   parameterPath: ["options", "project"],
   mapper: {
     serializedName: "project",
-    type: {
-      name: "String"
-    }
-  }
-};
-
-export const accept: OperationParameter = {
-  parameterPath: "accept",
-  mapper: {
-    defaultValue: "application/json, text/json",
-    isConstant: true,
-    serializedName: "Accept",
     type: {
       name: "String"
     }

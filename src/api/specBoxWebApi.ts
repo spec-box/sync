@@ -3,14 +3,18 @@ import * as Parameters from "./models/parameters";
 import * as Mappers from "./models/mappers";
 import {
   SpecBoxWebApiOptionalParams,
+  ConfigOptionalParams,
+  ConfigResponse,
   ExportUploadOptionalParams,
+  ProjectsListOptionalParams,
+  ProjectsListResponse,
   ProjectsProjectFeaturesFeatureOptionalParams,
   ProjectsProjectFeaturesFeatureResponse,
   ProjectsProjectStructureOptionalParams,
   ProjectsProjectStructureResponse,
-  StatAutotestsUploadOptionalParams,
-  StatAutotestsOptionalParams,
-  StatAssertionsOptionalParams
+  StatUploadAutotestsOptionalParams,
+  StatOptionalParams,
+  StatResponse
 } from "./models";
 
 export class SpecBoxWebApi extends coreClient.ServiceClient {
@@ -54,8 +58,20 @@ export class SpecBoxWebApi extends coreClient.ServiceClient {
   }
 
   /** @param options The options parameters. */
+  config(options?: ConfigOptionalParams): Promise<ConfigResponse> {
+    return this.sendOperationRequest({ options }, configOperationSpec);
+  }
+
+  /** @param options The options parameters. */
   exportUpload(options?: ExportUploadOptionalParams): Promise<void> {
     return this.sendOperationRequest({ options }, exportUploadOperationSpec);
+  }
+
+  /** @param options The options parameters. */
+  projectsList(
+    options?: ProjectsListOptionalParams
+  ): Promise<ProjectsListResponse> {
+    return this.sendOperationRequest({ options }, projectsListOperationSpec);
   }
 
   /**
@@ -89,28 +105,35 @@ export class SpecBoxWebApi extends coreClient.ServiceClient {
   }
 
   /** @param options The options parameters. */
-  statAutotestsUpload(
-    options?: StatAutotestsUploadOptionalParams
+  statUploadAutotests(
+    options?: StatUploadAutotestsOptionalParams
   ): Promise<void> {
     return this.sendOperationRequest(
       { options },
-      statAutotestsUploadOperationSpec
+      statUploadAutotestsOperationSpec
     );
   }
 
   /** @param options The options parameters. */
-  statAutotests(options?: StatAutotestsOptionalParams): Promise<void> {
-    return this.sendOperationRequest({ options }, statAutotestsOperationSpec);
-  }
-
-  /** @param options The options parameters. */
-  statAssertions(options?: StatAssertionsOptionalParams): Promise<void> {
-    return this.sendOperationRequest({ options }, statAssertionsOperationSpec);
+  stat(options?: StatOptionalParams): Promise<StatResponse> {
+    return this.sendOperationRequest({ options }, statOperationSpec);
   }
 }
 // Operation Specifications
 const serializer = coreClient.createSerializer(Mappers, /* isXml */ false);
 
+const configOperationSpec: coreClient.OperationSpec = {
+  path: "/config",
+  httpMethod: "GET",
+  responses: {
+    200: {
+      bodyMapper: Mappers.SpecBoxWebApiModelDefaultConfigurationModel
+    }
+  },
+  urlParameters: [Parameters.$host],
+  headerParameters: [Parameters.accept],
+  serializer
+};
 const exportUploadOperationSpec: coreClient.OperationSpec = {
   path: "/export/upload",
   httpMethod: "POST",
@@ -120,6 +143,28 @@ const exportUploadOperationSpec: coreClient.OperationSpec = {
   urlParameters: [Parameters.$host],
   headerParameters: [Parameters.contentType],
   mediaType: "json",
+  serializer
+};
+const projectsListOperationSpec: coreClient.OperationSpec = {
+  path: "/projects/list",
+  httpMethod: "GET",
+  responses: {
+    200: {
+      bodyMapper: {
+        type: {
+          name: "Sequence",
+          element: {
+            type: {
+              name: "Composite",
+              className: "SpecBoxWebApiModelCommonProjectModel"
+            }
+          }
+        }
+      }
+    }
+  },
+  urlParameters: [Parameters.$host],
+  headerParameters: [Parameters.accept],
   serializer
 };
 const projectsProjectFeaturesFeatureOperationSpec: coreClient.OperationSpec = {
@@ -146,8 +191,8 @@ const projectsProjectStructureOperationSpec: coreClient.OperationSpec = {
   headerParameters: [Parameters.accept],
   serializer
 };
-const statAutotestsUploadOperationSpec: coreClient.OperationSpec = {
-  path: "/stat/autotests/upload",
+const statUploadAutotestsOperationSpec: coreClient.OperationSpec = {
+  path: "/stat/upload-autotests",
   httpMethod: "POST",
   responses: { 200: {} },
   requestBody: Parameters.body1,
@@ -157,19 +202,16 @@ const statAutotestsUploadOperationSpec: coreClient.OperationSpec = {
   mediaType: "json",
   serializer
 };
-const statAutotestsOperationSpec: coreClient.OperationSpec = {
-  path: "/stat/autotests",
+const statOperationSpec: coreClient.OperationSpec = {
+  path: "/stat",
   httpMethod: "GET",
-  responses: { 200: {} },
+  responses: {
+    200: {
+      bodyMapper: Mappers.SpecBoxWebApiModelStatModel
+    }
+  },
   queryParameters: [Parameters.project, Parameters.from, Parameters.to],
   urlParameters: [Parameters.$host],
-  serializer
-};
-const statAssertionsOperationSpec: coreClient.OperationSpec = {
-  path: "/stat/assertions",
-  httpMethod: "GET",
-  responses: { 200: {} },
-  queryParameters: [Parameters.project, Parameters.from, Parameters.to],
-  urlParameters: [Parameters.$host],
+  headerParameters: [Parameters.accept],
   serializer
 };

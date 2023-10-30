@@ -28,5 +28,5 @@ export const uploadJestStat = async (
     duration: totalDuration,
   };
 
-  await client.statAutotestsUpload({ project, body });
+  await client.statUploadAutotests({ project, body });
 };
