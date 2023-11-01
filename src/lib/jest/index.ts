@@ -6,9 +6,11 @@ import {
 } from '../domain';
 import { parseObject, readTextFile } from '../utils';
 import { Validator } from '../validators';
-import { JestReport, jestReportDecoder } from './models';
+import { JestAssertionStatus, JestReport, jestReportDecoder } from './models';
 
 export const getFullName = (...parts: string[]) => parts.join(' / ');
+
+export const ignoredStatuses = new Set<JestAssertionStatus>(['pending', 'todo']);
 
 export const applyJestReport = (
   validationContext: Validator,
@@ -20,7 +22,9 @@ export const applyJestReport = (
 
   // формируем список ключей тест-кейсов из отчета jest
   for (let { assertionResults, name: path } of report.testResults) {
-    for (let { title, ancestorTitles } of assertionResults) {
+    const assertions = assertionResults.filter(a => !ignoredStatuses.has(a.status));
+
+    for (let { title, ancestorTitles } of assertions) {
       const name = getFullName(...ancestorTitles, title);
       const pathes = names.get(name) || [];
       pathes.push(path);
