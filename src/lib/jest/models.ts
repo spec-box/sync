@@ -10,7 +10,8 @@ export const jestSuiteStatusDecoder = d.literal(
 export const jestAssertionStatusDecoder = d.literal(
   "passed",
   "failed",
-  "pending"
+  "pending",
+  "todo",
 );
 
 export const jestAssertionResultDecoder = d.struct({
@@ -36,3 +37,4 @@ export const jestReportDecoder = d.struct({
 });
 
 export type JestReport = d.TypeOf<typeof jestReportDecoder>;
+export type JestAssertionStatus = d.TypeOf<typeof jestAssertionStatusDecoder>;
