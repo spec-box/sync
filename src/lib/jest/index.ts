@@ -10,7 +10,7 @@ import { JestAssertionStatus, JestReport, jestReportDecoder } from './models';
 
 export const getFullName = (...parts: string[]) => parts.join(' / ');
 
-export const ignoredStatuses = new Set<JestAssertionStatus>(['pending', 'todo']);
+export const ignoredStatuses = new Set<JestAssertionStatus>(['pending', 'todo', 'skipped']);
 
 export const applyJestReport = (
   validationContext: Validator,
