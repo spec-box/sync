@@ -4,7 +4,8 @@ export const jestSuiteStatusDecoder = d.literal(
   "passed",
   "failed",
   "pending",
-  "focused"
+  "focused",
+  "skipped",
 );
 
 export const jestAssertionStatusDecoder = d.literal(
