@@ -12,6 +12,7 @@ export const jestAssertionStatusDecoder = d.literal(
   "failed",
   "pending",
   "todo",
+  "skipped",
 );
 
 export const jestAssertionResultDecoder = d.struct({
