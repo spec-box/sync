@@ -13,20 +13,13 @@ export const cmdValidateOnly: CommandModule<{}, CommonOptions> = {
   handler: async (args) => {
     console.log('VALIDATION');
 
-    const {
-      yml,
-      jest,
-      validation = {},
-      projectPath,
-    } = await loadConfig(args.config);
+    const { yml, jest, validation = {}, projectPath } = await loadConfig(args.config);
     const validationContext = new Validator(validation);
     const meta = await loadMeta(validationContext, yml.metaPath, projectPath);
 
     const files = await glob(yml.files, { cwd: projectPath });
 
-    const yamls = await Promise.all(
-      files.map((path) => loadYaml(validationContext, path, projectPath))
-    );
+    const yamls = await Promise.all(files.map((path) => loadYaml(validationContext, path, projectPath)));
     const successYamls = new Array<YamlFile>();
     yamls.forEach((yaml) => yaml && successYamls.push(yaml));
 

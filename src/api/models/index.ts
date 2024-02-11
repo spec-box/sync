@@ -1,4 +1,4 @@
-import * as coreClient from "@azure/core-client";
+import * as coreClient from '@azure/core-client';
 
 export interface SpecBoxWebApiModelDefaultConfigurationModel {
   metrikaCounterId?: string;
@@ -119,36 +119,31 @@ export interface ConfigOptionalParams extends coreClient.OperationOptions {}
 export type ConfigResponse = SpecBoxWebApiModelDefaultConfigurationModel;
 
 /** Optional parameters. */
-export interface ExportUploadOptionalParams
-  extends coreClient.OperationOptions {
+export interface ExportUploadOptionalParams extends coreClient.OperationOptions {
   body?: SpecBoxWebApiModelUploadData;
   project?: string;
 }
 
 /** Optional parameters. */
-export interface ProjectsListOptionalParams
-  extends coreClient.OperationOptions {}
+export interface ProjectsListOptionalParams extends coreClient.OperationOptions {}
 
 /** Contains response data for the projectsList operation. */
 export type ProjectsListResponse = SpecBoxWebApiModelCommonProjectModel[];
 
 /** Optional parameters. */
-export interface ProjectsProjectFeaturesFeatureOptionalParams
-  extends coreClient.OperationOptions {}
+export interface ProjectsProjectFeaturesFeatureOptionalParams extends coreClient.OperationOptions {}
 
 /** Contains response data for the projectsProjectFeaturesFeature operation. */
 export type ProjectsProjectFeaturesFeatureResponse = SpecBoxWebApiModelProjectFeatureModel;
 
 /** Optional parameters. */
-export interface ProjectsProjectStructureOptionalParams
-  extends coreClient.OperationOptions {}
+export interface ProjectsProjectStructureOptionalParams extends coreClient.OperationOptions {}
 
 /** Contains response data for the projectsProjectStructure operation. */
 export type ProjectsProjectStructureResponse = SpecBoxWebApiModelProjectStructureModel;
 
 /** Optional parameters. */
-export interface StatUploadAutotestsOptionalParams
-  extends coreClient.OperationOptions {
+export interface StatUploadAutotestsOptionalParams extends coreClient.OperationOptions {
   project?: string;
   body?: SpecBoxWebApiModelStatAutotestsStatUploadData;
 }
@@ -164,8 +159,7 @@ export interface StatOptionalParams extends coreClient.OperationOptions {
 export type StatResponse = SpecBoxWebApiModelStatModel;
 
 /** Optional parameters. */
-export interface SpecBoxWebApiOptionalParams
-  extends coreClient.ServiceClientOptions {
+export interface SpecBoxWebApiOptionalParams extends coreClient.ServiceClientOptions {
   /** Overrides client endpoint. */
   endpoint?: string;
 }

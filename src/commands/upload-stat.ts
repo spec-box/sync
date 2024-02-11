@@ -1,19 +1,19 @@
-import { CommandModule } from "yargs";
+import { CommandModule } from 'yargs';
 
-import { CommonOptions } from "../lib/utils";
-import { loadConfig } from "../lib/config";
-import { uploadJestStat } from "../lib/upload/upload-jest-stat";
-import { loadJestReport } from "../lib/jest";
+import { CommonOptions } from '../lib/utils';
+import { loadConfig } from '../lib/config';
+import { uploadJestStat } from '../lib/upload/upload-jest-stat';
+import { loadJestReport } from '../lib/jest';
 
 export const cmdUploadStat: CommandModule<{}, CommonOptions> = {
-  command: "upload-stat",
+  command: 'upload-stat',
   handler: async (args) => {
-    console.log("Upload Jest stat");
+    console.log('Upload Jest stat');
 
     const { api, jest, projectPath } = await loadConfig(args.config);
 
     if (!jest) {
-      console.log("Jest settings are not specified");
+      console.log('Jest settings are not specified');
       process.exit(1);
     }
 

@@ -11,25 +11,17 @@ const renderError = (e: ValidationError): string => {
     case 'attribute-duplicate':
       return `Дубликат кода атрибута: ${val(e.attribute.code)}`;
     case 'attribute-value-duplicate':
-      return `Дубликат кода значения атрибута: ${val(
-        e.attributeValue.code
-      )} (атрибут ${val(e.attribute.code)})`;
+      return `Дубликат кода значения атрибута: ${val(e.attributeValue.code)} (атрибут ${val(e.attribute.code)})`;
     case 'tree-duplicate':
       return `Дубликат кода описания дерева: ${val(e.tree.code)}`;
     case 'tree-missing-attribute':
-      return `Неизвестный атрибут в дереве: ${val(
-        e.attributeCode
-      )} (дерево ${val(e.tree.code)})`;
+      return `Неизвестный атрибут в дереве: ${val(e.attributeCode)} (дерево ${val(e.tree.code)})`;
     case 'tree-attribute-duplicate':
-      return `Повторяющийся атрибут в описании дерева: ${val(
-        e.attributeCode
-      )} (дерево ${val(e.tree.code)})`;
+      return `Повторяющийся атрибут в описании дерева: ${val(e.attributeCode)} (дерево ${val(e.tree.code)})`;
     case 'featrue-code-format':
       return `Неправильный формат кода фичи: ${val(e.code)}`;
     case 'featrue-attribute-value-code-format':
-      return `Неправильный формат кода значения атрибута фичи: ${val(
-        e.code
-      )} (атрибут ${val(e.attribute)})`;
+      return `Неправильный формат кода значения атрибута фичи: ${val(e.code)} (атрибут ${val(e.attribute)})`;
     case 'feature-code-duplicate':
       return `Дубликат кода фичи: ${val(e.code)}`;
     case 'feature-missing-attribute':
@@ -37,9 +29,7 @@ const renderError = (e: ValidationError): string => {
     case 'feature-missing-link':
       return `Неизвестная ссылка в поле ${strong(e.field)}: ${val(e.link)}`;
     case 'assertion-duplicate':
-      return `Дубликат утверждения: ${val(e.assertion.title)} (группа ${val(
-        e.assertionGroup.title
-      )})`;
+      return `Дубликат утверждения: ${val(e.assertion.title)} (группа ${val(e.assertionGroup.title)})`;
     case 'jest-unused':
       return `Обнаружен тест без описания\n${val(e.test)}`;
   }
@@ -64,10 +54,7 @@ const formatSeverity = (s: ValidationSeverity): string | undefined => {
   }
 };
 
-export const printError = (
-  e: ValidationError,
-  config: Record<string, ValidationSeverity>,
-) => {
+export const printError = (e: ValidationError, config: Record<string, ValidationSeverity>) => {
   const severity = formatSeverity(config[e.type]);
 
   if (severity) {
@@ -75,21 +62,13 @@ export const printError = (
   }
 };
 
-export const renderStats = (
-  title: string,
-  errors: ValidationError[],
-  config: Record<string, ValidationSeverity>,
-) => {
+export const renderStats = (title: string, errors: ValidationError[], config: Record<string, ValidationSeverity>) => {
   if (errors.length === 0) {
     return;
   }
-  const errorsCount = errors.filter(
-    (e) => config[e.type] === 'error'
-  ).length;
-  const warnsCount = errors.filter(
-    (e) => config[e.type] === 'warning'
-  ).length;
-  if(!errorsCount && !warnsCount) {
+  const errorsCount = errors.filter((e) => config[e.type] === 'error').length;
+  const warnsCount = errors.filter((e) => config[e.type] === 'warning').length;
+  if (!errorsCount && !warnsCount) {
     console.log(`${chalk.green('Ошибки валидации не обнаружены')}`);
     return;
   }

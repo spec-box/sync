@@ -7,18 +7,14 @@ import {
   SpecBoxWebApiModelUploadAttributeModel,
   SpecBoxWebApiModelUploadAttributeValueModel,
   SpecBoxWebApiModelUploadTreeModel,
-} from "../../api";
-import { ApiConfig } from "../config/models";
-import { Attribute, AttributeValue, ProjectData } from "../domain";
-import { Assertion, AssertionGroup, Feature } from "../domain";
-import { Tree } from "../domain/models";
-import { DEFAULT_API_OPTIONS, normalizePath } from "../utils";
+} from '../../api';
+import { ApiConfig } from '../config/models';
+import { Attribute, AttributeValue, ProjectData } from '../domain';
+import { Assertion, AssertionGroup, Feature } from '../domain';
+import { Tree } from '../domain/models';
+import { DEFAULT_API_OPTIONS, normalizePath } from '../utils';
 
-const mapAssertion = ({
-  title,
-  description,
-  isAutomated,
-}: Assertion): SpecBoxWebApiModelUploadAssertionModel => {
+const mapAssertion = ({ title, description, isAutomated }: Assertion): SpecBoxWebApiModelUploadAssertionModel => {
   return {
     title,
     description,
@@ -26,10 +22,7 @@ const mapAssertion = ({
   };
 };
 
-const mapGroup = ({
-  title,
-  assertions,
-}: AssertionGroup): SpecBoxWebApiModelUploadAssertionGroupModel => {
+const mapGroup = ({ title, assertions }: AssertionGroup): SpecBoxWebApiModelUploadAssertionGroupModel => {
   return { title, assertions: assertions.map(mapAssertion) };
 };
 
@@ -51,38 +44,24 @@ const mapFeature = ({
   };
 };
 
-const mapAttributeValue = ({
-  title,
-  code,
-}: AttributeValue): SpecBoxWebApiModelUploadAttributeValueModel => ({
+const mapAttributeValue = ({ title, code }: AttributeValue): SpecBoxWebApiModelUploadAttributeValueModel => ({
   title,
   code,
 });
 
-const mapAttribute = ({
-  title,
-  code,
-  values,
-}: Attribute): SpecBoxWebApiModelUploadAttributeModel => ({
+const mapAttribute = ({ title, code, values }: Attribute): SpecBoxWebApiModelUploadAttributeModel => ({
   title,
   code,
   values: values.map(mapAttributeValue),
 });
 
-const mapTree = ({
-  title,
-  code,
-  attributes,
-}: Tree): SpecBoxWebApiModelUploadTreeModel => ({
+const mapTree = ({ title, code, attributes }: Tree): SpecBoxWebApiModelUploadTreeModel => ({
   title,
   code,
   attributes,
 });
 
-export const uploadEntities = async (
-  { features, attributes = [], trees = [] }: ProjectData,
-  config: ApiConfig
-) => {
+export const uploadEntities = async ({ features, attributes = [], trees = [] }: ProjectData, config: ApiConfig) => {
   const { host, project } = config;
 
   const client = new SpecBoxWebApi(host, DEFAULT_API_OPTIONS);

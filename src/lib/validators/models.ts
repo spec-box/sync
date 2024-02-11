@@ -1,12 +1,5 @@
 import { ValidationSeverity } from '../config';
-import {
-  Assertion,
-  AssertionGroup,
-  Attribute,
-  AttributeValue,
-  Feature,
-  Tree,
-} from '../domain';
+import { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, Tree } from '../domain';
 
 export type AttributeDuplicateError = {
   type: 'attribute-duplicate';
@@ -71,12 +64,7 @@ export type FeatureMissingLinkError = {
   type: 'feature-missing-link';
   filePath: string;
   feature: Feature;
-  field:
-    | 'description'
-    | 'title'
-    | 'group.title'
-    | 'assert.title'
-    | 'assert.description';
+  field: 'description' | 'title' | 'group.title' | 'assert.title' | 'assert.description';
   link: string;
 };
 
