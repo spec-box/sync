@@ -9,7 +9,14 @@ import { Validator, printError } from '../validators';
 import { getLoaderError } from '../validators/validator';
 import { Meta, RootConfig, configDecoder, metaDecoder } from './models';
 
-export type { YmlConfig, Attribute, AttributeValue, Tree } from './models';
+export type {
+  YmlConfig,
+  Attribute,
+  AttributeValue,
+  Tree,
+  ValidationConfig,
+  ValidationSeverity,
+} from './models';
 
 export const DEFAULT_CONFIG_PATH = '.tms.json';
 export const DEFAULT_META_PATH = '.spec-box-meta.yml';
@@ -41,7 +48,10 @@ export const loadMeta = async (
 
     return { filePath, meta };
   } catch (error) {
-    printError(getLoaderError(error, filePath, 'config'));
+    printError(
+      getLoaderError(error, filePath, 'config'),
+      validationContext.severity,
+    );
     throw Error('Ошибка загрузки файла конфигурации');
   }
 };

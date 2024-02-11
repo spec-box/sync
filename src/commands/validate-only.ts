@@ -1,20 +1,25 @@
 import { CommandModule } from 'yargs';
-
-import { loadConfig, loadMeta } from '../lib/config';
-import { CommonOptions } from '../lib/utils';
-import { Validator } from '../lib/validators';
 import { glob } from 'fast-glob';
+
 import { YamlFile, loadYaml } from '../lib/yaml';
+import { loadConfig, loadMeta } from '../lib/config';
 import { processYamlFiles } from '../lib/domain';
 import { applyJestReport, loadJestReport } from '../lib/jest';
+import { CommonOptions } from '../lib/utils';
+import { Validator } from '../lib/validators';
 
 export const cmdValidateOnly: CommandModule<{}, CommonOptions> = {
   command: 'validate',
   handler: async (args) => {
     console.log('VALIDATION');
 
-    const { yml, jest, projectPath } = await loadConfig(args.config);
-    const validationContext = new Validator();
+    const {
+      yml,
+      jest,
+      validation = {},
+      projectPath,
+    } = await loadConfig(args.config);
+    const validationContext = new Validator(validation);
     const meta = await loadMeta(validationContext, yml.metaPath, projectPath);
 
     const files = await glob(yml.files, { cwd: projectPath });

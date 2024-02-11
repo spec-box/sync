@@ -1,6 +1,17 @@
 import { pipe } from "fp-ts/lib/function";
 import * as d from "io-ts/Decoder";
 
+// validation
+
+export const validationSeverityDecoder = d.union(
+  d.literal("error"),
+  d.literal("warning"),
+  d.literal("info"),
+  d.literal("off"),
+);
+
+export const validationConfigDecoder = d.record(validationSeverityDecoder);
+
 // meta
 export const attributeValueDecoder = d.struct({
   code: d.string,
@@ -73,6 +84,7 @@ export const configDecoder = d.intersect(
 )(
   d.partial({
     projectPath: d.string,
+    validation: validationConfigDecoder,
     jest: jestConfigDecoder,
   })
 );
@@ -81,6 +93,8 @@ export type RootConfig = d.TypeOf<typeof configDecoder>;
 export type ApiConfig = d.TypeOf<typeof apiConfigDecoder>;
 export type YmlConfig = d.TypeOf<typeof ymlConfigDecoder>;
 export type JestConfig = d.TypeOf<typeof jestConfigDecoder>;
+export type ValidationConfig = d.TypeOf<typeof validationConfigDecoder>;
+export type ValidationSeverity = d.TypeOf<typeof validationSeverityDecoder>;
 
 export type Meta = d.TypeOf<typeof metaDecoder>;
 export type Tree = d.TypeOf<typeof treeDecoder>;

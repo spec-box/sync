@@ -1,3 +1,4 @@
+import { ValidationSeverity } from '../config';
 import {
   Assertion,
   AssertionGroup,
@@ -116,9 +117,7 @@ export type ValidationError =
 
 export type ValidationErrorTypes = ValidationError['type'];
 
-export type ErrorSeverity = 'info' | 'warning' | 'error';
-
-export const ERROR_SEVERITY: { [key in ValidationErrorTypes]: ErrorSeverity } = {
+export const DEFAULT_ERROR_SEVERITY: { [key in ValidationErrorTypes]: ValidationSeverity } = {
   'loader-error': 'error',
   'code-format-error': 'error',
   'attribute-duplicate': 'error',
