@@ -1,7 +1,7 @@
-import { Attribute } from "./models";
+import { Attribute } from './models';
 
-export const UNDEFINED = "UNDEFINED";
-export const AMBIGUOUS = "AMBIGUOUS";
+export const UNDEFINED = 'UNDEFINED';
+export const AMBIGUOUS = 'AMBIGUOUS';
 
 export type AttributesContext = Record<string, Record<string, string>>;
 
@@ -15,9 +15,7 @@ export interface AssertionContext {
   attributes: Record<string, string[]>;
 }
 
-export const getAttributesContext = (
-  alLAttributes: Attribute[] = []
-): AttributesContext => {
+export const getAttributesContext = (alLAttributes: Attribute[] = []): AttributesContext => {
   const obj: AttributesContext = {};
 
   for (let { code, values } of alLAttributes) {
@@ -35,7 +33,7 @@ export const getAttributesContext = (
 const getAttributeValue = (
   attributeCode: string,
   { attributes }: AssertionContext,
-  allAttributes: AttributesContext
+  allAttributes: AttributesContext,
 ): { title: string; code: string } | undefined => {
   const values = attributes[attributeCode] || [];
 
@@ -52,44 +50,32 @@ const getAttributeValue = (
   }
 };
 
-export const getKeyPart = (
-  value: string,
-  assertion: AssertionContext,
-  attributes: AttributesContext
-): string => {
-  if (value.startsWith("$")) {
-    const attributeCode = value.replace(/^[$]/, "");
-    return (
-      getAttributeValue(attributeCode, assertion, attributes)?.title ||
-      UNDEFINED
-    );
-  } else if (value.startsWith("@")) {
-    const attributeCode = value.replace(/^@/, "");
-    return (
-      getAttributeValue(attributeCode, assertion, attributes)?.code || UNDEFINED
-    );
+export const getKeyPart = (value: string, assertion: AssertionContext, attributes: AttributesContext): string => {
+  if (value.startsWith('$')) {
+    const attributeCode = value.replace(/^[$]/, '');
+    return getAttributeValue(attributeCode, assertion, attributes)?.title || UNDEFINED;
+  } else if (value.startsWith('@')) {
+    const attributeCode = value.replace(/^@/, '');
+    return getAttributeValue(attributeCode, assertion, attributes)?.code || UNDEFINED;
   }
 
   switch (value) {
-    case "featureTitle":
+    case 'featureTitle':
       return assertion.featureTitle;
-    case "featureCode":
+    case 'featureCode':
       return assertion.featureCode;
-    case "groupTitle":
+    case 'groupTitle':
       return assertion.groupTitle;
-    case "assertionTitle":
+    case 'assertionTitle':
       return assertion.assertionTitle;
-    case "fileName":
+    case 'fileName':
       return assertion.fileName;
-    case "filePath":
+    case 'filePath':
       return assertion.filePath;
     default:
       return UNDEFINED;
   }
 };
 
-export const getKey = (
-  parts: string[],
-  assertion: AssertionContext,
-  attributes: AttributesContext
-) => parts.map((str) => getKeyPart(str, assertion, attributes));
+export const getKey = (parts: string[], assertion: AssertionContext, attributes: AttributesContext) =>
+  parts.map((str) => getKeyPart(str, assertion, attributes));

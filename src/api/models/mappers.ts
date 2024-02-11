@@ -1,675 +1,675 @@
-import * as coreClient from "@azure/core-client";
+import * as coreClient from '@azure/core-client';
 
 export const SpecBoxWebApiModelDefaultConfigurationModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelDefaultConfigurationModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelDefaultConfigurationModel',
     modelProperties: {
       metrikaCounterId: {
-        serializedName: "metrikaCounterId",
+        serializedName: 'metrikaCounterId',
         nullable: true,
         type: {
-          name: "String"
-        }
-      }
-    }
-  }
+          name: 'String',
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelUploadData: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelUploadData",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelUploadData',
     modelProperties: {
       features: {
-        serializedName: "features",
+        serializedName: 'features',
         required: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelUploadFeatureModel"
-            }
-          }
-        }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelUploadFeatureModel',
+            },
+          },
+        },
       },
       attributes: {
-        serializedName: "attributes",
+        serializedName: 'attributes',
         required: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelUploadAttributeModel"
-            }
-          }
-        }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelUploadAttributeModel',
+            },
+          },
+        },
       },
       trees: {
-        serializedName: "trees",
+        serializedName: 'trees',
         required: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelUploadTreeModel"
-            }
-          }
-        }
-      }
-    }
-  }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelUploadTreeModel',
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelUploadFeatureModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelUploadFeatureModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelUploadFeatureModel',
     modelProperties: {
       code: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "code",
+        serializedName: 'code',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       description: {
-        serializedName: "description",
+        serializedName: 'description',
         nullable: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       filePath: {
-        serializedName: "filePath",
+        serializedName: 'filePath',
         nullable: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       groups: {
-        serializedName: "groups",
+        serializedName: 'groups',
         required: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelUploadAssertionGroupModel"
-            }
-          }
-        }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelUploadAssertionGroupModel',
+            },
+          },
+        },
       },
       attributes: {
-        serializedName: "attributes",
+        serializedName: 'attributes',
         nullable: true,
         type: {
-          name: "Dictionary",
+          name: 'Dictionary',
           value: {
-            type: { name: "Sequence", element: { type: { name: "String" } } }
-          }
-        }
-      }
-    }
-  }
+            type: { name: 'Sequence', element: { type: { name: 'String' } } },
+          },
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelUploadAssertionGroupModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelUploadAssertionGroupModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelUploadAssertionGroupModel',
     modelProperties: {
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       assertions: {
-        serializedName: "assertions",
+        serializedName: 'assertions',
         required: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelUploadAssertionModel"
-            }
-          }
-        }
-      }
-    }
-  }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelUploadAssertionModel',
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelUploadAssertionModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelUploadAssertionModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelUploadAssertionModel',
     modelProperties: {
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       description: {
-        serializedName: "description",
+        serializedName: 'description',
         nullable: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       isAutomated: {
-        serializedName: "isAutomated",
+        serializedName: 'isAutomated',
         required: true,
         type: {
-          name: "Boolean"
-        }
-      }
-    }
-  }
+          name: 'Boolean',
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelUploadAttributeModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelUploadAttributeModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelUploadAttributeModel',
     modelProperties: {
       code: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "code",
+        serializedName: 'code',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       values: {
-        serializedName: "values",
+        serializedName: 'values',
         required: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelUploadAttributeValueModel"
-            }
-          }
-        }
-      }
-    }
-  }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelUploadAttributeValueModel',
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelUploadAttributeValueModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelUploadAttributeValueModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelUploadAttributeValueModel',
     modelProperties: {
       code: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "code",
+        serializedName: 'code',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
-      }
-    }
-  }
+          name: 'String',
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelUploadTreeModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelUploadTreeModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelUploadTreeModel',
     modelProperties: {
       code: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "code",
+        serializedName: 'code',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       attributes: {
-        serializedName: "attributes",
+        serializedName: 'attributes',
         required: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "String"
-            }
-          }
-        }
-      }
-    }
-  }
+              name: 'String',
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelCommonProjectModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelCommonProjectModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelCommonProjectModel',
     modelProperties: {
       code: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "code",
+        serializedName: 'code',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       description: {
-        serializedName: "description",
+        serializedName: 'description',
         nullable: true,
         type: {
-          name: "String"
-        }
-      }
-    }
-  }
+          name: 'String',
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelProjectFeatureModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelProjectFeatureModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelProjectFeatureModel',
     modelProperties: {
       code: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "code",
+        serializedName: 'code',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       description: {
-        serializedName: "description",
+        serializedName: 'description',
         nullable: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       assertionGroups: {
-        serializedName: "assertionGroups",
+        serializedName: 'assertionGroups',
         required: true,
         readOnly: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelProjectAssertionGroupModel"
-            }
-          }
-        }
-      }
-    }
-  }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelProjectAssertionGroupModel',
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelProjectAssertionGroupModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelProjectAssertionGroupModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelProjectAssertionGroupModel',
     modelProperties: {
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       assertions: {
-        serializedName: "assertions",
+        serializedName: 'assertions',
         required: true,
         readOnly: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelProjectAssertionModel"
-            }
-          }
-        }
-      }
-    }
-  }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelProjectAssertionModel',
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelProjectAssertionModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelProjectAssertionModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelProjectAssertionModel',
     modelProperties: {
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       description: {
-        serializedName: "description",
+        serializedName: 'description',
         nullable: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       isAutomated: {
-        serializedName: "isAutomated",
+        serializedName: 'isAutomated',
         required: true,
         type: {
-          name: "Boolean"
-        }
-      }
-    }
-  }
+          name: 'Boolean',
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelProjectStructureModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelProjectStructureModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelProjectStructureModel',
     modelProperties: {
       project: {
-        serializedName: "project",
+        serializedName: 'project',
         type: {
-          name: "Composite",
-          className: "SpecBoxWebApiModelCommonProjectModel"
-        }
+          name: 'Composite',
+          className: 'SpecBoxWebApiModelCommonProjectModel',
+        },
       },
       tree: {
-        serializedName: "tree",
+        serializedName: 'tree',
         required: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelProjectTreeNodeModel"
-            }
-          }
-        }
-      }
-    }
-  }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelProjectTreeNodeModel',
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelProjectTreeNodeModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelProjectTreeNodeModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelProjectTreeNodeModel',
     modelProperties: {
       id: {
-        serializedName: "id",
+        serializedName: 'id',
         required: true,
         type: {
-          name: "Uuid"
-        }
+          name: 'Uuid',
+        },
       },
       parentId: {
-        serializedName: "parentId",
+        serializedName: 'parentId',
         nullable: true,
         type: {
-          name: "Uuid"
-        }
+          name: 'Uuid',
+        },
       },
       featureCode: {
-        serializedName: "featureCode",
+        serializedName: 'featureCode',
         nullable: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       title: {
         constraints: {
-          MinLength: 1
+          MinLength: 1,
         },
-        serializedName: "title",
+        serializedName: 'title',
         required: true,
         type: {
-          name: "String"
-        }
+          name: 'String',
+        },
       },
       totalCount: {
-        serializedName: "totalCount",
+        serializedName: 'totalCount',
         required: true,
         type: {
-          name: "Number"
-        }
+          name: 'Number',
+        },
       },
       automatedCount: {
-        serializedName: "automatedCount",
+        serializedName: 'automatedCount',
         required: true,
         type: {
-          name: "Number"
-        }
-      }
-    }
-  }
+          name: 'Number',
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelStatAutotestsStatUploadData: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelStatAutotestsStatUploadData",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelStatAutotestsStatUploadData',
     modelProperties: {
       timestamp: {
-        serializedName: "timestamp",
+        serializedName: 'timestamp',
         required: true,
         type: {
-          name: "DateTime"
-        }
+          name: 'DateTime',
+        },
       },
       duration: {
-        serializedName: "duration",
+        serializedName: 'duration',
         required: true,
         type: {
-          name: "Number"
-        }
+          name: 'Number',
+        },
       },
       assertionsCount: {
-        serializedName: "assertionsCount",
+        serializedName: 'assertionsCount',
         required: true,
         type: {
-          name: "Number"
-        }
-      }
-    }
-  }
+          name: 'Number',
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelStatModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelStatModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelStatModel',
     modelProperties: {
       project: {
-        serializedName: "project",
+        serializedName: 'project',
         type: {
-          name: "Composite",
-          className: "SpecBoxWebApiModelCommonProjectModel"
-        }
+          name: 'Composite',
+          className: 'SpecBoxWebApiModelCommonProjectModel',
+        },
       },
       assertions: {
-        serializedName: "assertions",
+        serializedName: 'assertions',
         required: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelStatAssertionsStatModel"
-            }
-          }
-        }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelStatAssertionsStatModel',
+            },
+          },
+        },
       },
       autotests: {
-        serializedName: "autotests",
+        serializedName: 'autotests',
         required: true,
         type: {
-          name: "Sequence",
+          name: 'Sequence',
           element: {
             type: {
-              name: "Composite",
-              className: "SpecBoxWebApiModelStatAutotestsStatModel"
-            }
-          }
-        }
-      }
-    }
-  }
+              name: 'Composite',
+              className: 'SpecBoxWebApiModelStatAutotestsStatModel',
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelStatAssertionsStatModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelStatAssertionsStatModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelStatAssertionsStatModel',
     modelProperties: {
       timestamp: {
-        serializedName: "timestamp",
+        serializedName: 'timestamp',
         required: true,
         type: {
-          name: "DateTime"
-        }
+          name: 'DateTime',
+        },
       },
       totalCount: {
-        serializedName: "totalCount",
+        serializedName: 'totalCount',
         required: true,
         type: {
-          name: "Number"
-        }
+          name: 'Number',
+        },
       },
       automatedCount: {
-        serializedName: "automatedCount",
+        serializedName: 'automatedCount',
         required: true,
         type: {
-          name: "Number"
-        }
-      }
-    }
-  }
+          name: 'Number',
+        },
+      },
+    },
+  },
 };
 
 export const SpecBoxWebApiModelStatAutotestsStatModel: coreClient.CompositeMapper = {
   type: {
-    name: "Composite",
-    className: "SpecBoxWebApiModelStatAutotestsStatModel",
+    name: 'Composite',
+    className: 'SpecBoxWebApiModelStatAutotestsStatModel',
     modelProperties: {
       timestamp: {
-        serializedName: "timestamp",
+        serializedName: 'timestamp',
         required: true,
         type: {
-          name: "DateTime"
-        }
+          name: 'DateTime',
+        },
       },
       duration: {
-        serializedName: "duration",
+        serializedName: 'duration',
         required: true,
         type: {
-          name: "Number"
-        }
+          name: 'Number',
+        },
       },
       assertionsCount: {
-        serializedName: "assertionsCount",
+        serializedName: 'assertionsCount',
         required: true,
         type: {
-          name: "Number"
-        }
-      }
-    }
-  }
+          name: 'Number',
+        },
+      },
+    },
+  },
 };

@@ -210,6 +210,14 @@ describe('Главная страница', () => {
         "host": "http://localhost:5059",
         "project": "id"
     },
+    // уровни ошибок: error / warning / info / off
+    "validation": {
+        // ссылка на несуществующую фичу
+        "feature-missing-link": "error",
+
+        // тест, не описанный в yml
+        "jest-unused": "error"
+    }
     "yml": {
         // путь к файлу с мета-информацией, относительно корня проекта, опционально
         "metaPath": "./configs/spec-box-meta.yml",

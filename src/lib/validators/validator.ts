@@ -1,4 +1,4 @@
-import { Attribute } from '../config/models';
+import { Attribute, ValidationConfig, ValidationSeverity } from '../config/models';
 import { Feature, ProjectData } from '../domain';
 import { Tree } from '../domain/models';
 import {
@@ -6,7 +6,7 @@ import {
   AttributeDuplicateError,
   AttributeValueDuplicateError,
   CodeError,
-  ERROR_SEVERITY,
+  DEFAULT_ERROR_SEVERITY,
   FeatureAttributeValueCodeError,
   FeatureCodeDuplicateError,
   FeatureCodeError,
@@ -32,34 +32,34 @@ export class Validator {
   private readonly jestUnusedTests = new Array<JestUnusedTestError>();
   private metaFilePath = '';
 
+  public readonly severity: Record<string, ValidationSeverity>;
+
+  constructor(config: ValidationConfig) {
+    this.severity = { ...DEFAULT_ERROR_SEVERITY, ...config };
+  }
+
   get hasCriticalErrors(): boolean {
-    return [
-      ...this.loaderErrors,
-      ...this.metaErrors,
-      ...this.featureErrors,
-      ...this.jestUnusedTests,
-    ].some((e) => ERROR_SEVERITY[e.type] === 'error');
+    return [...this.loaderErrors, ...this.metaErrors, ...this.featureErrors, ...this.jestUnusedTests].some(
+      (e) => this.severity[e.type] === 'error',
+    );
   }
 
   printReport() {
-    this.jestUnusedTests.forEach(printError);
-    this.featureErrors.forEach(printError);
-    this.metaErrors.forEach(printError);
-    this.loaderErrors.forEach(printError);
+    const render = (e: ValidationError) => printError(e, this.severity);
 
-    renderStats('Всего', [
-      ...this.loaderErrors,
-      ...this.metaErrors,
-      ...this.featureErrors,
-      ...this.jestUnusedTests,
-    ]);
+    this.jestUnusedTests.forEach(render);
+    this.featureErrors.forEach(render);
+    this.metaErrors.forEach(render);
+    this.loaderErrors.forEach(render);
+
+    renderStats(
+      'Всего',
+      [...this.loaderErrors, ...this.metaErrors, ...this.featureErrors, ...this.jestUnusedTests],
+      this.severity,
+    );
   }
 
-  registerLoaderError(
-    error: unknown,
-    filePath: string,
-    fileType: LoaderError['fileType']
-  ) {
+  registerLoaderError(error: unknown, filePath: string, fileType: LoaderError['fileType']) {
     this.loaderErrors.push(getLoaderError(error, filePath, fileType));
   }
 
@@ -80,10 +80,7 @@ export class Validator {
     this.validateFeatures(features, metaAttributeValues);
   }
 
-  private validateMetaAttributes(
-    attributes: Attribute[] | undefined,
-    attributeValuesMap: Map<string, Set<string>>
-  ) {
+  private validateMetaAttributes(attributes: Attribute[] | undefined, attributeValuesMap: Map<string, Set<string>>) {
     const filePath = this.metaFilePath;
 
     if (attributes) {
@@ -106,13 +103,7 @@ export class Validator {
         const attributeValuesUnique = new Set<string>();
         attributeValuesMap.set(attribute.code, attributeValuesUnique);
 
-        this.metaErrors.push(
-          ...this.validateMetaAttributeValues(
-            attribute,
-            attributeValuesUnique,
-            filePath
-          )
-        );
+        this.metaErrors.push(...this.validateMetaAttributeValues(attribute, attributeValuesUnique, filePath));
       }
     }
   }
@@ -120,7 +111,7 @@ export class Validator {
   private validateMetaAttributeValues(
     attribute: Attribute,
     attributeValuesUnique: Set<string>,
-    filePath: string
+    filePath: string,
   ): ValidationError[] {
     const result = new Array<ValidationError>();
     for (const attributeValue of attribute.values) {
@@ -145,10 +136,7 @@ export class Validator {
     return result;
   }
 
-  private validateMetaTrees(
-    trees: Tree[] | undefined,
-    attributeValuesMap: Map<string, Set<string>>
-  ) {
+  private validateMetaTrees(trees: Tree[] | undefined, attributeValuesMap: Map<string, Set<string>>) {
     const filePath = this.metaFilePath;
     if (trees) {
       const treeUnique = new Set<string>();
@@ -197,10 +185,7 @@ export class Validator {
     }
   }
 
-  private validateFeatures(
-    features: Feature[],
-    metaAttributeValues: Map<string, Set<string>>
-  ) {
+  private validateFeatures(features: Feature[], metaAttributeValues: Map<string, Set<string>>) {
     const featuresMap = new Map<string, Feature>();
     for (const feature of features) {
       const existingFeature = featuresMap.get(feature.code);
@@ -216,17 +201,12 @@ export class Validator {
       } else {
         featuresMap.set(feature.code, feature);
       }
-      this.featureErrors.push(
-        ...this.validateFeature(feature, metaAttributeValues)
-      );
+      this.featureErrors.push(...this.validateFeature(feature, metaAttributeValues));
     }
     this.validateFeatureLinks(features, featuresMap);
   }
 
-  private validateFeature(
-    feature: Feature,
-    metaAttributeValues: Map<string, Set<string>>
-  ): ValidationError[] {
+  private validateFeature(feature: Feature, metaAttributeValues: Map<string, Set<string>>): ValidationError[] {
     const errors = new Array<ValidationError>();
     if (feature.code) {
       if (!CODE_REGEX.test(feature.code)) {
@@ -292,50 +272,19 @@ export class Validator {
     return errors;
   }
 
-  private validateFeatureLinks(
-    features: Feature[],
-    featuresMap: Map<string, Feature>
-  ) {
+  private validateFeatureLinks(features: Feature[], featuresMap: Map<string, Feature>) {
     for (const feature of features) {
-      this.featureErrors.push(
-        ...this.validateLinks(feature.title, 'title', feature, featuresMap)
-      );
+      this.featureErrors.push(...this.validateLinks(feature.title, 'title', feature, featuresMap));
       if (feature.description) {
-        this.featureErrors.push(
-          ...this.validateLinks(
-            feature.description,
-            'description',
-            feature,
-            featuresMap
-          )
-        );
+        this.featureErrors.push(...this.validateLinks(feature.description, 'description', feature, featuresMap));
       }
       for (const group of feature.groups) {
-        this.featureErrors.push(
-          ...this.validateLinks(
-            group.title,
-            'group.title',
-            feature,
-            featuresMap
-          )
-        );
+        this.featureErrors.push(...this.validateLinks(group.title, 'group.title', feature, featuresMap));
         for (const assertion of group.assertions) {
-          this.featureErrors.push(
-            ...this.validateLinks(
-              assertion.title,
-              'assert.title',
-              feature,
-              featuresMap
-            )
-          );
+          this.featureErrors.push(...this.validateLinks(assertion.title, 'assert.title', feature, featuresMap));
           if (assertion.description) {
             this.featureErrors.push(
-              ...this.validateLinks(
-                assertion.description,
-                'assert.description',
-                feature,
-                featuresMap
-              )
+              ...this.validateLinks(assertion.description, 'assert.description', feature, featuresMap),
             );
           }
         }
@@ -347,7 +296,7 @@ export class Validator {
     value: string,
     field: FeatureMissingLinkError['field'],
     feature: Feature,
-    featuresMap: Map<string, Feature>
+    featuresMap: Map<string, Feature>,
   ): FeatureMissingLinkError[] {
     const re = new RegExp(LINK_LIKE);
     const errors = new Array<FeatureMissingLinkError>();
@@ -375,11 +324,7 @@ export class Validator {
   }
 }
 
-export const getLoaderError = (
-  error: unknown,
-  filePath: string,
-  fileType: LoaderError['fileType']
-): LoaderError => {
+export const getLoaderError = (error: unknown, filePath: string, fileType: LoaderError['fileType']): LoaderError => {
   let description = 'Unknown error';
   if (typeof error === 'string') {
     description = error;

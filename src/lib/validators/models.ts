@@ -1,11 +1,5 @@
-import {
-  Assertion,
-  AssertionGroup,
-  Attribute,
-  AttributeValue,
-  Feature,
-  Tree,
-} from '../domain';
+import { ValidationSeverity } from '../config';
+import { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, Tree } from '../domain';
 
 export type AttributeDuplicateError = {
   type: 'attribute-duplicate';
@@ -70,12 +64,7 @@ export type FeatureMissingLinkError = {
   type: 'feature-missing-link';
   filePath: string;
   feature: Feature;
-  field:
-    | 'description'
-    | 'title'
-    | 'group.title'
-    | 'assert.title'
-    | 'assert.description';
+  field: 'description' | 'title' | 'group.title' | 'assert.title' | 'assert.description';
   link: string;
 };
 
@@ -116,9 +105,7 @@ export type ValidationError =
 
 export type ValidationErrorTypes = ValidationError['type'];
 
-export type ErrorSeverity = 'info' | 'warning' | 'error';
-
-export const ERROR_SEVERITY: { [key in ValidationErrorTypes]: ErrorSeverity } = {
+export const DEFAULT_ERROR_SEVERITY: { [key in ValidationErrorTypes]: ValidationSeverity } = {
   'loader-error': 'error',
   'code-format-error': 'error',
   'attribute-duplicate': 'error',

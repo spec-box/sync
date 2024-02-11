@@ -1,42 +1,44 @@
 {
-    "name": "@spec-box/sync",
-    "version": "0.0.2-beta.13",
-    "private": false,
-    "bin": {
-        "spec-box": "./bin/spec-box"
-    },
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "start": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node ./src/cli.ts",
-        "build": "rm -rf dist && tsc --build tsconfig.json",
-        "prepublishOnly": "npm run build",
-        "generate-api": "./utils/generate-api.sh",
-        "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node ./src/cli.ts sync",
-        "test-ext": "./bin/spec-box sync",
-        "version-beta": "npm version prerelease --preid beta",
-        "publish-beta": "npm publish --tag beta"
-    },
-    "license": "MIT",
-    "dependencies": {
-        "@azure/core-client": "^1.7.3",
-        "@azure/core-rest-pipeline": "^1.11.0",
-        "chalk": "^4.1.0",
-        "fast-glob": "^3.3.0",
-        "fp-ts": "^2.16.0",
-        "fs-extra": "^11.1.1",
-        "io-ts": "^2.2.20",
-        "tslib": "^2.6.0",
-        "yaml": "^2.3.1",
-        "yargs": "^17.7.2"
-    },
-    "devDependencies": {
-        "@types/fs-extra": "^11.0.1",
-        "@types/node": "^20.4.2",
-        "@types/yargs": "^17.0.24",
-        "autorest": "^3.6.3",
-        "ts-node": "^10.9.1",
-        "typescript": "^5.1.6"
-    }
+  "name": "@spec-box/sync",
+  "version": "0.0.2-beta.16",
+  "private": false,
+  "bin": {
+    "spec-box": "./bin/spec-box"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node ./src/cli.ts",
+    "build": "rm -rf dist && tsc --build tsconfig.json",
+    "prepublishOnly": "npm run build",
+    "generate-api": "./utils/generate-api.sh",
+    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node ./src/cli.ts sync",
+    "test-ext": "./bin/spec-box sync",
+    "version-beta": "npm version prerelease --preid beta",
+    "publish-beta": "npm publish --tag beta",
+    "format-code": "npx prettier . --write"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@azure/core-client": "^1.7.3",
+    "@azure/core-rest-pipeline": "^1.11.0",
+    "chalk": "^4.1.0",
+    "fast-glob": "^3.3.0",
+    "fp-ts": "^2.16.0",
+    "fs-extra": "^11.1.1",
+    "io-ts": "^2.2.20",
+    "tslib": "^2.6.0",
+    "yaml": "^2.3.1",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^20.4.2",
+    "@types/yargs": "^17.0.24",
+    "autorest": "^3.6.3",
+    "prettier": "3.2.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
 }

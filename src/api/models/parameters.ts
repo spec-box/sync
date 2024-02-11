@@ -1,107 +1,103 @@
-import {
-  OperationParameter,
-  OperationURLParameter,
-  OperationQueryParameter
-} from "@azure/core-client";
+import { OperationParameter, OperationURLParameter, OperationQueryParameter } from '@azure/core-client';
 import {
   SpecBoxWebApiModelUploadData as SpecBoxWebApiModelUploadDataMapper,
-  SpecBoxWebApiModelStatAutotestsStatUploadData as SpecBoxWebApiModelStatAutotestsStatUploadDataMapper
-} from "../models/mappers";
+  SpecBoxWebApiModelStatAutotestsStatUploadData as SpecBoxWebApiModelStatAutotestsStatUploadDataMapper,
+} from '../models/mappers';
 
 export const accept: OperationParameter = {
-  parameterPath: "accept",
+  parameterPath: 'accept',
   mapper: {
-    defaultValue: "application/json, text/json",
+    defaultValue: 'application/json, text/json',
     isConstant: true,
-    serializedName: "Accept",
+    serializedName: 'Accept',
     type: {
-      name: "String"
-    }
-  }
+      name: 'String',
+    },
+  },
 };
 
 export const $host: OperationURLParameter = {
-  parameterPath: "$host",
+  parameterPath: '$host',
   mapper: {
-    serializedName: "$host",
+    serializedName: '$host',
     required: true,
     type: {
-      name: "String"
-    }
+      name: 'String',
+    },
   },
-  skipEncoding: true
+  skipEncoding: true,
 };
 
 export const contentType: OperationParameter = {
-  parameterPath: ["options", "contentType"],
+  parameterPath: ['options', 'contentType'],
   mapper: {
-    defaultValue: "application/json",
+    defaultValue: 'application/json',
     isConstant: true,
-    serializedName: "Content-Type",
+    serializedName: 'Content-Type',
     type: {
-      name: "String"
-    }
-  }
+      name: 'String',
+    },
+  },
 };
 
 export const body: OperationParameter = {
-  parameterPath: ["options", "body"],
-  mapper: SpecBoxWebApiModelUploadDataMapper
+  parameterPath: ['options', 'body'],
+  mapper: SpecBoxWebApiModelUploadDataMapper,
 };
 
 export const project: OperationQueryParameter = {
-  parameterPath: ["options", "project"],
+  parameterPath: ['options', 'project'],
   mapper: {
-    serializedName: "project",
+    serializedName: 'project',
     type: {
-      name: "String"
-    }
-  }
+      name: 'String',
+    },
+  },
 };
 
 export const project1: OperationURLParameter = {
-  parameterPath: "project",
+  parameterPath: 'project',
   mapper: {
-    serializedName: "project",
+    serializedName: 'project',
     required: true,
     type: {
-      name: "String"
-    }
-  }
+      name: 'String',
+    },
+  },
 };
 
 export const feature: OperationURLParameter = {
-  parameterPath: "feature",
+  parameterPath: 'feature',
   mapper: {
-    serializedName: "feature",
+    serializedName: 'feature',
     required: true,
     type: {
-      name: "String"
-    }
-  }
+      name: 'String',
+    },
+  },
 };
 
 export const body1: OperationParameter = {
-  parameterPath: ["options", "body"],
-  mapper: SpecBoxWebApiModelStatAutotestsStatUploadDataMapper
+  parameterPath: ['options', 'body'],
+  mapper: SpecBoxWebApiModelStatAutotestsStatUploadDataMapper,
 };
 
 export const from: OperationQueryParameter = {
-  parameterPath: ["options", "from"],
+  parameterPath: ['options', 'from'],
   mapper: {
-    serializedName: "from",
+    serializedName: 'from',
     type: {
-      name: "DateTime"
-    }
-  }
+      name: 'DateTime',
+    },
+  },
 };
 
 export const to: OperationQueryParameter = {
-  parameterPath: ["options", "to"],
+  parameterPath: ['options', 'to'],
   mapper: {
-    serializedName: "to",
+    serializedName: 'to',
     type: {
-      name: "DateTime"
-    }
-  }
+      name: 'DateTime',
+    },
+  },
 };

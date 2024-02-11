@@ -1,36 +1,13 @@
-import {
-  Attribute as CfgAttribute,
-  AttributeValue as CfgAttributeValue,
-  Tree as CfgTree,
-} from '../config';
+import { Attribute as CfgAttribute, AttributeValue as CfgAttributeValue, Tree as CfgTree } from '../config';
 import { Meta } from '../config/models';
 import { YamlFile, Assertion as YmlAssertion } from '../yaml';
-import {
-  Assertion,
-  AssertionGroup,
-  Attribute,
-  AttributeValue,
-  Feature,
-  ProjectData,
-  Tree,
-} from './models';
+import { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, ProjectData, Tree } from './models';
 
 export { getAttributesContext, getKey } from './keys';
 export type { AssertionContext, AttributesContext } from './keys';
-export type {
-  Assertion,
-  AssertionGroup,
-  Attribute,
-  AttributeValue,
-  Feature,
-  ProjectData,
-  Tree,
-} from './models';
+export type { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, ProjectData, Tree } from './models';
 
-const mapAssertion = ({
-  assert: title,
-  description,
-}: YmlAssertion): Assertion => ({
+const mapAssertion = ({ assert: title, description }: YmlAssertion): Assertion => ({
   title,
   description,
   isAutomated: false,
@@ -43,23 +20,14 @@ const mapGroup = ([title, list]: [string, YmlAssertion[]]): AssertionGroup => {
 };
 
 const mapFeature = ({ content, fileName, filePath }: YamlFile): Feature => {
-  const {
-    code,
-    feature: title,
-    description,
-    definitions: attributes,
-    'specs-unit': specs = {},
-  } = content;
+  const { code, feature: title, description, definitions: attributes, 'specs-unit': specs = {} } = content;
 
   const groups = Object.entries(specs).map(mapGroup);
 
   return { code, title, description, groups, attributes, fileName, filePath };
 };
 
-const mapAttributeValue = ({
-  code,
-  title,
-}: CfgAttributeValue): AttributeValue => ({ code, title });
+const mapAttributeValue = ({ code, title }: CfgAttributeValue): AttributeValue => ({ code, title });
 
 const mapAttribute = ({ code, title, values }: CfgAttribute): Attribute => {
   return {
@@ -77,14 +45,11 @@ const mapTree = ({ code, title, 'group-by': attributes }: CfgTree): Tree => {
   };
 };
 
-export const processYamlFiles = (
-  files: YamlFile[],
-  config: { filePath: string; meta: Meta }
-): ProjectData => {
+export const processYamlFiles = (files: YamlFile[], config: { filePath: string; meta: Meta }): ProjectData => {
   const features = files.map(mapFeature);
   const attributes = config.meta.attributes?.map(mapAttribute);
   const trees = config.meta.trees?.map(mapTree);
   const metaFilePath = config.filePath;
-  
+
   return { features, attributes, trees, metaFilePath };
 };

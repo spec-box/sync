@@ -1,2 +1,2 @@
-export * from "./models";
-export { SpecBoxWebApi } from "./specBoxWebApi";
+export * from './models';
+export { SpecBoxWebApi } from './specBoxWebApi';

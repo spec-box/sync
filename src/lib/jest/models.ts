@@ -1,20 +1,8 @@
-import * as d from "io-ts/Decoder";
+import * as d from 'io-ts/Decoder';
 
-export const jestSuiteStatusDecoder = d.literal(
-  "passed",
-  "failed",
-  "pending",
-  "focused",
-  "skipped",
-);
+export const jestSuiteStatusDecoder = d.literal('passed', 'failed', 'pending', 'focused', 'skipped');
 
-export const jestAssertionStatusDecoder = d.literal(
-  "passed",
-  "failed",
-  "pending",
-  "todo",
-  "skipped",
-);
+export const jestAssertionStatusDecoder = d.literal('passed', 'failed', 'pending', 'todo', 'skipped');
 
 export const jestAssertionResultDecoder = d.struct({
   title: d.string,
