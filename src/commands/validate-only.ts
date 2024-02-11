@@ -32,6 +32,10 @@ export const cmdValidateOnly: CommandModule<{}, CommonOptions> = {
 
       applyJestReport(validationContext, projectData, jestReport, jest.keys);
     }
+
     validationContext.printReport();
+    if (validationContext.hasCriticalErrors) {
+      throw Error('При валидации были обнаружены критические ошибки');
+    }
   },
 };
