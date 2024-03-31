@@ -1,7 +1,16 @@
 import { Attribute as CfgAttribute, AttributeValue as CfgAttributeValue, Tree as CfgTree } from '../config';
 import { Meta } from '../config/models';
-import { YamlFile, Assertion as YmlAssertion } from '../yaml';
-import { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, ProjectData, Tree } from './models';
+import { Entity, YamlFile, Assertion as YmlAssertion } from '../yaml';
+import {
+  Assertion,
+  AssertionGroup,
+  Attribute,
+  AttributeValue,
+  Feature,
+  FeatureType,
+  ProjectData,
+  Tree,
+} from './models';
 
 export { getAttributesContext, getKey } from './keys';
 export type { AssertionContext, AttributesContext } from './keys';
@@ -19,12 +28,23 @@ const mapGroup = ([title, list]: [string, YmlAssertion[]]): AssertionGroup => {
   return { title, assertions };
 };
 
+const mapFeatureType = (type: Entity['type']): FeatureType | undefined => {
+  switch (type) {
+    case 'functional':
+      return 'Functional';
+    case 'visual':
+      return 'Visual';
+    default:
+      return undefined;
+  }
+};
+
 const mapFeature = ({ content, fileName, filePath }: YamlFile): Feature => {
-  const { code, feature: title, description, definitions: attributes, 'specs-unit': specs = {} } = content;
+  const { code, type, feature: title, description, definitions: attributes, 'specs-unit': specs = {} } = content;
 
   const groups = Object.entries(specs).map(mapGroup);
 
-  return { code, title, description, groups, attributes, fileName, filePath };
+  return { code, featureType: mapFeatureType(type), title, description, groups, attributes, fileName, filePath };
 };
 
 const mapAttributeValue = ({ code, title }: CfgAttributeValue): AttributeValue => ({ code, title });

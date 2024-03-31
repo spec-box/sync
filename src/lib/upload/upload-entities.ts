@@ -28,6 +28,7 @@ const mapGroup = ({ title, assertions }: AssertionGroup): SpecBoxWebApiModelUplo
 
 const mapFeature = ({
   code,
+  featureType,
   title,
   description,
   filePath,
@@ -36,6 +37,7 @@ const mapFeature = ({
 }: Feature): SpecBoxWebApiModelUploadFeatureModel => {
   return {
     code,
+    featureType,
     title,
     description,
     attributes,
