@@ -89,6 +89,13 @@ export const SpecBoxWebApiModelUploadFeatureModel: coreClient.CompositeMapper = 
           name: 'String',
         },
       },
+      featureType: {
+        serializedName: 'featureType',
+        type: {
+          name: 'Enum',
+          allowedValues: ['Functional', 'Visual'],
+        },
+      },
       description: {
         serializedName: 'description',
         nullable: true,
@@ -186,9 +193,16 @@ export const SpecBoxWebApiModelUploadAssertionModel: coreClient.CompositeMapper 
       },
       isAutomated: {
         serializedName: 'isAutomated',
-        required: true,
+        nullable: true,
         type: {
           name: 'Boolean',
+        },
+      },
+      automationState: {
+        serializedName: 'automationState',
+        type: {
+          name: 'Enum',
+          allowedValues: ['Unknown', 'Automated', 'Problem'],
         },
       },
     },
@@ -339,6 +353,13 @@ export const SpecBoxWebApiModelCommonProjectModel: coreClient.CompositeMapper = 
           name: 'String',
         },
       },
+      repositoryUrl: {
+        serializedName: 'repositoryUrl',
+        nullable: true,
+        type: {
+          name: 'String',
+        },
+      },
     },
   },
 };
@@ -368,8 +389,22 @@ export const SpecBoxWebApiModelProjectFeatureModel: coreClient.CompositeMapper =
           name: 'String',
         },
       },
+      featureType: {
+        serializedName: 'featureType',
+        type: {
+          name: 'Enum',
+          allowedValues: ['Functional', 'Visual'],
+        },
+      },
       description: {
         serializedName: 'description',
+        nullable: true,
+        type: {
+          name: 'String',
+        },
+      },
+      filePath: {
+        serializedName: 'filePath',
         nullable: true,
         type: {
           name: 'String',
@@ -448,11 +483,12 @@ export const SpecBoxWebApiModelProjectAssertionModel: coreClient.CompositeMapper
           name: 'String',
         },
       },
-      isAutomated: {
-        serializedName: 'isAutomated',
+      automationState: {
+        serializedName: 'automationState',
         required: true,
         type: {
-          name: 'Boolean',
+          name: 'Enum',
+          allowedValues: ['Unknown', 'Automated', 'Problem'],
         },
       },
     },
@@ -514,12 +550,16 @@ export const SpecBoxWebApiModelProjectTreeNodeModel: coreClient.CompositeMapper 
           name: 'String',
         },
       },
-      title: {
-        constraints: {
-          MinLength: 1,
+      featureType: {
+        serializedName: 'featureType',
+        type: {
+          name: 'Enum',
+          allowedValues: ['Functional', 'Visual'],
         },
+      },
+      title: {
         serializedName: 'title',
-        required: true,
+        nullable: true,
         type: {
           name: 'String',
         },
@@ -534,6 +574,20 @@ export const SpecBoxWebApiModelProjectTreeNodeModel: coreClient.CompositeMapper 
       automatedCount: {
         serializedName: 'automatedCount',
         required: true,
+        type: {
+          name: 'Number',
+        },
+      },
+      problemCount: {
+        serializedName: 'problemCount',
+        required: true,
+        type: {
+          name: 'Number',
+        },
+      },
+      sortOrder: {
+        serializedName: 'sortOrder',
+        nullable: true,
         type: {
           name: 'Number',
         },
@@ -635,6 +689,13 @@ export const SpecBoxWebApiModelStatAssertionsStatModel: coreClient.CompositeMapp
       },
       automatedCount: {
         serializedName: 'automatedCount',
+        required: true,
+        type: {
+          name: 'Number',
+        },
+      },
+      problemCount: {
+        serializedName: 'problemCount',
         required: true,
         type: {
           name: 'Number',

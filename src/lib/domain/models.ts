@@ -1,7 +1,11 @@
+export type FeatureType = 'Functional' | 'Visual';
+
+export type AutomationState = 'Unknown' | 'Automated' | 'Problem';
+
 export interface Assertion {
   title: string;
   description?: string;
-  isAutomated: boolean;
+  automationState: AutomationState;
 }
 
 export interface AssertionGroup {

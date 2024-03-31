@@ -82,7 +82,7 @@ export const body1: OperationParameter = {
   mapper: SpecBoxWebApiModelStatAutotestsStatUploadDataMapper,
 };
 
-export const from: OperationQueryParameter = {
+export const fromParam: OperationQueryParameter = {
   parameterPath: ['options', 'from'],
   mapper: {
     serializedName: 'from',

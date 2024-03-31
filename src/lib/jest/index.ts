@@ -1,11 +1,10 @@
 import { AssertionContext, ProjectData, getAttributesContext, getKey } from '../domain';
+import { AutomationState } from '../domain/models';
 import { parseObject, readTextFile } from '../utils';
 import { Validator } from '../validators';
-import { JestAssertionStatus, JestReport, jestReportDecoder } from './models';
+import { JestReport, jestReportDecoder } from './models';
 
 export const getFullName = (...parts: string[]) => parts.join(' / ');
-
-export const ignoredStatuses = new Set<JestAssertionStatus>(['pending', 'todo', 'skipped']);
 
 export const applyJestReport = (
   validationContext: Validator,
@@ -15,15 +14,26 @@ export const applyJestReport = (
 ) => {
   const names = new Map<string, string[]>();
 
+  const state = new Map<string, AutomationState>();
+
   // формируем список ключей тест-кейсов из отчета jest
   for (let { assertionResults, name: path } of report.testResults) {
-    const assertions = assertionResults.filter((a) => !ignoredStatuses.has(a.status));
-
-    for (let { title, ancestorTitles } of assertions) {
+    for (let { title, ancestorTitles, status } of assertionResults) {
       const name = getFullName(...ancestorTitles, title);
       const pathes = names.get(name) || [];
       pathes.push(path);
       names.set(name, pathes);
+
+      switch (status) {
+        case 'passed':
+        case 'failed':
+          state.set(name, 'Automated');
+          break;
+        case 'pending':
+        case 'skipped':
+          state.set(name, 'Problem');
+          break;
+      }
     }
   }
 
@@ -47,7 +57,10 @@ export const applyJestReport = (
         const parts = getKey(keyParts, assertionCtx, attributesCtx);
         const fullName = getFullName(...parts);
 
-        assertion.isAutomated = names.has(fullName);
+        const automationState = state.get(fullName);
+        if (automationState) {
+          assertion.automationState = automationState;
+        }
 
         names.delete(fullName);
       }

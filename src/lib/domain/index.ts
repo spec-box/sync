@@ -10,7 +10,7 @@ export type { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, Pro
 const mapAssertion = ({ assert: title, description }: YmlAssertion): Assertion => ({
   title,
   description,
-  isAutomated: false,
+  automationState: 'Unknown',
 });
 
 const mapGroup = ([title, list]: [string, YmlAssertion[]]): AssertionGroup => {
