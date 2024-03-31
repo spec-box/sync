@@ -28,7 +28,7 @@ const mapGroup = ({ title, assertions }: AssertionGroup): SpecBoxWebApiModelUplo
 
 const mapFeature = ({
   code,
-  featureType,
+  type: featureType,
   title,
   description,
   filePath,

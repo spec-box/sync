@@ -1,6 +1,6 @@
 import * as d from 'io-ts/Decoder';
 
-export const featureTypeDecoder = d.literal('functional', 'visual');
+export const featureTypeDecoder = d.literal('Functional', 'Visual');
 
 export const assertionDecoder = d.intersect(
   d.struct({

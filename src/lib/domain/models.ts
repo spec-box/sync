@@ -17,7 +17,7 @@ export interface Feature {
   code: string;
   title: string;
   description?: string;
-  featureType?: FeatureType;
+  type?: FeatureType;
 
   groups: AssertionGroup[];
   attributes?: Record<string, string[]>;
