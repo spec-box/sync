@@ -14,11 +14,11 @@ import { Assertion, AssertionGroup, Feature } from '../domain';
 import { Tree } from '../domain/models';
 import { DEFAULT_API_OPTIONS, normalizePath } from '../utils';
 
-const mapAssertion = ({ title, description, isAutomated }: Assertion): SpecBoxWebApiModelUploadAssertionModel => {
+const mapAssertion = ({ title, description, automationState }: Assertion): SpecBoxWebApiModelUploadAssertionModel => {
   return {
     title,
     description,
-    isAutomated,
+    automationState,
   };
 };
 
@@ -28,6 +28,7 @@ const mapGroup = ({ title, assertions }: AssertionGroup): SpecBoxWebApiModelUplo
 
 const mapFeature = ({
   code,
+  type: featureType,
   title,
   description,
   filePath,
@@ -36,6 +37,7 @@ const mapFeature = ({
 }: Feature): SpecBoxWebApiModelUploadFeatureModel => {
   return {
     code,
+    featureType,
     title,
     description,
     attributes,

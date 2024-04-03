@@ -10,7 +10,7 @@ export type { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, Pro
 const mapAssertion = ({ assert: title, description }: YmlAssertion): Assertion => ({
   title,
   description,
-  isAutomated: false,
+  automationState: 'Unknown',
 });
 
 const mapGroup = ([title, list]: [string, YmlAssertion[]]): AssertionGroup => {
@@ -20,11 +20,11 @@ const mapGroup = ([title, list]: [string, YmlAssertion[]]): AssertionGroup => {
 };
 
 const mapFeature = ({ content, fileName, filePath }: YamlFile): Feature => {
-  const { code, feature: title, description, definitions: attributes, 'specs-unit': specs = {} } = content;
+  const { code, type, feature: title, description, definitions: attributes, 'specs-unit': specs = {} } = content;
 
   const groups = Object.entries(specs).map(mapGroup);
 
-  return { code, title, description, groups, attributes, fileName, filePath };
+  return { code, type, title, description, groups, attributes, fileName, filePath };
 };
 
 const mapAttributeValue = ({ code, title }: CfgAttributeValue): AttributeValue => ({ code, title });

@@ -197,7 +197,7 @@ const statOperationSpec: coreClient.OperationSpec = {
       bodyMapper: Mappers.SpecBoxWebApiModelStatModel,
     },
   },
-  queryParameters: [Parameters.project, Parameters.from, Parameters.to],
+  queryParameters: [Parameters.project, Parameters.fromParam, Parameters.to],
   urlParameters: [Parameters.$host],
   headerParameters: [Parameters.accept],
   serializer,
