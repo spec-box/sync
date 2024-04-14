@@ -1,3 +1,5 @@
+import { ParsedValue, parse } from '@spec-box/text-parser';
+
 import { Attribute as CfgAttribute, AttributeValue as CfgAttributeValue, Tree as CfgTree } from '../config';
 import { Meta } from '../config/models';
 import { YamlFile, Assertion as YmlAssertion } from '../yaml';
@@ -19,12 +21,32 @@ const mapGroup = ([title, list]: [string, YmlAssertion[]]): AssertionGroup => {
   return { title, assertions };
 };
 
+const parseDependencies = (title: string, description: string | undefined, groups: AssertionGroup[]): string[] => {
+  const references: ParsedValue[] = [];
+
+  references.push(...parse(title).meta.references);
+  references.push(...parse(description || '').meta.references);
+
+  for (const group of groups) {
+    for (const assertion of group.assertions) {
+      references.push(...parse(assertion.title).meta.references);
+      references.push(...parse(assertion.description || '').meta.references);
+    }
+  }
+
+  const dependencies = new Set<string>(references.map((r) => r.value.trim().toLowerCase()));
+
+  return Array.from(dependencies);
+};
+
 const mapFeature = ({ content, fileName, filePath }: YamlFile): Feature => {
   const { code, type, feature: title, description, definitions: attributes, 'specs-unit': specs = {} } = content;
 
   const groups = Object.entries(specs).map(mapGroup);
 
-  return { code, type, title, description, groups, attributes, fileName, filePath };
+  const dependencies = parseDependencies(title, description, groups);
+
+  return { code, type, title, description, groups, attributes, fileName, filePath, dependencies };
 };
 
 const mapAttributeValue = ({ code, title }: CfgAttributeValue): AttributeValue => ({ code, title });

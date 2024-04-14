@@ -19,6 +19,7 @@ export interface SpecBoxWebApiModelUploadFeatureModel {
   groups: SpecBoxWebApiModelUploadAssertionGroupModel[];
   /** Dictionary of <components·1i2d5w·schemas·specbox-webapi-model-upload-featuremodel·properties·attributes·additionalproperties> */
   attributes?: { [propertyName: string]: string[] | null };
+  dependencies?: string[];
 }
 
 export interface SpecBoxWebApiModelUploadAssertionGroupModel {
@@ -69,6 +70,7 @@ export interface SpecBoxWebApiModelProjectFeatureModel {
 
 export interface SpecBoxWebApiModelProjectAssertionGroupModel {
   title: string;
+  sortOrder?: number;
   /** NOTE: This property will not be serialized. It can only be populated by the server. */
   readonly assertions: SpecBoxWebApiModelProjectAssertionModel[];
 }
@@ -76,6 +78,7 @@ export interface SpecBoxWebApiModelProjectAssertionGroupModel {
 export interface SpecBoxWebApiModelProjectAssertionModel {
   title: string;
   description?: string;
+  sortOrder?: number;
   automationState: AutomationState;
 }
 

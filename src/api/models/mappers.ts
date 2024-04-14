@@ -133,6 +133,18 @@ export const SpecBoxWebApiModelUploadFeatureModel: coreClient.CompositeMapper = 
           },
         },
       },
+      dependencies: {
+        serializedName: 'dependencies',
+        nullable: true,
+        type: {
+          name: 'Sequence',
+          element: {
+            type: {
+              name: 'String',
+            },
+          },
+        },
+      },
     },
   },
 };
@@ -443,6 +455,13 @@ export const SpecBoxWebApiModelProjectAssertionGroupModel: coreClient.CompositeM
           name: 'String',
         },
       },
+      sortOrder: {
+        serializedName: 'sortOrder',
+        nullable: true,
+        type: {
+          name: 'Number',
+        },
+      },
       assertions: {
         serializedName: 'assertions',
         required: true,
@@ -481,6 +500,13 @@ export const SpecBoxWebApiModelProjectAssertionModel: coreClient.CompositeMapper
         nullable: true,
         type: {
           name: 'String',
+        },
+      },
+      sortOrder: {
+        serializedName: 'sortOrder',
+        nullable: true,
+        type: {
+          name: 'Number',
         },
       },
       automationState: {
