@@ -64,7 +64,6 @@ export type FeatureMissingLinkError = {
   type: 'feature-missing-link';
   filePath: string;
   feature: Feature;
-  field: 'description' | 'title' | 'group.title' | 'assert.title' | 'assert.description';
   link: string;
 };
 

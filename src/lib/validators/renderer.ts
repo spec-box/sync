@@ -27,7 +27,7 @@ const renderError = (e: ValidationError): string => {
     case 'feature-missing-attribute':
       return `Неизвестный атрибут: ${val(e.attributeCode)}`;
     case 'feature-missing-link':
-      return `Неизвестная ссылка в поле ${strong(e.field)}: ${val(e.link)}`;
+      return `Неизвестная ссылка: ${val(e.link)}`;
     case 'assertion-duplicate':
       return `Дубликат утверждения: ${val(e.assertion.title)} (группа ${val(e.assertionGroup.title)})`;
     case 'jest-unused':

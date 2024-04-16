@@ -21,6 +21,7 @@ export interface Feature {
 
   groups: AssertionGroup[];
   attributes?: Record<string, string[]>;
+  dependencies?: string[];
 
   fileName: string;
   filePath: string;
