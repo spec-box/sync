@@ -23,7 +23,7 @@
   "dependencies": {
     "@azure/core-client": "^1.7.3",
     "@azure/core-rest-pipeline": "^1.11.0",
-    "@spec-box/text-parser": "0.1.0",
+    "@spec-box/text-parser": "0.2.0",
     "chalk": "^4.1.0",
     "fast-glob": "^3.3.0",
     "fp-ts": "^2.16.0",
