@@ -22,8 +22,6 @@ import {
 import { printError, renderStats } from './renderer';
 
 const CODE_REGEX = /^[A-Za-z][A-Za-z0-9-_]*$/;
-// named group <link> is used to capture and validate link key
-const LINK_LIKE = /\$(?<link>[A-Za-z][A-Za-z0-9-_]*)/g;
 
 export class Validator {
   private readonly loaderErrors = new Array<ValidationError>();
@@ -274,46 +272,27 @@ export class Validator {
 
   private validateFeatureLinks(features: Feature[], featuresMap: Map<string, Feature>) {
     for (const feature of features) {
-      this.featureErrors.push(...this.validateLinks(feature.title, 'title', feature, featuresMap));
-      if (feature.description) {
-        this.featureErrors.push(...this.validateLinks(feature.description, 'description', feature, featuresMap));
-      }
-      for (const group of feature.groups) {
-        this.featureErrors.push(...this.validateLinks(group.title, 'group.title', feature, featuresMap));
-        for (const assertion of group.assertions) {
-          this.featureErrors.push(...this.validateLinks(assertion.title, 'assert.title', feature, featuresMap));
-          if (assertion.description) {
-            this.featureErrors.push(
-              ...this.validateLinks(assertion.description, 'assert.description', feature, featuresMap),
-            );
-          }
-        }
-      }
+      this.featureErrors.push(...this.validateLinks(feature, featuresMap));
     }
   }
 
-  private validateLinks(
-    value: string,
-    field: FeatureMissingLinkError['field'],
-    feature: Feature,
-    featuresMap: Map<string, Feature>,
-  ): FeatureMissingLinkError[] {
-    const re = new RegExp(LINK_LIKE);
+  private validateLinks(feature: Feature, featuresMap: Map<string, Feature>): FeatureMissingLinkError[] {
     const errors = new Array<FeatureMissingLinkError>();
-    let match: RegExpExecArray | null;
-    while ((match = re.exec(value)) !== null) {
-      const link = match.groups!.link;
-      if (!featuresMap.has(link)) {
-        const linkError: FeatureMissingLinkError = {
-          type: 'feature-missing-link',
-          filePath: feature.filePath,
-          feature,
-          field,
-          link,
-        };
-        errors.push(linkError);
+
+    if (feature.dependencies) {
+      for (const link of feature.dependencies) {
+        if (!featuresMap.has(link)) {
+          const linkError: FeatureMissingLinkError = {
+            type: 'feature-missing-link',
+            filePath: feature.filePath,
+            feature,
+            link,
+          };
+          errors.push(linkError);
+        }
       }
     }
+
     return errors;
   }
 
