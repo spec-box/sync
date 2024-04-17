@@ -1,4 +1,4 @@
-import { AssertionContext, ProjectData, getAttributesContext, getKey } from '../domain';
+import { ProjectData, getAssertionContext, getAttributesContext, getKey } from '../domain';
 import { AutomationState } from '../domain/models';
 import { parseObject, readTextFile } from '../utils';
 import { Validator } from '../validators';
@@ -40,19 +40,10 @@ export const applyJestReport = (
   const attributesCtx = getAttributesContext(attributes);
 
   // заполняем поле isAutomated
-  for (let { title: featureTitle, code: featureCode, groups, fileName, filePath, attributes = {} } of features) {
-    for (let { title: groupTitle, assertions } of groups || []) {
-      for (let assertion of assertions || []) {
-        // TODO: перенести в domain?
-        const assertionCtx: AssertionContext = {
-          featureTitle,
-          featureCode,
-          groupTitle,
-          assertionTitle: assertion.title,
-          attributes,
-          fileName,
-          filePath,
-        };
+  for (let feature of features) {
+    for (let group of feature.groups || []) {
+      for (let assertion of group.assertions || []) {
+        const assertionCtx = getAssertionContext(feature, group, assertion);
 
         const parts = getKey(keyParts, assertionCtx, attributesCtx);
         const fullName = getFullName(...parts);

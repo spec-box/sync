@@ -1,4 +1,4 @@
-import { Attribute } from './models';
+import { Assertion, AssertionGroup, Attribute, Feature } from './models';
 
 export const UNDEFINED = 'UNDEFINED';
 export const AMBIGUOUS = 'AMBIGUOUS';
@@ -28,6 +28,22 @@ export const getAttributesContext = (alLAttributes: Attribute[] = []): Attribute
   }
 
   return obj;
+};
+
+export const getAssertionContext = (
+  feature: Feature,
+  group: AssertionGroup,
+  assertion: Assertion,
+): AssertionContext => {
+  return {
+    featureTitle: feature.title,
+    featureCode: feature.code,
+    groupTitle: group.title,
+    assertionTitle: assertion.title,
+    attributes: feature.attributes ?? {},
+    fileName: feature.fileName,
+    filePath: feature.filePath,
+  };
 };
 
 const getAttributeValue = (
