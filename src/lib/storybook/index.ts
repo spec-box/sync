@@ -15,13 +15,20 @@ export const applyStorybookIndex = (
 ) => {
   const names = new Map<string, string>();
 
-  const state = new Map<string, AutomationState>();
+  const automatedAssertions = new Set<string>();
 
   // формируем список ключей сторей из конфига storybook
   for (let { title, name, importPath } of Object.values(index.entries)) {
-    const fullName = getFullName(title.split('/').join(' / '), name);
+    const fullName = getFullName(
+      title
+        .split('/')
+        .map((part) => part.trim())
+        .join(' / '),
+      name,
+    );
 
-    state.set(fullName, 'Automated');
+    automatedAssertions.add(fullName);
+
     names.set(fullName, importPath);
   }
 
@@ -36,9 +43,8 @@ export const applyStorybookIndex = (
         const parts = getKey(storybook.keys, assertionCtx, attributesCtx);
         const fullName = getFullName(...parts);
 
-        const automationState = state.get(fullName);
-        if (automationState) {
-          assertion.automationState = automationState;
+        if (automatedAssertions.has(fullName)) {
+          assertion.automationState = 'Automated';
         }
 
         names.delete(fullName);
