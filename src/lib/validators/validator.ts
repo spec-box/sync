@@ -14,7 +14,7 @@ import {
   FeatureMissingLinkError,
   JestUnusedTestError,
   LoaderError,
-  StorybookUnusedStoryError,
+  StorybookUnusedStoryError as PluginError,
   TreeAttributeDuplicateError,
   TreeDuplicateError,
   TreeMissingAttributeError,
@@ -29,7 +29,7 @@ export class Validator {
   private readonly metaErrors = new Array<ValidationError>();
   private readonly featureErrors = new Array<ValidationError>();
   private readonly jestUnusedTests = new Array<JestUnusedTestError>();
-  private readonly storybookUnusedStories = new Array<StorybookUnusedStoryError>();
+  private readonly pluginsErrors = new Array<PluginError>();
   private metaFilePath = '';
 
   public readonly severity: Record<string, ValidationSeverity>;
@@ -44,7 +44,7 @@ export class Validator {
       ...this.metaErrors,
       ...this.featureErrors,
       ...this.jestUnusedTests,
-      ...this.storybookUnusedStories,
+      ...this.pluginsErrors,
     ].some((e) => this.severity[e.type] === 'error');
   }
 
@@ -52,20 +52,14 @@ export class Validator {
     const render = (e: ValidationError) => printError(e, this.severity);
 
     this.jestUnusedTests.forEach(render);
-    this.storybookUnusedStories.forEach(render);
+    this.pluginsErrors.forEach(render);
     this.featureErrors.forEach(render);
     this.metaErrors.forEach(render);
     this.loaderErrors.forEach(render);
 
     renderStats(
       'Всего',
-      [
-        ...this.loaderErrors,
-        ...this.metaErrors,
-        ...this.featureErrors,
-        ...this.jestUnusedTests,
-        ...this.storybookUnusedStories,
-      ],
+      [...this.loaderErrors, ...this.metaErrors, ...this.featureErrors, ...this.jestUnusedTests, ...this.pluginsErrors],
       this.severity,
     );
   }
@@ -82,10 +76,11 @@ export class Validator {
     });
   }
 
-  registerStorybookUnusedStory(story: string, filePath: string) {
-    this.storybookUnusedStories.push({
-      type: 'storybook-unused',
-      story,
+  registerPluginError(pluginName: string, error: PluginError['error'], filePath: string) {
+    this.pluginsErrors.push({
+      type: 'plugin-error',
+      pluginName,
+      error,
       filePath,
     });
   }

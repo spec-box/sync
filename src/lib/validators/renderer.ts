@@ -32,8 +32,8 @@ const renderError = (e: ValidationError): string => {
       return `Дубликат утверждения: ${val(e.assertion.title)} (группа ${val(e.assertionGroup.title)})`;
     case 'jest-unused':
       return `Обнаружен тест без описания\n${val(e.test)}`;
-    case 'storybook-unused':
-      return `Обнаружена история без описания\n${val(e.story)}`;
+    case 'plugin-error':
+      return `[ @spec-box/${e.pluginName} ]: ${e.error({ val })}`;
   }
 };
 

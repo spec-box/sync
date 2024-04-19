@@ -8,13 +8,13 @@ import { applyJestReport, loadJestReport } from '../lib/jest';
 import { uploadEntities } from '../lib/upload/upload-entities';
 import { CommonOptions } from '../lib/utils';
 import { Validator } from '../lib/validators';
-import { loadStorybookIndex, applyStorybookIndex } from '../lib/storybook';
+import { applyPlugins } from '../lib/pluginsLoader';
 
 export const cmdSync: CommandModule<{}, CommonOptions> = {
   command: 'sync',
   handler: async (args) => {
     console.log('SYNC');
-    const { yml, api, jest, storybook, validation = {}, projectPath } = await loadConfig(args.config);
+    const { yml, api, jest, plugins, validation = {}, projectPath } = await loadConfig(args.config);
     const validationContext = new Validator(validation);
 
     const meta = await loadMeta(validationContext, yml.metaPath, projectPath);
@@ -27,16 +27,14 @@ export const cmdSync: CommandModule<{}, CommonOptions> = {
     const projectData = processYamlFiles(successYamls, meta);
     validationContext.validate(projectData);
 
+    if (plugins) {
+      await applyPlugins({ projectData, validationContext }, plugins);
+    }
+
     if (jest) {
       const jestReport = await loadJestReport(jest.reportPath, projectPath);
 
       applyJestReport(validationContext, projectData, jestReport, jest.keys);
-    }
-
-    if (storybook) {
-      const storybookIndex = await loadStorybookIndex(storybook.indexPath, projectPath);
-
-      applyStorybookIndex(validationContext, projectData, storybookIndex, storybook);
     }
 
     validationContext.printReport();
