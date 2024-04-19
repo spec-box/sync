@@ -242,3 +242,11 @@ describe('Главная страница', () => {
     }
 }
 ```
+
+
+## Сборка и обновление docker образа
+```shell
+docker build . -t docker.io/pk72/spec-box-sync:latest
+docker push docker.io/pk72/spec-box-sync:latest
+
+```
