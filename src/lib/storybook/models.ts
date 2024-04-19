@@ -1,4 +1,11 @@
 import * as d from 'io-ts/Decoder';
+// TODO: надо импоритовать из @spec-box/sync
+import { attributeKeyPartDecoder, literalKeyPartDecoder } from '../config/models';
+
+export const storybookConfigDecoder = d.struct({
+  indexPath: d.string,
+  keys: d.array(d.union(literalKeyPartDecoder, attributeKeyPartDecoder)),
+});
 
 export const storyDecoder = d.intersect(
   d.struct({
@@ -19,5 +26,6 @@ export const storybookIndexDecoder = d.struct({
   entries: d.record(storyDecoder),
 });
 
+export type StorybookConfig = d.TypeOf<typeof storybookConfigDecoder>;
 export type Story = d.TypeOf<typeof storyDecoder>;
 export type StorybookIndex = d.TypeOf<typeof storybookIndexDecoder>;

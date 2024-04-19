@@ -76,10 +76,7 @@ export const jestConfigDecoder = d.struct({
   keys: d.array(d.union(literalKeyPartDecoder, attributeKeyPartDecoder)),
 });
 
-export const storybookConfigDecoder = d.struct({
-  indexPath: d.string,
-  keys: d.array(d.union(literalKeyPartDecoder, attributeKeyPartDecoder)),
-});
+export const pluginsDecoder = d.record(d.UnknownRecord);
 
 export const configDecoder = d.intersect(
   d.struct({
@@ -91,7 +88,7 @@ export const configDecoder = d.intersect(
     projectPath: d.string,
     validation: validationConfigDecoder,
     jest: jestConfigDecoder,
-    storybook: storybookConfigDecoder,
+    plugins: pluginsDecoder,
   }),
 );
 
@@ -99,7 +96,6 @@ export type RootConfig = d.TypeOf<typeof configDecoder>;
 export type ApiConfig = d.TypeOf<typeof apiConfigDecoder>;
 export type YmlConfig = d.TypeOf<typeof ymlConfigDecoder>;
 export type JestConfig = d.TypeOf<typeof jestConfigDecoder>;
-export type StorybookConfig = d.TypeOf<typeof storybookConfigDecoder>;
 export type ValidationConfig = d.TypeOf<typeof validationConfigDecoder>;
 export type ValidationSeverity = d.TypeOf<typeof validationSeverityDecoder>;
 

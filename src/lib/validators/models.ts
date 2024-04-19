@@ -86,9 +86,10 @@ export type JestUnusedTestError = {
   test: string;
 };
 export type StorybookUnusedStoryError = {
-  type: 'storybook-unused';
+  type: 'plugin-error';
   filePath: string;
-  story: string;
+  pluginName: string;
+  error: (ctx: { val: (val: string) => string }) => string;
 };
 
 export type ValidationError =
@@ -125,5 +126,5 @@ export const DEFAULT_ERROR_SEVERITY: { [key in ValidationErrorTypes]: Validation
   'featrue-attribute-value-code-format': 'error',
   'feature-missing-link': 'warning',
   'jest-unused': 'warning',
-  'storybook-unused': 'warning',
+  'plugin-error': 'warning',
 };

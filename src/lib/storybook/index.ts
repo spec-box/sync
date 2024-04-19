@@ -1,11 +1,20 @@
-import { StorybookConfig } from '../config/models';
+// TODO: надо вынести в отдельный пакет и импоритовать зависимости из @spec-box/sync
 import { ProjectData, getAssertionContext, getAttributesContext, getKey } from '../domain';
 import { AutomationState } from '../domain/models';
+import { SpecBox } from '../pluginsLoader';
 import { parseObject, readTextFile } from '../utils';
 import { Validator } from '../validators';
-import { StorybookIndex, storybookIndexDecoder } from './models';
+
+import { StorybookConfig, StorybookIndex, storybookConfigDecoder, storybookIndexDecoder } from './models';
 
 export const getFullName = (...parts: string[]) => parts.join(' / ');
+
+export default async (specbox: SpecBox, opts: unknown) => {
+  const storybook = parseObject(opts, storybookConfigDecoder);
+  const index = await loadStorybookIndex(storybook.indexPath, specbox.projectPath);
+
+  applyStorybookIndex(specbox.validationContext, specbox.projectData, index, storybook);
+};
 
 export const applyStorybookIndex = (
   validationContext: Validator,
@@ -53,7 +62,11 @@ export const applyStorybookIndex = (
   }
 
   for (const [name, path] of names.entries()) {
-    validationContext.registerStorybookUnusedStory(name, path);
+    validationContext.registerPluginError(
+      'storybook',
+      ({ val }) => `Обнаружена история без описания\n${val(name)}`,
+      path,
+    );
   }
 };
 
