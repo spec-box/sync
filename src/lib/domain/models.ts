@@ -5,6 +5,7 @@ export type AutomationState = 'Unknown' | 'Automated' | 'Problem';
 export interface Assertion {
   title: string;
   description?: string;
+  detailsUrl?: string;
   automationState: AutomationState;
 }
 
