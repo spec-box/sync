@@ -9,7 +9,11 @@ import { uploadEntities } from '../lib/upload/upload-entities';
 import { CommonOptions } from '../lib/utils';
 import { Validator } from '../lib/validators';
 
-export const cmdSync: CommandModule<{}, CommonOptions> = {
+export interface SyncOptions extends CommonOptions {
+  message?: string;
+}
+
+export const cmdSync: CommandModule<{}, SyncOptions> = {
   command: 'sync',
   handler: async (args) => {
     console.log('SYNC');
@@ -37,6 +41,6 @@ export const cmdSync: CommandModule<{}, CommonOptions> = {
       throw Error('Выгрузка невозможна из-за наличия критических ошибок');
     }
 
-    await uploadEntities(projectData, api);
+    await uploadEntities(projectData, api, args.message);
   },
 };

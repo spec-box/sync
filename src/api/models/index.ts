@@ -5,6 +5,7 @@ export interface SpecBoxWebApiModelDefaultConfigurationModel {
 }
 
 export interface SpecBoxWebApiModelUploadData {
+  message?: string;
   features: SpecBoxWebApiModelUploadFeatureModel[];
   attributes: SpecBoxWebApiModelUploadAttributeModel[];
   trees: SpecBoxWebApiModelUploadTreeModel[];
@@ -30,6 +31,7 @@ export interface SpecBoxWebApiModelUploadAssertionGroupModel {
 export interface SpecBoxWebApiModelUploadAssertionModel {
   title: string;
   description?: string;
+  detailsUrl?: string;
   isAutomated?: boolean;
   automationState?: AutomationState;
 }
@@ -64,8 +66,18 @@ export interface SpecBoxWebApiModelProjectFeatureModel {
   featureType?: FeatureType;
   description?: string;
   filePath?: string;
+  usages: SpecBoxWebApiModelProjectRelatedFeatureModel[];
   /** NOTE: This property will not be serialized. It can only be populated by the server. */
   readonly assertionGroups: SpecBoxWebApiModelProjectAssertionGroupModel[];
+}
+
+export interface SpecBoxWebApiModelProjectRelatedFeatureModel {
+  code: string;
+  title: string;
+  featureType?: FeatureType;
+  totalCount: number;
+  automatedCount: number;
+  problemCount: number;
 }
 
 export interface SpecBoxWebApiModelProjectAssertionGroupModel {
@@ -78,6 +90,7 @@ export interface SpecBoxWebApiModelProjectAssertionGroupModel {
 export interface SpecBoxWebApiModelProjectAssertionModel {
   title: string;
   description?: string;
+  detailsUrl?: string;
   sortOrder?: number;
   automationState: AutomationState;
 }

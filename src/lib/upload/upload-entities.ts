@@ -14,10 +14,16 @@ import { Assertion, AssertionGroup, Feature } from '../domain';
 import { Tree } from '../domain/models';
 import { DEFAULT_API_OPTIONS, normalizePath } from '../utils';
 
-const mapAssertion = ({ title, description, automationState }: Assertion): SpecBoxWebApiModelUploadAssertionModel => {
+const mapAssertion = ({
+  title,
+  description,
+  detailsUrl,
+  automationState,
+}: Assertion): SpecBoxWebApiModelUploadAssertionModel => {
   return {
     title,
     description,
+    detailsUrl,
     automationState,
   };
 };
@@ -65,7 +71,8 @@ const mapTree = ({ title, code, attributes }: Tree): SpecBoxWebApiModelUploadTre
   attributes,
 });
 
-export const uploadEntities = async ({ features, attributes = [], trees = [] }: ProjectData, config: ApiConfig) => {
+export const uploadEntities = async (data: ProjectData, config: ApiConfig, message?: string) => {
+  const { features, attributes = [], trees = [] } = data;
   const { host, project } = config;
 
   const client = new SpecBoxWebApi(host, DEFAULT_API_OPTIONS);
@@ -74,6 +81,7 @@ export const uploadEntities = async ({ features, attributes = [], trees = [] }: 
     features: features.map(mapFeature),
     attributes: attributes?.map(mapAttribute),
     trees: trees?.map(mapTree),
+    message,
   };
 
   await client.exportUpload({ project, body });
