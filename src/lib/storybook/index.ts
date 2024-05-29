@@ -1,6 +1,5 @@
 import { StorybookConfig } from '../config/models';
 import { ProjectData, getAssertionContext, getAttributesContext, getKey } from '../domain';
-import { AutomationState } from '../domain/models';
 import { parseObject, readTextFile } from '../utils';
 import { Validator } from '../validators';
 import { StorybookIndex, storybookIndexDecoder } from './models';
@@ -19,13 +18,8 @@ export const applyStorybookIndex = (
 
   // формируем список ключей сторей из конфига storybook
   for (let { title, name, importPath } of Object.values(index.entries)) {
-    const fullName = getFullName(
-      title
-        .split('/')
-        .map((part) => part.trim())
-        .join(' / '),
-      name,
-    );
+    const parts = title.split('/').map((part) => part.trim());
+    const fullName = getFullName(...parts, name);
 
     automatedAssertions.add(fullName);
 
@@ -34,7 +28,7 @@ export const applyStorybookIndex = (
 
   const attributesCtx = getAttributesContext(attributes);
 
-  // заполняем поле isAutomated
+  // заполняем поле automationState
   for (let feature of features) {
     for (let group of feature.groups || []) {
       for (let assertion of group.assertions || []) {
