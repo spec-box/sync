@@ -14,6 +14,7 @@ import {
   FeatureMissingLinkError,
   JestUnusedTestError,
   LoaderError,
+  StorybookUnusedStoryError,
   TreeAttributeDuplicateError,
   TreeDuplicateError,
   TreeMissingAttributeError,
@@ -28,6 +29,7 @@ export class Validator {
   private readonly metaErrors = new Array<ValidationError>();
   private readonly featureErrors = new Array<ValidationError>();
   private readonly jestUnusedTests = new Array<JestUnusedTestError>();
+  private readonly storybookUnusedStories = new Array<StorybookUnusedStoryError>();
   private metaFilePath = '';
 
   public readonly severity: Record<string, ValidationSeverity>;
@@ -37,22 +39,33 @@ export class Validator {
   }
 
   get hasCriticalErrors(): boolean {
-    return [...this.loaderErrors, ...this.metaErrors, ...this.featureErrors, ...this.jestUnusedTests].some(
-      (e) => this.severity[e.type] === 'error',
-    );
+    return [
+      ...this.loaderErrors,
+      ...this.metaErrors,
+      ...this.featureErrors,
+      ...this.jestUnusedTests,
+      ...this.storybookUnusedStories,
+    ].some((e) => this.severity[e.type] === 'error');
   }
 
   printReport() {
     const render = (e: ValidationError) => printError(e, this.severity);
 
     this.jestUnusedTests.forEach(render);
+    this.storybookUnusedStories.forEach(render);
     this.featureErrors.forEach(render);
     this.metaErrors.forEach(render);
     this.loaderErrors.forEach(render);
 
     renderStats(
       'Всего',
-      [...this.loaderErrors, ...this.metaErrors, ...this.featureErrors, ...this.jestUnusedTests],
+      [
+        ...this.loaderErrors,
+        ...this.metaErrors,
+        ...this.featureErrors,
+        ...this.jestUnusedTests,
+        ...this.storybookUnusedStories,
+      ],
       this.severity,
     );
   }
@@ -65,6 +78,14 @@ export class Validator {
     this.jestUnusedTests.push({
       type: 'jest-unused',
       test,
+      filePath,
+    });
+  }
+
+  registerStorybookUnusedStory(story: string, filePath: string) {
+    this.storybookUnusedStories.push({
+      type: 'storybook-unused',
+      story,
       filePath,
     });
   }

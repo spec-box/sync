@@ -7,13 +7,14 @@ import { processYamlFiles } from '../lib/domain';
 import { applyJestReport, loadJestReport } from '../lib/jest';
 import { CommonOptions } from '../lib/utils';
 import { Validator } from '../lib/validators';
+import { applyStorybookIndex, loadStorybookIndex } from '../lib/storybook';
 
 export const cmdValidateOnly: CommandModule<{}, CommonOptions> = {
   command: 'validate',
   handler: async (args) => {
     console.log('VALIDATION');
 
-    const { yml, jest, validation = {}, projectPath } = await loadConfig(args.config);
+    const { yml, jest, storybook, validation = {}, projectPath } = await loadConfig(args.config);
     const validationContext = new Validator(validation);
     const meta = await loadMeta(validationContext, yml.metaPath, projectPath);
 
@@ -31,6 +32,12 @@ export const cmdValidateOnly: CommandModule<{}, CommonOptions> = {
       const jestReport = await loadJestReport(jest.reportPath, projectPath);
 
       applyJestReport(validationContext, projectData, jestReport, jest.keys);
+    }
+
+    if (storybook) {
+      const storybookIndex = await loadStorybookIndex(storybook.indexPath, projectPath);
+
+      applyStorybookIndex(validationContext, projectData, storybookIndex, storybook);
     }
 
     validationContext.printReport();

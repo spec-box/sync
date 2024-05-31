@@ -5,7 +5,7 @@ import { Meta } from '../config/models';
 import { YamlFile, Assertion as YmlAssertion } from '../yaml';
 import { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, ProjectData, Tree } from './models';
 
-export { getAttributesContext, getKey } from './keys';
+export { getAttributesContext, getAssertionContext, getKey } from './keys';
 export type { AssertionContext, AttributesContext } from './keys';
 export type { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, ProjectData, Tree } from './models';
 

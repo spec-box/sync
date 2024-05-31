@@ -8,6 +8,7 @@ import { applyJestReport, loadJestReport } from '../lib/jest';
 import { uploadEntities } from '../lib/upload/upload-entities';
 import { CommonOptions } from '../lib/utils';
 import { Validator } from '../lib/validators';
+import { loadStorybookIndex, applyStorybookIndex } from '../lib/storybook';
 
 export interface SyncOptions extends CommonOptions {
   message?: string;
@@ -17,7 +18,7 @@ export const cmdSync: CommandModule<{}, SyncOptions> = {
   command: 'sync',
   handler: async (args) => {
     console.log('SYNC');
-    const { yml, api, jest, validation = {}, projectPath } = await loadConfig(args.config);
+    const { yml, api, jest, storybook, validation = {}, projectPath } = await loadConfig(args.config);
     const validationContext = new Validator(validation);
 
     const meta = await loadMeta(validationContext, yml.metaPath, projectPath);
@@ -34,6 +35,12 @@ export const cmdSync: CommandModule<{}, SyncOptions> = {
       const jestReport = await loadJestReport(jest.reportPath, projectPath);
 
       applyJestReport(validationContext, projectData, jestReport, jest.keys);
+    }
+
+    if (storybook) {
+      const storybookIndex = await loadStorybookIndex(storybook.indexPath, projectPath);
+
+      applyStorybookIndex(validationContext, projectData, storybookIndex, storybook);
     }
 
     validationContext.printReport();
