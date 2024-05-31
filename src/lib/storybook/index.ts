@@ -6,24 +6,29 @@ import { StorybookIndex, storybookIndexDecoder } from './models';
 
 export const getFullName = (...parts: string[]) => parts.join(' / ');
 
+export const normalizeUrl = (url?: string) => url?.replace(/^[\s\/]+|[\s\/]+$/g, '');
+
 export const applyStorybookIndex = (
   validationContext: Validator,
   { features, attributes }: ProjectData,
   index: StorybookIndex,
   storybook: StorybookConfig,
 ) => {
-  const names = new Map<string, string>();
+  const publicUrl = normalizeUrl(storybook.publicUrl);
 
-  const automatedAssertions = new Set<string>();
+  const buildDetailsUrl = publicUrl
+    ? (id: string) => `${publicUrl}/iframe.html?viewMode=story&id=${id}`
+    : () => undefined;
+
+  const automatedAssertions = new Map<string, { importPath: string; detailsUrl?: string }>();
 
   // формируем список ключей сторей из конфига storybook
-  for (let { title, name, importPath } of Object.values(index.entries)) {
+  for (let { id, title, name, importPath } of Object.values(index.entries)) {
     const parts = title.split('/').map((part) => part.trim());
     const fullName = getFullName(...parts, name);
+    const detailsUrl = buildDetailsUrl(id);
 
-    automatedAssertions.add(fullName);
-
-    names.set(fullName, importPath);
+    automatedAssertions.set(fullName, { importPath, detailsUrl });
   }
 
   const attributesCtx = getAttributesContext(attributes);
@@ -39,15 +44,16 @@ export const applyStorybookIndex = (
 
         if (automatedAssertions.has(fullName)) {
           assertion.automationState = 'Automated';
+          assertion.detailsUrl = automatedAssertions.get(fullName)?.detailsUrl;
         }
 
-        names.delete(fullName);
+        automatedAssertions.delete(fullName);
       }
     }
   }
 
-  for (const [name, path] of names.entries()) {
-    validationContext.registerStorybookUnusedStory(name, path);
+  for (const [name, { importPath }] of automatedAssertions.entries()) {
+    validationContext.registerStorybookUnusedStory(name, importPath);
   }
 };
 

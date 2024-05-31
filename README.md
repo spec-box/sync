@@ -245,6 +245,8 @@ export const Default: StoryObj<typeof Cart> = {
 };
 ```
 
+Если вы укажете в настройках поле `publicUrl`, то для каждого ФТ, для которого в сторибуке написана история, будет прикреплена ссылка на эту историю.
+
 ## Формат конфига
 
 Ниже указаны все возможные параметры конфигурационного файла:
@@ -288,6 +290,7 @@ export const Default: StoryObj<typeof Cart> = {
     // настройки для сопоставления ФТ с историями storybook
     "storybook": {
         "indexPath": "index.json", // путь к файлу index.json, генерируемого при билде сторибука
+        "publicUrl": "https://my-dev-domain/storybook", // базовый путь к опубликованному стрибуку, опционально
         "keys": [ // сегменты идентификатора для сопоставления историй из storybook с ФТ
             "featureTitle",
             "$sub-component",

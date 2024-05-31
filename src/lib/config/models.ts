@@ -76,10 +76,16 @@ export const jestConfigDecoder = d.struct({
   keys: d.array(d.union(literalKeyPartDecoder, attributeKeyPartDecoder)),
 });
 
-export const storybookConfigDecoder = d.struct({
-  indexPath: d.string,
-  keys: d.array(d.union(literalKeyPartDecoder, attributeKeyPartDecoder)),
-});
+export const storybookConfigDecoder = d.intersect(
+  d.struct({
+    indexPath: d.string,
+    keys: d.array(d.union(literalKeyPartDecoder, attributeKeyPartDecoder)),
+  }),
+)(
+  d.partial({
+    publicUrl: d.string,
+  }),
+);
 
 export const configDecoder = d.intersect(
   d.struct({
