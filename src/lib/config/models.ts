@@ -87,6 +87,11 @@ export const storybookConfigDecoder = d.intersect(
   }),
 );
 
+export const testplaneConfigDecoder = d.struct({
+  reportPath: d.string,
+  keys: d.array(d.union(literalKeyPartDecoder, attributeKeyPartDecoder)),
+});
+
 export const configDecoder = d.intersect(
   d.struct({
     api: apiConfigDecoder,
@@ -98,6 +103,7 @@ export const configDecoder = d.intersect(
     validation: validationConfigDecoder,
     jest: jestConfigDecoder,
     storybook: storybookConfigDecoder,
+    testplane: testplaneConfigDecoder,
   }),
 );
 
@@ -106,6 +112,7 @@ export type ApiConfig = d.TypeOf<typeof apiConfigDecoder>;
 export type YmlConfig = d.TypeOf<typeof ymlConfigDecoder>;
 export type JestConfig = d.TypeOf<typeof jestConfigDecoder>;
 export type StorybookConfig = d.TypeOf<typeof storybookConfigDecoder>;
+export type TestplaneConfig = d.TypeOf<typeof testplaneConfigDecoder>;
 export type ValidationConfig = d.TypeOf<typeof validationConfigDecoder>;
 export type ValidationSeverity = d.TypeOf<typeof validationSeverityDecoder>;
 

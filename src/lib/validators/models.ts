@@ -90,6 +90,11 @@ export type StorybookUnusedStoryError = {
   filePath: string;
   story: string;
 };
+export type TestplaneUnusedTestError = {
+  type: 'testplane-unused';
+  filePath: string;
+  test: string;
+};
 
 export type ValidationError =
   | AttributeDuplicateError
@@ -106,7 +111,8 @@ export type ValidationError =
   | CodeError
   | LoaderError
   | JestUnusedTestError
-  | StorybookUnusedStoryError;
+  | StorybookUnusedStoryError
+  | TestplaneUnusedTestError;
 
 export type ValidationErrorTypes = ValidationError['type'];
 
@@ -126,4 +132,5 @@ export const DEFAULT_ERROR_SEVERITY: { [key in ValidationErrorTypes]: Validation
   'feature-missing-link': 'warning',
   'jest-unused': 'warning',
   'storybook-unused': 'warning',
+  'testplane-unused': 'warning',
 };
