@@ -20,7 +20,9 @@ export const applyTestplaneReport = (
   for (let { suitePath, file: path, status } of Object.values(report)) {
     const name = getFullName(...suitePath);
     const pathes = names.get(name) || [];
-    pathes.push(path);
+    if (path) {
+      pathes.push(path);
+    }
     names.set(name, pathes);
 
     switch (status) {

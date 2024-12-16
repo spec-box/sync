@@ -7,37 +7,11 @@ export const testplaneTestResultDecoder = d.intersect(
     suitePath: d.array(d.string),
     fullName: d.string,
     browserId: d.string,
-    file: d.string,
-    duration: d.number,
-    meta: d.intersect(
-      d.struct({
-        browserVersion: d.string,
-        pid: d.number,
-        testXReqId: d.string,
-        traceparent: d.string,
-        platform: d.string,
-        url: d.string,
-      }),
-    )(
-      d.partial({
-        'tus-internal': d.struct({
-          accounts: d.array(
-            d.struct({
-              login: d.string,
-              uid: d.string,
-            }),
-          ),
-        }),
-        tus: d.struct({
-          uid: d.string,
-          login: d.string,
-          auth: d.boolean,
-        }),
-      }),
-    ),
+    file: d.nullable(d.string),
+    duration: d.nullable(d.number),
+    meta: d.record(d.string),
     startTime: d.number,
     status: testplaneTestStatusDecoder,
-    url: d.string,
   }),
 )(
   d.partial({
@@ -53,6 +27,7 @@ export const testplaneTestResultDecoder = d.intersect(
         duration: d.number,
       }),
     ),
+    url: d.string,
   }),
 );
 
