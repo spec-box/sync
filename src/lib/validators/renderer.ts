@@ -34,6 +34,8 @@ const renderError = (e: ValidationError): string => {
       return `Обнаружен тест без описания\n${val(e.test)}`;
     case 'storybook-unused':
       return `Обнаружена история без описания\n${val(e.story)}`;
+    case 'testplane-unused':
+      return `Обнаружен интеграционный тест без описания\n${val(e.test)}`;
   }
 };
 

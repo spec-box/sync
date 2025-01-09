@@ -9,6 +9,7 @@ import { uploadEntities } from '../lib/upload/upload-entities';
 import { CommonOptions } from '../lib/utils';
 import { Validator } from '../lib/validators';
 import { loadStorybookIndex, applyStorybookIndex } from '../lib/storybook';
+import { applyTestplaneReport, loadTestplaneReport } from '../lib/testplane';
 
 export interface SyncOptions extends CommonOptions {
   message?: string;
@@ -18,7 +19,7 @@ export const cmdSync: CommandModule<{}, SyncOptions> = {
   command: 'sync',
   handler: async (args) => {
     console.log('SYNC');
-    const { yml, api, jest, storybook, validation = {}, projectPath } = await loadConfig(args.config);
+    const { yml, api, jest, storybook, testplane, validation = {}, projectPath } = await loadConfig(args.config);
     const validationContext = new Validator(validation);
 
     const meta = await loadMeta(validationContext, yml.metaPath, projectPath);
@@ -41,6 +42,12 @@ export const cmdSync: CommandModule<{}, SyncOptions> = {
       const storybookIndex = await loadStorybookIndex(storybook.indexPath, projectPath);
 
       applyStorybookIndex(validationContext, projectData, storybookIndex, storybook);
+    }
+
+    if (testplane) {
+      const testplaneReport = await loadTestplaneReport(testplane.reportPath, projectPath);
+
+      applyTestplaneReport(validationContext, projectData, testplaneReport, testplane.keys);
     }
 
     validationContext.printReport();
