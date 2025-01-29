@@ -9,7 +9,7 @@ export const testplaneTestResultDecoder = d.intersect(
     browserId: d.string,
     file: d.nullable(d.string),
     duration: d.nullable(d.number),
-    meta: d.record(d.string),
+    meta: d.UnknownRecord,
     startTime: d.number,
     status: testplaneTestStatusDecoder,
   }),
