@@ -10,6 +10,7 @@ import { CommonOptions } from '../lib/utils';
 import { Validator } from '../lib/validators';
 import { loadStorybookIndex, applyStorybookIndex } from '../lib/storybook';
 import { applyTestplaneReport, loadTestplaneReport } from '../lib/testplane';
+import { applyPlaywrightReport, loadPlaywrightReport } from '../lib/playwright';
 
 export interface SyncOptions extends CommonOptions {
   message?: string;
@@ -19,7 +20,16 @@ export const cmdSync: CommandModule<{}, SyncOptions> = {
   command: 'sync',
   handler: async (args) => {
     console.log('SYNC');
-    const { yml, api, jest, storybook, testplane, validation = {}, projectPath } = await loadConfig(args.config);
+    const {
+      yml,
+      api,
+      jest,
+      storybook,
+      testplane,
+      playwright,
+      validation = {},
+      projectPath,
+    } = await loadConfig(args.config);
     const validationContext = new Validator(validation);
 
     const meta = await loadMeta(validationContext, yml.metaPath, projectPath);
@@ -48,6 +58,12 @@ export const cmdSync: CommandModule<{}, SyncOptions> = {
       const testplaneReport = await loadTestplaneReport(testplane.reportPath, projectPath);
 
       applyTestplaneReport(validationContext, projectData, testplaneReport, testplane.keys);
+    }
+
+    if (playwright) {
+      const playwrightReport = await loadPlaywrightReport(playwright.reportPath, projectPath);
+
+      applyPlaywrightReport(validationContext, projectData, playwrightReport, playwright.keys);
     }
 
     validationContext.printReport();
