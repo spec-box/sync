@@ -19,13 +19,7 @@ export const applyPlaywrightReport = (
   const calcReverse = (prevSuites: PlaywrightReport['suites'], paths: string[]) => {
     for (let { file: path, suites, specs, title } of prevSuites) {
       if (suites) {
-        if (title !== path) {
-          // На первом уровне playwrite-report в title название файла, 
-          // которого не должно быть в названии теста
-          calcReverse(suites, [...paths, title]);
-        } else{
-          calcReverse(suites, paths);
-        }
+        calcReverse(suites, [...paths, title]);
       }
 
       if (!specs.length) {
@@ -33,7 +27,10 @@ export const applyPlaywrightReport = (
       }
 
       for (let { tests, title: testTitle } of specs) {
-        const name = getFullName(...paths, title, testTitle);
+        // На первом уровне playwrite-report в title название файла,
+        // которого не должно быть в названии теста.
+        // Поэтому име генерируем со второго элемента
+        const name = getFullName(...paths.slice(1), title, testTitle);
 
         // Добавление в мапу для ошибки тестов без описания
         const pathes = names.get(name) || [];
