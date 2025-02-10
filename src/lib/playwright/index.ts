@@ -26,22 +26,20 @@ export const applyPlaywrightReport = (
         continue;
       }
 
+      // На первом уровне playwrite-report в title название файла,
+      // которого не должно быть в названии теста.
+      // Поэтому име генерируем со второго элемента
+      const parts = paths.concat(title).slice(1);
       for (let { tests, title: testTitle } of specs) {
-        // На первом уровне playwrite-report в title название файла,
-        // которого не должно быть в названии теста.
-        // Поэтому име генерируем со второго элемента
-        const name = getFullName(...paths.slice(1), title, testTitle);
+        const name = getFullName(...parts, testTitle);
 
         // Добавление в мапу для ошибки тестов без описания
         const pathes = names.get(name) || [];
-        if (path) {
-          pathes.push(path);
-        }
+        pathes.push(path);
         names.set(name, pathes);
 
-        const automated = tests.find(({ expectedStatus }) => ['passed'].includes(expectedStatus));
+        const automated = tests.find(({ expectedStatus }) => expectedStatus == 'passed');
 
-        console.log('name: ', name);
         if (automated) {
           state.set(name, 'Automated');
         } else {
