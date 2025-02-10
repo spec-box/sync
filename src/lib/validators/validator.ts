@@ -16,6 +16,7 @@ import {
   LoaderError,
   StorybookUnusedStoryError,
   TestplaneUnusedTestError,
+  PlaywrightUnusedTestError,
   TreeAttributeDuplicateError,
   TreeDuplicateError,
   TreeMissingAttributeError,
@@ -32,6 +33,7 @@ export class Validator {
   private readonly jestUnusedTests = new Array<JestUnusedTestError>();
   private readonly storybookUnusedStories = new Array<StorybookUnusedStoryError>();
   private readonly testplaneUnusedTests = new Array<TestplaneUnusedTestError>();
+  private readonly playwrightUnusedTests = new Array<PlaywrightUnusedTestError>();
   private metaFilePath = '';
 
   public readonly severity: Record<string, ValidationSeverity>;
@@ -48,6 +50,7 @@ export class Validator {
       ...this.jestUnusedTests,
       ...this.storybookUnusedStories,
       ...this.testplaneUnusedTests,
+      ...this.playwrightUnusedTests,
     ].some((e) => this.severity[e.type] === 'error');
   }
 
@@ -57,6 +60,7 @@ export class Validator {
     this.jestUnusedTests.forEach(render);
     this.storybookUnusedStories.forEach(render);
     this.testplaneUnusedTests.forEach(render);
+    this.playwrightUnusedTests.forEach(render);
     this.featureErrors.forEach(render);
     this.metaErrors.forEach(render);
     this.loaderErrors.forEach(render);
@@ -70,6 +74,7 @@ export class Validator {
         ...this.jestUnusedTests,
         ...this.storybookUnusedStories,
         ...this.testplaneUnusedTests,
+        ...this.playwrightUnusedTests,
       ],
       this.severity,
     );
@@ -98,6 +103,14 @@ export class Validator {
   registerTestplaneUnusedTests(test: string, filePath: string) {
     this.testplaneUnusedTests.push({
       type: 'testplane-unused',
+      test,
+      filePath,
+    });
+  }
+
+  registerPlaywrightUnusedTests(test: string, filePath: string) {
+    this.playwrightUnusedTests.push({
+      type: 'playwright-unused',
       test,
       filePath,
     });

@@ -95,6 +95,11 @@ export type TestplaneUnusedTestError = {
   filePath: string;
   test: string;
 };
+export type PlaywrightUnusedTestError = {
+  type: 'playwright-unused';
+  filePath: string;
+  test: string;
+};
 
 export type ValidationError =
   | AttributeDuplicateError
@@ -112,7 +117,8 @@ export type ValidationError =
   | LoaderError
   | JestUnusedTestError
   | StorybookUnusedStoryError
-  | TestplaneUnusedTestError;
+  | TestplaneUnusedTestError
+  | PlaywrightUnusedTestError;
 
 export type ValidationErrorTypes = ValidationError['type'];
 
@@ -133,4 +139,5 @@ export const DEFAULT_ERROR_SEVERITY: { [key in ValidationErrorTypes]: Validation
   'jest-unused': 'warning',
   'storybook-unused': 'warning',
   'testplane-unused': 'warning',
+  'playwright-unused': 'warning',
 };

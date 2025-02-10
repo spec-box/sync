@@ -9,13 +9,14 @@ import { CommonOptions } from '../lib/utils';
 import { Validator } from '../lib/validators';
 import { applyStorybookIndex, loadStorybookIndex } from '../lib/storybook';
 import { applyTestplaneReport, loadTestplaneReport } from '../lib/testplane';
+import { applyPlaywrightReport, loadPlaywrightReport } from '../lib/playwright';
 
 export const cmdValidateOnly: CommandModule<{}, CommonOptions> = {
   command: 'validate',
   handler: async (args) => {
     console.log('VALIDATION');
 
-    const { yml, jest, storybook, testplane, validation = {}, projectPath } = await loadConfig(args.config);
+    const { yml, jest, storybook, testplane, playwright, validation = {}, projectPath } = await loadConfig(args.config);
     const validationContext = new Validator(validation);
     const meta = await loadMeta(validationContext, yml.metaPath, projectPath);
 
@@ -45,6 +46,12 @@ export const cmdValidateOnly: CommandModule<{}, CommonOptions> = {
       const testplaneReport = await loadTestplaneReport(testplane.reportPath, projectPath);
 
       applyTestplaneReport(validationContext, projectData, testplaneReport, testplane.keys);
+    }
+
+    if (playwright) {
+      const playwrightReport = await loadPlaywrightReport(playwright.reportPath, projectPath);
+
+      applyPlaywrightReport(validationContext, projectData, playwrightReport, playwright.keys);
     }
 
     validationContext.printReport();
