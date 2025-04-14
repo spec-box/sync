@@ -45,10 +45,23 @@ export interface Tree {
   attributes: string[];
 }
 
+interface StructureDir {
+  title: string;
+  id: string;
+  dirs: StructureDir[];
+}
+
+export type Structure = {
+  title: string;
+  id: string;
+  dirs: StructureDir[];
+}
+
 export interface ProjectData {
   features: Feature[];
 
   attributes?: Attribute[];
   trees?: Tree[];
+  structure?: Structure;
   metaFilePath: string;
 }
