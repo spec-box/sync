@@ -16,7 +16,7 @@ export const uploadJestStat = async (jestReport: JestReport, config: ApiConfig) 
   const body: SpecBoxWebApiModelStatAutotestsStatUploadData = {
     timestamp: new Date(startTime),
     assertionsCount: numTotalTests,
-    duration: totalDuration,
+    duration: Math.floor(totalDuration),
   };
 
   await client.statUploadAutotests({ project, body });
