@@ -1,6 +1,6 @@
 {
   "name": "@spec-box/sync",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": false,
   "bin": {
     "spec-box": "./bin/spec-box"
