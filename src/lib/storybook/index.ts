@@ -22,6 +22,13 @@ export const applyStorybookIndex = (
 
   const automatedAssertions = new Map<string, { importPath: string; detailsUrl?: string }>();
 
+  // полное имя истории -> пути ко всем файлам с таким именем.
+  // отдельная структура нужна потому, что automatedAssertions выше — это Map, и стори
+  // с совпадающим именем в ней затирают друг друга. затирание оставлено намеренно:
+  // на нем держится отчет о историях без описания, где одинаковые стори дают одну запись.
+  // здесь же они нужны все до единой, иначе валидатор не увидит дубликат
+  const importPaths = new Map<string, string[]>();
+
   // формируем список ключей сторей из конфига storybook
   for (let { id, title, name, importPath } of Object.values(index.entries)) {
     const parts = title.split('/').map((part) => part.trim());
@@ -29,6 +36,11 @@ export const applyStorybookIndex = (
     const detailsUrl = buildDetailsUrl(id);
 
     automatedAssertions.set(fullName, { importPath, detailsUrl });
+
+    // накапливаем путь, а не перезаписываем: количество путей — это количество стори с таким именем
+    const pathes = importPaths.get(fullName) || [];
+    pathes.push(importPath);
+    importPaths.set(fullName, pathes);
   }
 
   const attributesCtx = getAttributesContext(attributes);
@@ -47,6 +59,15 @@ export const applyStorybookIndex = (
           assertion.detailsUrl = automatedAssertions.get(fullName)?.detailsUrl;
         }
 
+        // складываем в модель все истории с таким именем.
+        // если историй больше одной, валидатор сообщит о дубликате;
+        // если ни одной, ФТ останется без сопоставленных тестов и попадет в непокрытые.
+        // читаем из importPaths, а не из automatedAssertions: последний ниже очищается по ходу цикла
+        for (const importPath of importPaths.get(fullName) ?? []) {
+          assertion.matchedTests.push({ source: 'storybook', name: fullName, filePath: importPath });
+        }
+
+        // имя использовано — убираем его, чтобы в конце остались только истории без описания
         automatedAssertions.delete(fullName);
       }
     }

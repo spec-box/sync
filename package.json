@@ -13,7 +13,10 @@
     "build": "rm -rf dist && tsc --build tsconfig.json",
     "prepublishOnly": "npm run build",
     "generate-api": "./utils/generate-api.sh",
-    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node ./src/cli.ts sync --message=\"первый снег\"",
+    "test": "vitest run",
+    "test-watch": "vitest",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "smoke": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node ./src/cli.ts sync --message=\"первый снег\"",
     "test-ext": "./bin/spec-box sync",
     "version-beta": "npm version prerelease --preid beta",
     "publish-beta": "npm publish --tag beta",
@@ -35,11 +38,12 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
-    "@types/node": "^20.4.2",
+    "@types/node": "^22.20.2",
     "@types/yargs": "^17.0.24",
     "autorest": "^3.6.3",
     "prettier": "3.2.5",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vitest": "^5.0.0"
   }
 }

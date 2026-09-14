@@ -1,5 +1,5 @@
 import { ValidationSeverity } from '../config';
-import { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, Tree } from '../domain';
+import { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, MatchedTest, Tree } from '../domain';
 
 export type AttributeDuplicateError = {
   type: 'attribute-duplicate';
@@ -74,6 +74,21 @@ export type AssertionDuplicateError = {
   assertionGroup: AssertionGroup;
   assertion: Assertion;
 };
+export type AssertionDuplicateTestError = {
+  type: 'assertion-duplicate-test';
+  filePath: string;
+  feature: Feature;
+  assertionGroup: AssertionGroup;
+  assertion: Assertion;
+  tests: MatchedTest[];
+};
+export type AssertionNotCoveredError = {
+  type: 'assertion-not-covered';
+  filePath: string;
+  feature: Feature;
+  assertionGroup: AssertionGroup;
+  assertion: Assertion;
+};
 export type LoaderError = {
   type: 'loader-error';
   filePath: string;
@@ -113,6 +128,8 @@ export type ValidationError =
   | FeatureMissingAttributeError
   | FeatureMissingLinkError
   | AssertionDuplicateError
+  | AssertionDuplicateTestError
+  | AssertionNotCoveredError
   | CodeError
   | LoaderError
   | JestUnusedTestError
@@ -131,6 +148,8 @@ export const DEFAULT_ERROR_SEVERITY: { [key in ValidationErrorTypes]: Validation
   'tree-missing-attribute': 'error',
   'tree-attribute-duplicate': 'error',
   'assertion-duplicate': 'error',
+  'assertion-duplicate-test': 'warning',
+  'assertion-not-covered': 'off',
   'featrue-code-format': 'error',
   'feature-code-duplicate': 'error',
   'feature-missing-attribute': 'error',

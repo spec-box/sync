@@ -54,6 +54,8 @@ export const cmdValidateOnly: CommandModule<{}, CommonOptions> = {
       applyPlaywrightReport(validationContext, projectData, playwrightReport, playwright.keys);
     }
 
+    validationContext.validateTests(projectData);
+
     validationContext.printReport();
     if (validationContext.hasCriticalErrors) {
       throw Error('При валидации были обнаружены критические ошибки');

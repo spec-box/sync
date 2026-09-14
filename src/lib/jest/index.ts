@@ -12,7 +12,13 @@ export const applyJestReport = (
   report: JestReport,
   keyParts: string[],
 ) => {
+  // полное имя теста -> пути к файлам, в которых встретился тест с таким именем.
+  // одно имя может встретиться несколько раз: это и есть дубликаты, которые ищет валидатор
   const names = new Map<string, string[]>();
+
+  // имена, для которых нашлось ФТ. раньше вместо этого использованные имена удалялись из names,
+  // но теперь names нужен до самого конца: из него берется список сопоставленных тестов
+  const usedNames = new Set<string>();
 
   const state = new Map<string, AutomationState>();
 
@@ -53,13 +59,27 @@ export const applyJestReport = (
           assertion.automationState = automationState;
         }
 
-        names.delete(fullName);
+        // складываем в модель все тесты с таким именем — по одному на каждое вхождение в отчет.
+        // если вхождений больше одного, валидатор сообщит о дубликате;
+        // если ни одного, ФТ останется без сопоставленных тестов и попадет в непокрытые
+        for (const path of names.get(fullName) ?? []) {
+          assertion.matchedTests.push({ source: 'jest', name: fullName, filePath: path });
+        }
+
+        // помечаем имя использованным, даже если теста с таким именем в отчете не было:
+        // для отчета о тестах без описания важно только обратное — какие имена остались лишними
+        usedNames.add(fullName);
       }
     }
   }
-  Array.from(names.keys()).forEach((name) => {
-    const pathes = names.get(name);
-    pathes?.forEach((path) => validationContext.registerJestUnusedTests(name, path));
+
+  // все, что не совпало ни с одним ФТ, — тесты без описания
+  names.forEach((pathes, name) => {
+    if (usedNames.has(name)) {
+      return;
+    }
+    // дубликаты сообщаются по отдельности: у каждого вхождения свой файл, и найти нужно каждый
+    pathes.forEach((path) => validationContext.registerJestUnusedTests(name, path));
   });
 };
 

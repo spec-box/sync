@@ -7,12 +7,22 @@ import { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, ProjectD
 
 export { getAttributesContext, getAssertionContext, getKey } from './keys';
 export type { AssertionContext, AttributesContext } from './keys';
-export type { Assertion, AssertionGroup, Attribute, AttributeValue, Feature, ProjectData, Tree } from './models';
+export type {
+  Assertion,
+  AssertionGroup,
+  Attribute,
+  AttributeValue,
+  Feature,
+  MatchedTest,
+  ProjectData,
+  Tree,
+} from './models';
 
 const mapAssertion = ({ assert: title, description }: YmlAssertion): Assertion => ({
   title,
   description,
   automationState: 'Unknown',
+  matchedTests: [],
 });
 
 const mapGroup = ([title, list]: [string, YmlAssertion[]]): AssertionGroup => {

@@ -1,6 +1,10 @@
 import chalk from 'chalk';
 import { ValidationError } from './models';
 import { ValidationSeverity } from '../config';
+import { MatchedTest } from '../domain';
+
+const renderTest = ({ source, name, filePath }: MatchedTest) =>
+  `  ${strong(source)} ${val(name)}${filePath ? ` ${path(filePath)}` : ''}`;
 
 const renderError = (e: ValidationError): string => {
   switch (e.type) {
@@ -30,6 +34,12 @@ const renderError = (e: ValidationError): string => {
       return `Неизвестная ссылка: ${val(e.link)}`;
     case 'assertion-duplicate':
       return `Дубликат утверждения: ${val(e.assertion.title)} (группа ${val(e.assertionGroup.title)})`;
+    case 'assertion-duplicate-test':
+      return `Утверждение проверяется несколькими тестами: ${val(e.assertion.title)} (группа ${val(
+        e.assertionGroup.title,
+      )})\n${e.tests.map(renderTest).join('\n')}`;
+    case 'assertion-not-covered':
+      return `Утверждение не проверяется тестами: ${val(e.assertion.title)} (группа ${val(e.assertionGroup.title)})`;
     case 'jest-unused':
       return `Обнаружен тест без описания\n${val(e.test)}`;
     case 'storybook-unused':

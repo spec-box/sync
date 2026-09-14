@@ -2,11 +2,21 @@ export type FeatureType = 'Functional' | 'Visual';
 
 export type AutomationState = 'Unknown' | 'Automated' | 'Problem';
 
+export interface MatchedTest {
+  // код источника данных о тестах; ядро не знает их перечень
+  source: string;
+  name: string;
+  filePath: string;
+}
+
 export interface Assertion {
   title: string;
   description?: string;
   detailsUrl?: string;
   automationState: AutomationState;
+
+  // тесты, сопоставленные с утверждением; поле используется только для валидации и не выгружается
+  matchedTests: MatchedTest[];
 }
 
 export interface AssertionGroup {

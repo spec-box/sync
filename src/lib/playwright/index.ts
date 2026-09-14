@@ -12,7 +12,14 @@ export const applyPlaywrightReport = (
   report: PlaywrightReport,
   keyParts: string[],
 ) => {
+  // полное имя теста -> пути к файлам, в которых встретился тест с таким именем.
+  // запуски в разных проектах playwright складывает внутрь одного spec, поэтому
+  // одно имя попадает сюда по разу на файл, а не по разу на браузер
   const names = new Map<string, string[]>();
+
+  // имена, для которых нашлось ФТ. раньше вместо этого использованные имена удалялись из names,
+  // но теперь names нужен до самого конца: из него берется список сопоставленных тестов
+  const usedNames = new Set<string>();
 
   const state = new Map<string, AutomationState>();
 
@@ -67,13 +74,27 @@ export const applyPlaywrightReport = (
           assertion.automationState = automationState;
         }
 
-        names.delete(fullName);
+        // складываем в модель все тесты с таким именем — по одному на каждый файл.
+        // если файлов больше одного, валидатор сообщит о дубликате;
+        // если ни одного, ФТ останется без сопоставленных тестов и попадет в непокрытые
+        for (const path of names.get(fullName) ?? []) {
+          assertion.matchedTests.push({ source: 'playwright', name: fullName, filePath: path });
+        }
+
+        // помечаем имя использованным, даже если теста с таким именем в отчете не было:
+        // для отчета о тестах без описания важно только обратное — какие имена остались лишними
+        usedNames.add(fullName);
       }
     }
   }
-  Array.from(names.keys()).forEach((name) => {
-    const pathes = names.get(name);
-    pathes?.forEach((path) => validationContext.registerPlaywrightUnusedTests(name, path));
+
+  // все, что не совпало ни с одним ФТ, — тесты без описания
+  names.forEach((pathes, name) => {
+    if (usedNames.has(name)) {
+      return;
+    }
+    // дубликаты сообщаются по отдельности: у каждого вхождения свой файл, и найти нужно каждый
+    pathes.forEach((path) => validationContext.registerPlaywrightUnusedTests(name, path));
   });
 };
 
