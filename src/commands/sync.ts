@@ -66,6 +66,8 @@ export const cmdSync: CommandModule<{}, SyncOptions> = {
       applyPlaywrightReport(validationContext, projectData, playwrightReport, playwright.keys);
     }
 
+    validationContext.validateTests(projectData);
+
     validationContext.printReport();
     if (validationContext.hasCriticalErrors) {
       throw Error('Выгрузка невозможна из-за наличия критических ошибок');

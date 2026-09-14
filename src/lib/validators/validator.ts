@@ -3,6 +3,8 @@ import { Feature, ProjectData } from '../domain';
 import { Tree } from '../domain/models';
 import {
   AssertionDuplicateError,
+  AssertionDuplicateTestError,
+  AssertionNotCoveredError,
   AttributeDuplicateError,
   AttributeValueDuplicateError,
   CodeError,
@@ -30,6 +32,7 @@ export class Validator {
   private readonly loaderErrors = new Array<ValidationError>();
   private readonly metaErrors = new Array<ValidationError>();
   private readonly featureErrors = new Array<ValidationError>();
+  private readonly testErrors = new Array<ValidationError>();
   private readonly jestUnusedTests = new Array<JestUnusedTestError>();
   private readonly storybookUnusedStories = new Array<StorybookUnusedStoryError>();
   private readonly testplaneUnusedTests = new Array<TestplaneUnusedTestError>();
@@ -42,16 +45,21 @@ export class Validator {
     this.severity = { ...DEFAULT_ERROR_SEVERITY, ...config };
   }
 
-  get hasCriticalErrors(): boolean {
+  private get allErrors(): ValidationError[] {
     return [
       ...this.loaderErrors,
       ...this.metaErrors,
       ...this.featureErrors,
+      ...this.testErrors,
       ...this.jestUnusedTests,
       ...this.storybookUnusedStories,
       ...this.testplaneUnusedTests,
       ...this.playwrightUnusedTests,
-    ].some((e) => this.severity[e.type] === 'error');
+    ];
+  }
+
+  get hasCriticalErrors(): boolean {
+    return this.allErrors.some((e) => this.severity[e.type] === 'error');
   }
 
   printReport() {
@@ -61,23 +69,12 @@ export class Validator {
     this.storybookUnusedStories.forEach(render);
     this.testplaneUnusedTests.forEach(render);
     this.playwrightUnusedTests.forEach(render);
+    this.testErrors.forEach(render);
     this.featureErrors.forEach(render);
     this.metaErrors.forEach(render);
     this.loaderErrors.forEach(render);
 
-    renderStats(
-      'Всего',
-      [
-        ...this.loaderErrors,
-        ...this.metaErrors,
-        ...this.featureErrors,
-        ...this.jestUnusedTests,
-        ...this.storybookUnusedStories,
-        ...this.testplaneUnusedTests,
-        ...this.playwrightUnusedTests,
-      ],
-      this.severity,
-    );
+    renderStats('Всего', this.allErrors, this.severity);
   }
 
   registerLoaderError(error: unknown, filePath: string, fileType: LoaderError['fileType']) {
@@ -123,6 +120,39 @@ export class Validator {
     this.validateMetaAttributes(attributes, metaAttributeValues);
     this.validateMetaTrees(trees, metaAttributeValues);
     this.validateFeatures(features, metaAttributeValues);
+  }
+
+  // вызывается после применения всех отчетов автотестов, когда для каждого утверждения
+  // известен полный список сопоставленных с ним тестов
+  validateTests({ features }: ProjectData) {
+    for (const feature of features) {
+      for (const assertionGroup of feature.groups) {
+        for (const assertion of assertionGroup.assertions) {
+          const tests = assertion.matchedTests;
+
+          if (tests.length === 0) {
+            const notCoveredError: AssertionNotCoveredError = {
+              type: 'assertion-not-covered',
+              filePath: feature.filePath,
+              feature,
+              assertionGroup,
+              assertion,
+            };
+            this.testErrors.push(notCoveredError);
+          } else if (tests.length > 1) {
+            const duplicateTestError: AssertionDuplicateTestError = {
+              type: 'assertion-duplicate-test',
+              filePath: feature.filePath,
+              feature,
+              assertionGroup,
+              assertion,
+              tests,
+            };
+            this.testErrors.push(duplicateTestError);
+          }
+        }
+      }
+    }
   }
 
   private validateMetaAttributes(attributes: Attribute[] | undefined, attributeValuesMap: Map<string, Set<string>>) {
