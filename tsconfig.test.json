@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    // vitest раздает типы через exports map, которую moduleResolution: node разрешить не может
+    "skipLibCheck": true
+  },
+  "include": ["./src/**/*.ts", "./test/**/*.ts"]
+}
