@@ -33,7 +33,28 @@ export const treeDecoder = d.struct({
 export const metaDecoder = d.partial({
   attributes: d.array(attributeDecoder),
   trees: d.array(treeDecoder),
+  structures: d.array(treeDecoder),
 });
+
+interface DirType {
+  title: string;
+  id: string;
+  dirs: Array<DirType>;
+}
+
+const dirDecoder: d.Decoder<unknown, DirType> = d.lazy('dirDecoder', () =>
+  d.struct({
+    title: d.string,
+    id: d.string,
+    dirs: d.array(dirDecoder),
+  }),
+);
+
+export const structureDecoder = d.struct({
+  title: d.string,
+  id: d.string,
+  dirs: d.array(dirDecoder),
+})
 
 // config
 export const apiConfigDecoder = d.struct({
@@ -125,5 +146,6 @@ export type ValidationSeverity = d.TypeOf<typeof validationSeverityDecoder>;
 
 export type Meta = d.TypeOf<typeof metaDecoder>;
 export type Tree = d.TypeOf<typeof treeDecoder>;
+export type Structure = d.TypeOf<typeof structureDecoder>;
 export type Attribute = d.TypeOf<typeof attributeDecoder>;
 export type AttributeValue = d.TypeOf<typeof attributeValueDecoder>;

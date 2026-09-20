@@ -19,6 +19,7 @@ export const entityDecoder = d.intersect(
   }),
 )(
   d.partial({
+    path: d.string,
     type: featureTypeDecoder,
     'specs-unit': d.record(d.array(assertionDecoder)),
     definitions: d.record(d.array(d.string)),
