@@ -72,7 +72,13 @@ export const attributeKeyPartDecoder = pipe(
 );
 
 export const jestConfigDecoder = d.struct({
-  reportPath: d.string,
+  reportPath: d.union(
+    d.string,
+    pipe(
+      d.array(d.string),
+      d.parse((paths) => (paths.length > 0 ? d.success(paths) : d.failure(paths, 'non-empty array of report paths'))),
+    ),
+  ),
   keys: d.array(d.union(literalKeyPartDecoder, attributeKeyPartDecoder)),
 });
 

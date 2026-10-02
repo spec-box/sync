@@ -1,0 +1,13 @@
+{
+  "api": {
+    "host": "http://localhost:5059",
+    "project": "magic"
+  },
+  "yml": {
+    "files": ["specs/**/*.yml"]
+  },
+  "jest": {
+    "reportPath": ["reports/client-unit.json", "reports/client-bff.json", "reports/server-bff.json"],
+    "keys": ["featureTitle", "groupTitle", "assertionTitle"]
+  }
+}

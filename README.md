@@ -195,7 +195,7 @@ describe('Главная страница', () => {
 
 Уровень каждой проверки задается в секции `validation` [конфигурационного файла](#формат-конфига).
 
-### Jest
+### Jest и Vitest
 
 Отчет о выполнении тестов можно сформировать, запустив jest с параметром `--json`, например:
 
@@ -216,6 +216,34 @@ jest --json --outputFile=jest-report.json
         "keys": ["featureTitle", "groupTitle", "assertionTitle"]
     }
 ```
+
+Vitest может сформировать совместимый JSON-отчет:
+
+```sh
+vitest run --reporter=json --outputFile=vitest-report.json
+```
+
+`jest.reportPath` принимает строку (как раньше) или **непустой массив путей**. Если тесты запускаются отдельно, например client-unit, client-BFF и server-BFF в Magic, объединять JSON внешним скриптом не нужно:
+
+```json
+{
+  "jest": {
+    "reportPath": [
+      "reports/client-unit.json",
+      "reports/client-bff.json",
+      "reports/server-bff.json"
+    ],
+    "keys": ["featureTitle", "groupTitle", "assertionTitle"]
+  }
+}
+```
+
+Полный пример: [`examples/magic.tms.json`](examples/magic.tms.json). Имена файлов и `keys` нужно согласовать с настройками тестов проекта.
+
+- Относительные пути разрешаются относительно `projectPath`, а если он не указан — текущей рабочей папки. Абсолютные пути также поддерживаются; это пути к файлам, не glob-шаблоны.
+- `validate` и `sync` сопоставляют ФТ с тестами из всех отчетов в порядке массива. Дубликаты не удаляются: они учитываются существующей проверкой `assertion-duplicate-test`. Повторно указанный путь также будет обработан повторно.
+- `upload-stat` отправляет одну общую запись: самое раннее `startTime`, сумму `numTotalTests` и сумму длительностей всех test suites (`endTime - startTime`, в миллисекундах, с округлением вниз после суммирования). Это суммарная длительность, а не время между началом первого и концом последнего запуска.
+- Каждый файл должен содержать корректный JSON-отчет Jest/Vitest. Если хотя бы один файл отсутствует, недоступен или не соответствует формату, команда завершается с ошибкой с путем файла и причиной. `sync` и `upload-stat` в этом случае ничего не отправляют.
 
 ### Testplane
 
@@ -326,7 +354,7 @@ export const Default: StoryObj<typeof Cart> = {
     },
     // настройки для сопоставления ФТ с отчетами jest
     "jest": {
-        "reportPath": "jest-report.json", // путь к файлу с отчетом о выполнении тестов
+        "reportPath": "jest-report.json", // строка или непустой массив путей к JSON-отчетам Jest/Vitest
         "keys": [ // сегменты идентификатора для сопоставления автотестов с ФТ
             "featureTitle",
             "$sub-component",
