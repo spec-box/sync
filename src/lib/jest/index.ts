@@ -1,6 +1,6 @@
 import { ProjectData, getAssertionContext, getAttributesContext, getKey } from '../domain';
 import { AutomationState } from '../domain/models';
-import { parseObject, readTextFile } from '../utils';
+import { parseObject, readTextFile, resolvePath } from '../utils';
 import { Validator } from '../validators';
 import { JestReport, jestReportDecoder } from './models';
 
@@ -83,11 +83,30 @@ export const applyJestReport = (
   });
 };
 
-export const loadJestReport = async (path: string, basePath?: string) => {
-  const json = await readTextFile(path, basePath);
-  const data: unknown = JSON.parse(json);
+export const loadJestReport = async (path: string | string[], basePath?: string): Promise<JestReport> => {
+  const paths = typeof path === 'string' ? [path] : path;
+  if (paths.length === 0) {
+    throw new Error('jest.reportPath должен содержать строку или непустой массив путей к отчетам');
+  }
 
-  const entity = parseObject(data, jestReportDecoder);
+  const reports: JestReport[] = [];
+  for (const reportPath of paths) {
+    try {
+      const json = await readTextFile(reportPath, basePath);
+      const data: unknown = JSON.parse(json);
+      reports.push(parseObject(data, jestReportDecoder));
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : String(error);
+      throw new Error(
+        `Не удалось загрузить отчет Jest/Vitest "${reportPath}" (${resolvePath(reportPath, basePath)}): ${reason}`,
+      );
+    }
+  }
 
-  return entity;
+  // Сохраняем все вхождения тестов: дубликаты между отчетами должен видеть валидатор.
+  return {
+    startTime: reports.reduce((earliest, report) => Math.min(earliest, report.startTime), reports[0].startTime),
+    numTotalTests: reports.reduce((total, report) => total + report.numTotalTests, 0),
+    testResults: reports.flatMap((report) => report.testResults),
+  };
 };

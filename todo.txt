@@ -1,0 +1,3 @@
+Техдолг
+- src/cli.ts / yargs@17.7.2: CLI на системном Node 26.4.0 падает до чтения конфигурации (require is not defined in ES module scope, yargs/yargs). Проверить и устранить совместимость с Node 26 отдельно; для текущей проверки использовать Node 22.17.0 из .nvmrc. Снять пункт после проверки запуска реального CLI на Node 26.
+- package-lock.json: npm audit обнаруживает существующие уязвимости в form-data (critical), picomatch (high), @tootallnate/once и diff (low). Обновить соответствующие транзитивные зависимости, проверить совместимость (npm test, npm run typecheck, npm run build) и повторить npm audit. Доработка нескольких Jest/Vitest-отчётов их не добавляет и не устраняет.
